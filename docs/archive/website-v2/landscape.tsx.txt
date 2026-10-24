@@ -1,0 +1,148 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import { Icon } from "./icons";
+
+export function ContourLines({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 700 600"
+      fill="none"
+      aria-hidden="true"
+    >
+      {Array.from({ length: 24 }, (_, i) => {
+        const r = 50 + i * 9;
+        return (
+          <path
+            key={i}
+            d={`M${350 - r} 300 C${350 - r - 80} ${300 - r * 0.58}, ${350 - r * 0.35} ${300 - r * 1.12}, 350 ${300 - r * 0.88} C${350 + r * 0.8} ${300 - r * 0.65}, ${350 + r + 42} ${300 - r * 0.25}, ${350 + r} 300 C${350 + r - 5} ${300 + r * 0.5}, ${350 + r * 0.48} ${300 + r * 0.91}, 350 ${300 + r * 0.83} C${350 - r * 0.6} ${300 + r * 0.82}, ${350 - r + 23} ${300 + r * 0.3}, ${350 - r} 300Z`}
+            pathLength="1"
+          />
+        );
+      })}
+    </svg>
+  );
+}
+
+export function LandscapeHero() {
+  const root = useRef<HTMLElement>(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const mm = gsap.matchMedia();
+    mm.add("(prefers-reduced-motion: no-preference)", () => {
+      const ctx = gsap.context(() => {
+        gsap.from(".hero-image", {
+          scale: 1.12,
+          duration: 2.1,
+          ease: "power2.out",
+        });
+        gsap.from(".hero-title-line span", {
+          yPercent: 110,
+          rotate: 2,
+          stagger: 0.14,
+          duration: 1.15,
+          delay: 0.15,
+          ease: "power4.out",
+        });
+        gsap.from(".hero-support", {
+          opacity: 0,
+          y: 16,
+          duration: 0.8,
+          stagger: 0.12,
+          delay: 0.7,
+        });
+      }, root);
+      return () => ctx.revert();
+    });
+    return () => mm.revert();
+  }, []);
+
+  return (
+    <section
+      className={`hero ${visible ? "is-revealed" : ""}`}
+      ref={root}
+      aria-labelledby="hero-title"
+    >
+      <img
+        className="hero-image"
+        src="/images/atlas-landscape.webp"
+        alt="Reliefs et cultures en terrasses inspirés des paysages de l’Atlas marocain"
+        fetchPriority="high"
+        width="1672"
+        height="941"
+      />
+      <div className="hero-shade" />
+      <div className="hero-content">
+        <p className="hero-intro hero-support">
+          <span className="status-dot" /> Pensée pour les entreprises au Maroc
+        </p>
+        <h1 id="hero-title">
+          <span className="hero-title-line">
+            <span>Votre impact,</span>
+          </span>
+          <span className="hero-title-line">
+            <span>en clair.</span>
+          </span>
+        </h1>
+        <p className="hero-description hero-support">
+          Derrière chaque donnée, une décision.
+          <br />
+          Donnez du sens à votre empreinte carbone.
+        </p>
+        <div className="hero-actions hero-support">
+          <a className="button button-white" href="#plateforme">
+            Découvrir la plateforme{" "}
+            <span className="button-disc">
+              <Icon name="arrowUp" />
+            </span>
+          </a>
+          <a className="hero-text-link" href="#approche">
+            Notre approche <Icon name="arrow" />
+          </a>
+        </div>
+        <p className="hero-disclaimer hero-support">
+          Une plateforme en construction. Une vision déjà claire.
+        </p>
+      </div>
+      <div className="hero-field" aria-hidden="true">
+        <ContourLines className="hero-contours" />
+        <div className="field-axis axis-h" />
+        <div className="field-axis axis-v" />
+        <div className="field-point point-one">
+          <i />
+          <span>Relier les sources</span>
+        </div>
+        <div className="field-point point-two">
+          <i />
+          <span>Comprendre l’impact</span>
+        </div>
+        <div className="field-point point-three">
+          <i />
+          <span>Éclairer l’action</span>
+        </div>
+      </div>
+      <div className="hero-bottom">
+        <span className="landscape-caption">
+          Un regard nouveau sur ce qui nous entoure.
+        </span>
+        <button
+          className="reveal-control"
+          aria-pressed={visible}
+          onClick={() => setVisible(!visible)}
+        >
+          <span className="reveal-symbol">
+            <Icon name={visible ? "close" : "plus"} />
+          </span>
+          <span>
+            {visible ? "Retrouver le paysage" : "Révéler l’invisible"}
+          </span>
+        </button>
+      </div>
+      <span className="hero-corner" aria-hidden="true">
+        <Icon name="arrow" />
+      </span>
+    </section>
+  );
+}

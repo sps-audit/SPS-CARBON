@@ -1,0 +1,504 @@
+"use client";
+
+import { useEffect, useRef, useState, type MouseEvent } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { LandscapeHero, ContourLines } from "./landscape";
+import { ProductPreview } from "./product-preview";
+import { ProjectDialog } from "./project-dialog";
+import { Icon } from "./icons";
+
+const faq = [
+  {
+    q: "À qui s’adresse SPS-CARBON ?",
+    a: "Nous concevons SPS-CARBON pour les entreprises au Maroc qui souhaitent mieux comprendre leurs émissions : dirigeants, équipes financières, responsables RSE et personnes chargées de réunir les données. Le parcours part de votre activité et de vos justificatifs, sans vous demander de maîtriser tout le vocabulaire carbone.",
+  },
+  {
+    q: "Puis-je déjà utiliser la plateforme pour mon entreprise ?",
+    a: "SPS-CARBON est en développement. Cette version vous permet d’explorer notre approche avec une démonstration interactive et de préparer une première checklist. Les exemples sont fictifs ; le service de production et les comptes clients ne sont pas encore ouverts.",
+  },
+  {
+    q: "Quelles émissions seront prises en compte ?",
+    a: "La première expérience se concentre sur l’électricité et les carburants. Les autres sources pertinentes restent identifiées comme à examiner. Selon votre activité, un inventaire plus complet peut aussi inclure les procédés industriels, les fuites de réfrigérants, les achats, le transport ou les déchets.",
+  },
+  {
+    q: "Comment savoir d’où vient un résultat ?",
+    a: "Notre principe est de relier chaque résultat à une donnée d’activité, une unité, une période et un facteur d’émission documenté. La démonstration vous permet d’ouvrir un calcul pour découvrir cette logique. Les facteurs utilisés dans cet exemple sont illustratifs, sans valeur officielle.",
+  },
+  {
+    q: "Est-ce un bilan certifié ou un outil CBAM ?",
+    a: "Non. La documentation et la traçabilité facilitent la revue, mais ne constituent pas une certification ni une vérification indépendante. Le CBAM et les empreintes de produits nécessitent des règles spécifiques et ne font pas partie de cette première version.",
+  },
+];
+
+export function CarbonSite() {
+  const [menu, setMenu] = useState(false);
+  const [dialog, setDialog] = useState(false);
+  const root = useRef<HTMLDivElement>(null);
+  const returnFocus = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    const mm = gsap.matchMedia();
+    mm.add(
+      "(prefers-reduced-motion: no-preference) and (min-width: 768px)",
+      () => {
+        const ctx = gsap.context(() => {
+          gsap.to(".method-contours", {
+            rotation: 38,
+            scale: 1.12,
+            ease: "none",
+            scrollTrigger: {
+              trigger: ".method-section",
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1,
+            },
+          });
+          gsap.fromTo(
+            ".method-orbit",
+            { y: 30 },
+            {
+              y: -35,
+              ease: "none",
+              scrollTrigger: {
+                trigger: ".method-section",
+                start: "top bottom",
+                end: "bottom top",
+                scrub: 1,
+              },
+            },
+          );
+          gsap.fromTo(
+            ".philosophy-line",
+            { scaleX: 0 },
+            {
+              scaleX: 1,
+              transformOrigin: "left center",
+              ease: "none",
+              scrollTrigger: {
+                trigger: ".philosophy-section",
+                start: "top 80%",
+                end: "center 40%",
+                scrub: 1,
+              },
+            },
+          );
+        }, root);
+        return () => ctx.revert();
+      },
+    );
+    return () => mm.revert();
+  }, []);
+  function openProject(event: MouseEvent<HTMLButtonElement>) {
+    returnFocus.current = event.currentTarget.classList.contains("mobile-cta")
+      ? document.getElementById("menu-toggle")
+      : event.currentTarget;
+    setMenu(false);
+    setDialog(true);
+  }
+
+  function closeProject() {
+    setDialog(false);
+    requestAnimationFrame(() =>
+      returnFocus.current?.focus({ preventScroll: true }),
+    );
+  }
+
+  return (
+    <div ref={root}>
+      <a className="skip-link" href="#main">
+        Aller au contenu
+      </a>
+      <header className="site-header">
+        <a href="#" className="brand-link" aria-label="SPS CARBON, accueil">
+          <img
+            src="/brand/logo-dark.svg"
+            width="188"
+            height="40"
+            alt="SPS CARBON"
+          />
+        </a>
+        <button
+          id="menu-toggle"
+          className="menu-toggle icon-button"
+          aria-label={menu ? "Fermer le menu" : "Ouvrir le menu"}
+          aria-expanded={menu}
+          aria-controls="main-navigation"
+          onClick={() => setMenu(!menu)}
+        >
+          <Icon name={menu ? "close" : "menu"} />
+        </button>
+        <nav
+          className={`site-nav ${menu ? "is-open" : ""}`}
+          aria-label="Navigation principale"
+          id="main-navigation"
+          onKeyDown={(event) => {
+            if (event.key === "Escape") {
+              setMenu(false);
+              document.getElementById("menu-toggle")?.focus();
+            }
+          }}
+        >
+          <a onClick={() => setMenu(false)} href="#plateforme">
+            La plateforme
+          </a>
+          <a onClick={() => setMenu(false)} href="#approche">
+            Notre approche
+          </a>
+          <a onClick={() => setMenu(false)} href="#difference">
+            L’esprit SPS
+          </a>
+          <a onClick={() => setMenu(false)} href="#questions">
+            Questions
+          </a>
+          <button
+            className="button button-dark mobile-cta"
+            onClick={openProject}
+          >
+            Préparer mon projet <Icon name="arrowUp" />
+          </button>
+        </nav>
+        <button className="button button-dark header-cta" onClick={openProject}>
+          Préparer mon projet <Icon name="arrowUp" />
+        </button>
+      </header>
+      <main id="main">
+        <LandscapeHero />
+        <section className="intro-section section-shell">
+          <div className="intro-left">
+            <span className="section-tag">
+              <span /> La clarté, comme point de départ.
+            </span>
+            <p>Mesurer. Comprendre. Avancer.</p>
+          </div>
+          <div className="intro-right">
+            <h2>
+              Des données dispersées.
+              <br />
+              Une vision qui se précise.
+            </h2>
+            <p>
+              Factures, consommations, déplacements… Votre activité laisse des
+              traces. Nous construisons l’espace qui les relie, pour vous aider
+              à comprendre vos émissions et à préparer la suite.
+            </p>
+          </div>
+        </section>
+        <section className="platform-section section-shell" id="plateforme">
+          <div className="section-heading">
+            <div>
+              <span className="section-tag">
+                <span /> La plateforme
+              </span>
+              <h2>
+                Le carbone devient
+                <br />
+                lisible.
+              </h2>
+            </div>
+            <div>
+              <p>
+                Une vue d’ensemble pour décider.
+                <br />
+                Le détail pour comprendre.
+              </p>
+              <a className="inline-link" href="#product-demo">
+                Prenez les commandes <Icon name="arrow" />
+              </a>
+            </div>
+          </div>
+          <div id="product-demo">
+            <ProductPreview />
+          </div>
+        </section>
+        <section className="method-section" id="approche">
+          <div className="method-inner section-shell">
+            <div className="method-intro">
+              <span className="section-tag">
+                <span /> Notre approche
+              </span>
+              <h2>
+                Du premier document
+                <br />à la bonne question.
+              </h2>
+              <p>
+                Un parcours pensé pour avancer avec méthode, même quand tout
+                n’est pas encore disponible.
+              </p>
+            </div>
+            <div className="method-body">
+              <div className="method-art" aria-hidden="true">
+                <ContourLines className="method-contours" />
+                <div className="method-orbit">
+                  <img
+                    src="/brand/symbol-light.svg"
+                    width="105"
+                    height="105"
+                    alt=""
+                  />
+                </div>
+                <span className="orbit-label label-top">Une source</span>
+                <span className="orbit-label label-bottom">Une vision</span>
+              </div>
+              <div className="method-steps">
+                <article>
+                  <span className="step-number">01</span>
+                  <div>
+                    <h3>Poser le cadre.</h3>
+                    <p>
+                      Vos sites, vos activités, votre période. Un point de
+                      départ clair pour savoir ce qui entre dans votre
+                      inventaire.
+                    </p>
+                  </div>
+                </article>
+                <article>
+                  <span className="step-number">02</span>
+                  <div>
+                    <h3>Relier les données.</h3>
+                    <p>
+                      Rassembler les justificatifs, vérifier les unités, repérer
+                      les manques. Donner à chaque information sa juste place.
+                    </p>
+                  </div>
+                </article>
+                <article>
+                  <span className="step-number">03</span>
+                  <div>
+                    <h3>Éclairer les décisions.</h3>
+                    <p>
+                      Comprendre les résultats et leurs limites. Identifier les
+                      sujets à approfondir avant de définir vos actions.
+                    </p>
+                  </div>
+                </article>
+                <span className="method-note">
+                  Le parcours que nous développons, étape par étape.
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section className="philosophy-section section-shell" id="difference">
+          <div className="philosophy-heading">
+            <span className="section-tag">
+              <span /> L’esprit SPS
+            </span>
+            <h2>
+              La confiance se construit.
+              <br />
+              Donnée après donnée.
+            </h2>
+            <p>
+              Trois convictions qui guident chaque choix de notre plateforme.
+            </p>
+          </div>
+          <div className="philosophy-line" />
+          <div className="principles">
+            <article className="principle principle-trace">
+              <div className="trace-visual" aria-hidden="true">
+                <span className="trace-document">
+                  <Icon name="file" />
+                </span>
+                <span className="trace-connector" />
+                <span className="trace-factor">×</span>
+                <span className="trace-connector" />
+                <span className="trace-result">CO₂e</span>
+              </div>
+              <h3>
+                Un chiffre doit
+                <br />
+                pouvoir s’expliquer.
+              </h3>
+              <p>
+                La source, le facteur, l’hypothèse. Retrouvez le chemin du
+                calcul, au lieu de vous arrêter au résultat.
+              </p>
+              <span className="principle-foot">
+                La traçabilité comme fondation
+              </span>
+            </article>
+            <article className="principle">
+              <div className="missing-visual" aria-hidden="true">
+                <i />
+                <i />
+                <i />
+                <i className="empty" />
+                <i />
+                <i />
+              </div>
+              <h3>
+                Un manque mérite
+                <br />
+                d’être visible.
+              </h3>
+              <p>
+                Mesuré, estimé ou à collecter : des états distincts pour garder
+                une lecture honnête de votre inventaire.
+              </p>
+              <span className="principle-foot">
+                La transparence à chaque étape
+              </span>
+            </article>
+            <article className="principle">
+              <div className="context-visual" aria-hidden="true">
+                <Icon name="compass" width="48" height="48" />
+                <span>
+                  33° N<br />
+                  07° W
+                </span>
+              </div>
+              <h3>
+                Le contexte local
+                <br />
+                change la lecture.
+              </h3>
+              <p>
+                Unités, fournisseurs, périodes de facturation. Une démarche
+                attentive aux réalités des entreprises au Maroc.
+              </p>
+              <span className="principle-foot">
+                Pensée depuis votre terrain
+              </span>
+            </article>
+          </div>
+        </section>
+        <section className="manifesto-section">
+          <div className="section-shell manifesto-inner">
+            <img src="/brand/symbol-dark.svg" width="60" height="60" alt="" />
+            <p>
+              Moins d’opacité.
+              <br />
+              Plus de perspective.
+            </p>
+            <span>
+              Le point de départ d’une
+              <br />
+              démarche carbone qui a du sens.
+            </span>
+          </div>
+        </section>
+        <section className="faq-section section-shell" id="questions">
+          <div className="faq-intro">
+            <span className="section-tag">
+              <span /> Questions utiles
+            </span>
+            <h2>
+              Tout commence
+              <br />
+              par comprendre.
+            </h2>
+            <p>
+              Quelques repères pour découvrir le projet, son approche et son
+              état d’avancement.
+            </p>
+          </div>
+          <div className="faq-list">
+            {faq.map((item) => (
+              <details key={item.q}>
+                <summary>
+                  {item.q}
+                  <span className="faq-icon">
+                    <Icon name="plus" />
+                  </span>
+                </summary>
+                <p>{item.a}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+        <section className="closing-section">
+          <img
+            src="/images/atlas-landscape.webp"
+            alt=""
+            loading="lazy"
+            width="1672"
+            height="941"
+          />
+          <div className="closing-shade" />
+          <div className="closing-content">
+            <span className="section-tag">
+              <span /> Votre prochain pas
+            </span>
+            <h2>
+              Chaque trajectoire
+              <br />a un point de départ.
+            </h2>
+            <p>
+              Commencez par les bonnes questions.
+              <br />
+              Préparez les premières données de votre entreprise.
+            </p>
+            <button className="button button-white" onClick={openProject}>
+              Préparer mon projet{" "}
+              <span className="button-disc">
+                <Icon name="arrowUp" />
+              </span>
+            </button>
+            <span className="closing-note">
+              Une checklist adaptée à votre activité. Sans inscription.
+            </span>
+          </div>
+        </section>
+      </main>
+      <footer className="site-footer section-shell">
+        <div className="footer-top">
+          <a className="brand-link" href="#" aria-label="Retour en haut">
+            <img
+              src="/brand/logo-dark.svg"
+              width="208"
+              height="44"
+              alt="SPS CARBON"
+            />
+          </a>
+          <p>
+            Donner du sens aux données.
+            <br />
+            Ouvrir de nouvelles perspectives.
+          </p>
+          <a href="/identite" className="brand-kit-link">
+            Notre identité <Icon name="arrowUp" />
+          </a>
+        </div>
+        <div className="footer-bottom">
+          <span>© 2026 SPS-CARBON</span>
+          <span>
+            <i className="status-dot" /> Projet en développement
+          </span>
+          <button
+            className="text-button"
+            onClick={() =>
+              document.getElementById("privacy-note")?.showPopover()
+            }
+          >
+            Confidentialité
+          </button>
+          <a href="#main">
+            Retour en haut <Icon name="arrowUp" />
+          </a>
+        </div>
+        <div id="privacy-note" popover="auto" className="privacy-popover">
+          <h3>Une découverte en toute simplicité.</h3>
+          <p>
+            Cette présentation n’utilise ni suivi publicitaire ni formulaire
+            d’envoi. La checklist est créée sur votre appareil. Les données de
+            démonstration sont fictives.
+          </p>
+          <p>
+            Lors de la mise en ligne, l’hébergeur pourra traiter les données
+            techniques nécessaires au fonctionnement du site. Cette information
+            sera précisée avant l’ouverture de comptes.
+          </p>
+          <button
+            className="button button-dark"
+            popoverTarget="privacy-note"
+            popoverTargetAction="hide"
+          >
+            Fermer
+          </button>
+        </div>
+      </footer>
+      <ProjectDialog open={dialog} onClose={closeProject} />
+    </div>
+  );
+}

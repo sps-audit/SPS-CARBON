@@ -1,0 +1,70 @@
+{
+  "svgChecks": "passed",
+  "pngChecks": "passed",
+  "smallSizeChecks": "passed",
+  "pngs": [
+    {
+      "file": "logo-dark.png",
+      "width": 2400,
+      "height": 485,
+      "alpha": true,
+      "density": 300
+    },
+    {
+      "file": "symbol-dark.png",
+      "width": 1024,
+      "height": 1024,
+      "alpha": true,
+      "density": 300
+    },
+    {
+      "file": "wordmark-dark.png",
+      "width": 2400,
+      "height": 323,
+      "alpha": true,
+      "density": 300
+    },
+    {
+      "file": "logo-light.png",
+      "width": 2400,
+      "height": 485,
+      "alpha": true,
+      "density": 300
+    },
+    {
+      "file": "symbol-light.png",
+      "width": 1024,
+      "height": 1024,
+      "alpha": true,
+      "density": 300
+    },
+    {
+      "file": "wordmark-light.png",
+      "width": 2400,
+      "height": 323,
+      "alpha": true,
+      "density": 300
+    },
+    {
+      "file": "logo-black.png",
+      "width": 2400,
+      "height": 485,
+      "alpha": true,
+      "density": 300
+    },
+    {
+      "file": "symbol-black.png",
+      "width": 1024,
+      "height": 1024,
+      "alpha": true,
+      "density": 300
+    },
+    {
+      "file": "wordmark-black.png",
+      "width": 2400,
+      "height": 323,
+      "alpha": true,
+      "density": 300
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Icon } from "./icons";
+
+const scopes = [
+  {id:1,label:"Vos opérations",title:"Ce que vous émettez directement.",description:"Combustibles, véhicules contrôlés, procédés industriels, fuites de réfrigérants. On commence par identifier les sources présentes dans votre activité.",examples:["Combustion sur site","Flotte de véhicules","Procédés & réfrigérants"],icon:"fuel"},
+  {id:2,label:"Votre énergie",title:"L’énergie que vous achetez.",description:"Électricité, chaleur, vapeur et froid achetés et consommés. Les quantités, la période et le contexte du facteur d’émission donnent du sens au calcul.",examples:["Électricité achetée","Chaleur & vapeur","Froid acheté"],icon:"electric"},
+  {id:3,label:"Votre chaîne de valeur",title:"L’impact au-delà de vos murs.",description:"Achats, transport, déchets, déplacements, utilisation des produits… Quinze catégories à examiner pour déterminer les enjeux pertinents de votre entreprise.",examples:["Achats & fournisseurs","Transport & déplacements","Produits & fin de vie"],icon:"globe"},
+] as const;
+
+export function ScopeStory(){
+  const [active,setActive]=useState(0);const root=useRef<HTMLElement>(null);const scene=useRef<HTMLDivElement>(null);const updating=useRef(false);
+  useEffect(()=>{
+    gsap.registerPlugin(ScrollTrigger);const mm=gsap.matchMedia();
+    mm.add("(min-width: 900px) and (min-height: 850px) and (prefers-reduced-motion: no-preference)",()=>{
+      const trigger=ScrollTrigger.create({trigger:root.current,start:()=>`top ${document.querySelector(".v2-header")?.getBoundingClientRect().height ?? 90}px`,end:"+=1150",invalidateOnRefresh:true,pin:scene.current,scrub:true,onUpdate:self=>{if(!updating.current)setActive(Math.min(2,Math.floor(self.progress*3)));}});
+      return()=>trigger.kill();
+    });return()=>mm.revert();
+  },[]);
+  function select(index:number){updating.current=true;setActive(index);setTimeout(()=>{updating.current=false;},700);}
+  const item=scopes[active];
+  return <section className="scope-chapter" ref={root} id="comprendre"><div className="scope-scene" ref={scene}><div className="v2-wrap"><div className="chapter-heading"><div><span className="overline">Comprendre le périmètre</span><h2>Une entreprise.<br/>Trois perspectives.</h2></div><p>Le bon inventaire commence par les bonnes frontières. Explorez les trois scopes du GHG Protocol.</p></div><div className="scope-stage"><div className={`scope-orbits scope-${active+1}`} aria-hidden="true"><div className="orbit-grid"/><div className="scope-ring ring-three"><span>Scope 3</span></div><div className="scope-ring ring-two"><span>Scope 2</span></div><div className="scope-ring ring-one"><span>Scope 1</span></div><div className="scope-core"><img src="/brand/symbol-light.svg" alt="" width="68" height="68"/><span>Votre entreprise</span></div><span className="orbit-node node-a"><Icon name="fuel"/></span><span className="orbit-node node-b"><Icon name="electric"/></span><span className="orbit-node node-c"><Icon name="globe"/></span></div><div className="scope-detail"><div className="scope-tabs" role="tablist" aria-label="Explorer les scopes">{scopes.map((scope,i)=><button key={scope.id} role="tab" id={`scope-tab-${i}`} aria-controls="scope-panel" aria-selected={active===i} tabIndex={active===i?0:-1} onClick={()=>select(i)} onKeyDown={e=>{if(e.key==="ArrowRight"||e.key==="ArrowLeft"){e.preventDefault();const next=(active+(e.key==="ArrowRight"?1:2))%3;select(next);document.getElementById(`scope-tab-${next}`)?.focus();}}}>Scope {scope.id}</button>)}</div><div id="scope-panel" role="tabpanel" aria-labelledby={`scope-tab-${active}`} key={active} className="scope-copy"><span className="scope-category"><Icon name={item.icon}/>{item.label}</span><h3>{item.title}</h3><p>{item.description}</p><ul>{item.examples.map(example=><li key={example}><Icon name="check"/>{example}</li>)}</ul></div><a href="/methodologie" className="text-link">Comprendre notre méthodologie <Icon name="arrowUp"/></a></div></div><p className="scope-footnote">La couverture dépend du périmètre retenu. La démonstration actuelle illustre l’électricité et les carburants.</p></div></div></section>;
+}

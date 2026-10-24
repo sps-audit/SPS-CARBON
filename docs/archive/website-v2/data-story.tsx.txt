@@ -1,0 +1,122 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { formatNumber, monthlyTonnes, months } from "@/lib/demo-data";
+
+const steps = [
+  {
+    title: "La donnée, avec son contexte.",
+    text: "Une facture d’électricité indique 10 000 kWh consommés en mars sur un site de production. La quantité, l’unité, la période, le site et le justificatif restent attachés à la ligne.",
+  },
+  {
+    title: "Le facteur, avec sa référence.",
+    text: "On applique un facteur d’émission adapté au pays, à la période et à l’activité. Sa source, sa version et ses limites sont conservées. Ici, une valeur illustrative de 0,5 kgCO₂e par kWh.",
+  },
+  {
+    title: "Le résultat, avec son périmètre.",
+    text: "10 000 kWh × 0,5 kgCO₂e/kWh = 5 000 kgCO₂e, soit 5 tCO₂e, classées en Scope 2. Le calcul reste ouvert à la revue : chacun peut remonter à la facture.",
+  },
+  {
+    title: "La décision, avec une trajectoire.",
+    text: "Mois après mois, les sources se comparent. On repère les postes qui pèsent le plus, on choisit où agir en priorité et l’on suit l’effet des actions dans le temps.",
+  },
+];
+
+const yearly = monthlyTonnes("overview");
+
+function Ledger({ step, only }: { step: number; only?: boolean }) {
+  const state = (index: number) =>
+    only ? (index === step ? "is-current" : "is-hidden") : index < step ? "is-past" : index === step ? "is-current" : "is-hidden";
+  return (
+    <div className={`ledger ${only ? "ledger-single" : ""}`} data-step={step} aria-hidden="true">
+      {!only && <span className="ledger-thread" style={{ transform: `scaleY(${(step + 1) / 4})` }} />}
+      <div className={`ledger-layer layer-doc ${state(0)}`}>
+        <div className="doc-head">
+          <span>Facture d’électricité</span>
+          <span>Exemple fictif</span>
+        </div>
+        <dl>
+          <div><dt>Site</dt><dd>Site de production</dd></div>
+          <div><dt>Période</dt><dd>Mars 2025</dd></div>
+          <div className="doc-key"><dt>Consommation</dt><dd>10 000 kWh</dd></div>
+          <div><dt>Justificatif</dt><dd>Facture jointe</dd></div>
+        </dl>
+      </div>
+      <div className={`ledger-layer layer-factor ${state(1)}`}>
+        <span className="factor-op">×</span>
+        <div>
+          <strong>0,5 kgCO₂e / kWh</strong>
+          <span>Facteur illustratif. Source, version et année documentées.</span>
+        </div>
+      </div>
+      <div className={`ledger-layer layer-result ${state(2)}`}>
+        <span className="factor-op">=</span>
+        <div className="result-figure">
+          5,0<small>tCO₂e</small>
+        </div>
+        <span className="result-scope">Scope 2</span>
+      </div>
+      <div className={`ledger-layer layer-decision ${state(3)}`}>
+        <div className="mini-chart">
+          {yearly.map((value, index) => (
+            <span key={months[index]} style={{ height: `${(value / 12) * 100}%` }} title={`${months[index]} : ${formatNumber(value, 1)} tCO₂e`} />
+          ))}
+          <svg viewBox="0 0 100 40" preserveAspectRatio="none" className="mini-trajectory">
+            <path d="M0 12 L100 30" />
+          </svg>
+        </div>
+        <div className="decision-legend">
+          <span>Émissions mensuelles, exemple fictif</span>
+          <span>Trajectoire à définir avec vous</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function DataStory() {
+  const [active, setActive] = useState(0);
+  const refs = useRef<(HTMLElement | null)[]>([]);
+
+  useEffect(() => {
+    const items = refs.current.filter(Boolean) as HTMLElement[];
+    if (!("IntersectionObserver" in window)) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) setActive(Number((entry.target as HTMLElement).dataset.index));
+        }
+      },
+      { rootMargin: "-45% 0px -45% 0px" },
+    );
+    items.forEach((item) => observer.observe(item));
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div className="story grid">
+      <ol className="story-steps">
+        {steps.map((step, index) => (
+          <li
+            key={step.title}
+            data-index={index}
+            ref={(element) => {
+              refs.current[index] = element;
+            }}
+            className={active === index ? "is-active" : ""}
+          >
+            <span className="story-index">Étape {index + 1}</span>
+            <h3>{step.title}</h3>
+            <p>{step.text}</p>
+            <div className="story-inline">
+              <Ledger step={index} only />
+            </div>
+          </li>
+        ))}
+      </ol>
+      <div className="story-sticky">
+        <Ledger step={active} />
+      </div>
+    </div>
+  );
+}

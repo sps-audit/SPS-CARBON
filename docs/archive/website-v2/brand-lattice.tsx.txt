@@ -1,0 +1,325 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import { SYMBOL_PATH } from "@/lib/geometry";
+
+/*
+ * Signature hero: a carbon lattice. Hundreds of scattered cells (the data an
+ * organisation already holds) converge into the SPS-CARBON ring, then the two
+ * parallel cuts of the symbol extend into a descending trajectory.
+ * One orchestrated intro, then still. Pointer and scroll only add subtle depth.
+ */
+
+type Cell = {
+  x: number;
+  y: number;
+  sx: number;
+  sy: number;
+  alpha: number;
+  delay: number;
+  depth: number;
+};
+
+const SQRT3 = Math.sqrt(3);
+const INTRO = 2600;
+
+function random(seed: number) {
+  const value = Math.sin(seed * 127.1 + 311.7) * 43758.5453;
+  return value - Math.floor(value);
+}
+
+export function BrandLattice() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const context = canvas?.getContext("2d");
+    if (!canvas || !context) return;
+    const probe = document.createElement("canvas").getContext("2d");
+    if (!probe) return;
+    const symbol = new Path2D(SYMBOL_PATH);
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    let width = 0;
+    let height = 0;
+    let radius = 10;
+    let scale = 1;
+    let centerX = 0;
+    let centerY = 0;
+    let cells: Cell[] = [];
+    let lattice: HTMLCanvasElement | null = null;
+    let start = 0;
+    let frame = 0;
+    let visible = true;
+    let introDone = media.matches;
+    let scroll = 0;
+    const pointer = { x: -9999, y: -9999, strength: 0 };
+
+    const inSymbol = (x: number, y: number) =>
+      probe.isPointInPath(
+        symbol,
+        (x - centerX) / scale + 32,
+        (y - centerY) / scale + 32,
+      );
+
+    function hexPath(
+      target: CanvasRenderingContext2D,
+      x: number,
+      y: number,
+      r: number,
+    ) {
+      target.moveTo(x, y - r);
+      target.lineTo(x + (SQRT3 / 2) * r, y - r / 2);
+      target.lineTo(x + (SQRT3 / 2) * r, y + r / 2);
+      target.lineTo(x, y + r);
+      target.lineTo(x - (SQRT3 / 2) * r, y + r / 2);
+      target.lineTo(x - (SQRT3 / 2) * r, y - r / 2);
+      target.closePath();
+    }
+
+    function layout() {
+      const rect = canvas!.getBoundingClientRect();
+      width = rect.width;
+      height = rect.height;
+      if (!width || !height) return;
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      canvas!.width = Math.round(width * ratio);
+      canvas!.height = Math.round(height * ratio);
+      context!.setTransform(ratio, 0, 0, ratio, 0, 0);
+
+      const compact = width < 820;
+      const size = compact
+        ? Math.min(width * 0.62, height * 0.36)
+        : Math.min(height * 0.74, width * 0.42);
+      centerX = compact ? width * 0.66 : width * 0.73;
+      centerY = compact ? height * 0.22 : height * 0.5;
+      scale = size / 58;
+      radius = Math.max(4.2, size / 60);
+
+      const step = SQRT3 * radius;
+      const row = 1.5 * radius;
+      // Static background lattice, drawn once per size.
+      lattice = document.createElement("canvas");
+      lattice.width = canvas!.width;
+      lattice.height = canvas!.height;
+      const layer = lattice.getContext("2d")!;
+      layer.setTransform(ratio, 0, 0, ratio, 0, 0);
+      layer.strokeStyle = "rgba(122, 221, 184, 0.07)";
+      layer.lineWidth = 1;
+      layer.beginPath();
+      for (let r = -1; r * row < height + row; r++) {
+        for (let c = -1; c * step < width + step; c++) {
+          const x = c * step + (r % 2 ? step / 2 : 0);
+          const y = r * row;
+          hexPath(layer, x, y, radius * 0.9);
+        }
+      }
+      layer.stroke();
+
+      // Cells covering the symbol, from the same lattice.
+      cells = [];
+      const minRow = Math.floor((centerY - 30 * scale) / row) - 1;
+      const maxRow = Math.ceil((centerY + 30 * scale) / row) + 1;
+      const minCol = Math.floor((centerX - 28 * scale) / step) - 1;
+      const maxCol = Math.ceil((centerX + 28 * scale) / step) + 1;
+      for (let r = minRow; r <= maxRow; r++) {
+        for (let c = minCol; c <= maxCol; c++) {
+          const x = c * step + (Math.abs(r) % 2 ? step / 2 : 0);
+          const y = r * row;
+          let coverage = inSymbol(x, y) ? 1 : 0;
+          for (let k = 0; k < 6; k++) {
+            const a = (k * Math.PI) / 3;
+            if (inSymbol(x + Math.cos(a) * radius * 0.6, y + Math.sin(a) * radius * 0.6))
+              coverage += 1;
+          }
+          if (coverage < 3) continue;
+          const seed = r * 977 + c * 131;
+          const sweep =
+            ((x - (centerX - 28 * scale)) / (56 * scale)) * 0.55 +
+            ((y - (centerY - 29 * scale)) / (58 * scale)) * 0.45;
+          cells.push({
+            x,
+            y,
+            sx: random(seed) * width,
+            sy: random(seed + 1) * height,
+            alpha: (0.42 + random(seed + 2) * 0.5) * (coverage / 7),
+            delay: 150 + sweep * 900 + random(seed + 3) * 420,
+            depth: 0.3 + random(seed + 4) * 0.7,
+          });
+        }
+      }
+      draw(performance.now());
+    }
+
+    const ease = (t: number) => 1 - Math.pow(1 - Math.min(1, Math.max(0, t)), 3);
+
+    function draw(now: number) {
+      if (!width || !height || !lattice) return;
+      const elapsed = introDone ? INTRO + 1000 : now - start;
+      context!.clearRect(0, 0, width, height);
+
+      // Depth glow behind the ring.
+      const glow = context!.createRadialGradient(
+        centerX,
+        centerY,
+        0,
+        centerX,
+        centerY,
+        34 * scale,
+      );
+      glow.addColorStop(0, "rgba(23, 68, 80, 0.55)");
+      glow.addColorStop(1, "rgba(4, 21, 26, 0)");
+      context!.fillStyle = glow;
+      context!.fillRect(0, 0, width, height);
+
+      const drift = media.matches ? 0 : scroll;
+      context!.globalAlpha = Math.min(1, elapsed / 900) * (1 - drift * 0.6);
+      context!.drawImage(lattice, 0, -drift * 40, width, height);
+      context!.globalAlpha = 1;
+
+      // Pointer: the lattice answers softly.
+      if (pointer.strength > 0.01 && !media.matches) {
+        const step = SQRT3 * radius;
+        const row = 1.5 * radius;
+        const reach = 150;
+        const r0 = Math.floor((pointer.y - reach) / row);
+        const r1 = Math.ceil((pointer.y + reach) / row);
+        const c0 = Math.floor((pointer.x - reach) / step) - 1;
+        const c1 = Math.ceil((pointer.x + reach) / step) + 1;
+        for (let r = r0; r <= r1; r++) {
+          for (let c = c0; c <= c1; c++) {
+            const x = c * step + (Math.abs(r) % 2 ? step / 2 : 0);
+            const y = r * row - drift * 40;
+            const distance = Math.hypot(x - pointer.x, y - pointer.y);
+            if (distance > reach) continue;
+            const a = (1 - distance / reach) ** 2 * 0.22 * pointer.strength;
+            context!.fillStyle = `rgba(41, 199, 146, ${a.toFixed(3)})`;
+            context!.beginPath();
+            hexPath(context!, x, y, radius * 0.82);
+            context!.fill();
+          }
+        }
+      }
+
+      // Trajectory: the two parallel cuts of the symbol, extended.
+      const cut = ease((elapsed - 1750) / 900);
+      if (cut > 0) {
+        const slope = 7 / 12;
+        const lines = [
+          [46, 25],
+          [46, 33],
+        ];
+        const fade = 1 - drift;
+        lines.forEach(([u, v], index) => {
+          const x0 = centerX + (u - 32) * scale;
+          const y0 = centerY + (v - 32) * scale - drift * 60;
+          const reachX = (width - x0 + 40) * cut;
+          const gradient = context!.createLinearGradient(x0, y0, x0 + reachX, y0 + reachX * slope);
+          gradient.addColorStop(0, `rgba(122, 221, 184, ${0.9 * fade})`);
+          gradient.addColorStop(1, `rgba(41, 199, 146, ${0.1 * fade})`);
+          context!.strokeStyle = gradient;
+          context!.lineWidth = index === 0 ? 1.2 : 1;
+          context!.beginPath();
+          context!.moveTo(x0, y0);
+          context!.lineTo(x0 + reachX, y0 + reachX * slope);
+          context!.stroke();
+        });
+      }
+
+      // The ring itself.
+      for (const cell of cells) {
+        const t = ease((elapsed - cell.delay) / 1100);
+        if (t <= 0) continue;
+        let x = cell.sx + (cell.x - cell.sx) * t;
+        let y = cell.sy + (cell.y - cell.sy) * t;
+        let alpha = cell.alpha * (0.25 + 0.75 * t);
+        if (drift > 0) {
+          y += drift * cell.depth * 220;
+          alpha *= 1 - drift * 0.85;
+        }
+        if (pointer.strength > 0.01 && !media.matches) {
+          const dx = x - pointer.x;
+          const dy = y - pointer.y;
+          const distance = Math.hypot(dx, dy) || 1;
+          if (distance < 120) {
+            const push = (1 - distance / 120) * 7 * pointer.strength;
+            x += (dx / distance) * push;
+            y += (dy / distance) * push;
+            alpha = Math.min(1, alpha + (1 - distance / 120) * 0.25);
+          }
+        }
+        context!.fillStyle = `rgba(41, 199, 146, ${alpha.toFixed(3)})`;
+        context!.beginPath();
+        hexPath(context!, x, y, radius * (0.55 + 0.27 * t));
+        context!.fill();
+      }
+    }
+
+    function tick(now: number) {
+      frame = 0;
+      if (!visible || document.hidden) return;
+      draw(now);
+      if (!introDone && now - start > INTRO + 300) introDone = true;
+      if (!introDone || pointer.strength > 0.01) {
+        if (introDone) pointer.strength *= 0.94;
+        frame = requestAnimationFrame(tick);
+      }
+    }
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(tick);
+    };
+
+    const onPointer = (event: PointerEvent) => {
+      if (media.matches || event.pointerType === "touch") return;
+      const rect = canvas!.getBoundingClientRect();
+      pointer.x = event.clientX - rect.left;
+      pointer.y = event.clientY - rect.top;
+      pointer.strength = 1;
+      schedule();
+    };
+    const onScroll = () => {
+      const rect = canvas!.getBoundingClientRect();
+      const value = Math.min(1, Math.max(0, -rect.top / (rect.height * 0.9)));
+      if (Math.abs(value - scroll) < 0.002) return;
+      scroll = value;
+      canvas!.parentElement?.style.setProperty("--hero-p", value.toFixed(3));
+      if (!media.matches) schedule();
+    };
+
+    start = performance.now();
+    const resizeObserver = new ResizeObserver(() => {
+      layout();
+      schedule();
+    });
+    resizeObserver.observe(canvas);
+    const intersection = new IntersectionObserver((entries) => {
+      visible = entries[0]?.isIntersecting ?? true;
+      if (visible) schedule();
+    });
+    intersection.observe(canvas);
+    const host = canvas.parentElement ?? canvas;
+    host.addEventListener("pointermove", onPointer);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    const onMotionChange = () => {
+      introDone = true;
+      schedule();
+    };
+    media.addEventListener("change", onMotionChange);
+    const onVisibility = () => schedule();
+    document.addEventListener("visibilitychange", onVisibility);
+    layout();
+    schedule();
+
+    return () => {
+      cancelAnimationFrame(frame);
+      resizeObserver.disconnect();
+      intersection.disconnect();
+      host.removeEventListener("pointermove", onPointer);
+      window.removeEventListener("scroll", onScroll);
+      media.removeEventListener("change", onMotionChange);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, []);
+
+  return <canvas ref={canvasRef} className="lattice-canvas" aria-hidden="true" />;
+}

@@ -1,0 +1,109 @@
+{
+  "version": 2,
+  "svgChecks": "passed: 12 standalone filled-path masters",
+  "pngChecks": "passed: 12 transparent PNGs at 300 ppi",
+  "smallSizeChecks": [
+    {
+      "size": 16,
+      "diagonalOpening": "clear",
+      "filledRing": "connected"
+    },
+    {
+      "size": 24,
+      "diagonalOpening": "clear",
+      "filledRing": "connected"
+    },
+    {
+      "size": 32,
+      "diagonalOpening": "clear",
+      "filledRing": "connected"
+    }
+  ],
+  "favicon": "SVG and ICO (16, 32, 48 px)",
+  "pngs": [
+    {
+      "file": "logo-dark.png",
+      "width": 2400,
+      "height": 488,
+      "alpha": true,
+      "density": 300
+    },
+    {
+      "file": "symbol-dark.png",
+      "width": 1024,
+      "height": 1024,
+      "alpha": true,
+      "density": 300
+    },
+    {
+      "file": "wordmark-dark.png",
+      "width": 2400,
+      "height": 325,
+      "alpha": true,
+      "density": 300
+    },
+    {
+      "file": "logo-light.png",
+      "width": 2400,
+      "height": 488,
+      "alpha": true,
+      "density": 300
+    },
+    {
+      "file": "symbol-light.png",
+      "width": 1024,
+      "height": 1024,
+      "alpha": true,
+      "density": 300
+    },
+    {
+      "file": "wordmark-light.png",
+      "width": 2400,
+      "height": 325,
+      "alpha": true,
+      "density": 300
+    },
+    {
+      "file": "logo-black.png",
+      "width": 2400,
+      "height": 488,
+      "alpha": true,
+      "density": 300
+    },
+    {
+      "file": "symbol-black.png",
+      "width": 1024,
+      "height": 1024,
+      "alpha": true,
+      "density": 300
+    },
+    {
+      "file": "wordmark-black.png",
+      "width": 2400,
+      "height": 325,
+      "alpha": true,
+      "density": 300
+    },
+    {
+      "file": "logo-viridian.png",
+      "width": 2400,
+      "height": 488,
+      "alpha": true,
+      "density": 300
+    },
+    {
+      "file": "symbol-viridian.png",
+      "width": 1024,
+      "height": 1024,
+      "alpha": true,
+      "density": 300
+    },
+    {
+      "file": "wordmark-viridian.png",
+      "width": 2400,
+      "height": 325,
+      "alpha": true,
+      "density": 300
+    }
+  ]
+}

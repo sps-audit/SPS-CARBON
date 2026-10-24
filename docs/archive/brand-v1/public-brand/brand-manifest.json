@@ -1,0 +1,20 @@
+{
+  "brand": "SPS-CARBON",
+  "wordmark": "SPS CARBON",
+  "symbolViewBox": "0 0 64 64",
+  "logoViewBox": "0 0 316.55 64",
+  "palette": {
+    "midnight": "#132D38",
+    "mineral": "#F6F8F6",
+    "sage": "#BDCCB5",
+    "reversed": "#FFFFFF"
+  },
+  "font": {
+    "family": "Manrope",
+    "weight": 650,
+    "license": "SIL Open Font License 1.1",
+    "source": "https://github.com/google/fonts/tree/main/ofl/manrope",
+    "sha256": "3ae11c49db0455a3cc33e37d380f20fdb8c7f8b41dc07625c177e3d87a9d6ae6"
+  },
+  "construction": "Three separately filled bands form an open, compact S silhouette. No live text, strokes, filters, clipping masks, embedded bitmap images or external dependencies in logo masters."
+}

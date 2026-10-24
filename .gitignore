@@ -1,0 +1,14 @@
+node_modules/
+.next/
+out/
+.env*
+!.env.example
+.vercel/
+*.tsbuildinfo
+qa/screenshots/
+apercu.log
+build-check.log
+publier-github.cmd
+publier-github.ps1
+publish-github.log
+publish-commit-message.txt

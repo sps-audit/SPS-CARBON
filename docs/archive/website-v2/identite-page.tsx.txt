@@ -1,0 +1,108 @@
+import type { Metadata } from "next";
+import { Icon } from "@/components/icons";
+import { PageMotif } from "@/components/motifs";
+
+export const metadata: Metadata = {
+  title: "L’identité SPS CARBON — Logos & ressources",
+  description:
+    "Une identité simple, lisible et adaptable. Téléchargez le symbole et la signature SPS CARBON en SVG et PNG.",
+};
+
+const assets = [
+  { file: "logo-dark", title: "Signature, fond clair", type: "wordmark", theme: "light" },
+  { file: "logo-light", title: "Signature, fond sombre", type: "wordmark", theme: "dark" },
+  { file: "symbol-dark", title: "Symbole, fond clair", type: "symbol", theme: "light" },
+  { file: "symbol-light", title: "Symbole, fond sombre", type: "symbol", theme: "dark" },
+];
+
+const palette = [
+  { name: "Pétrole", hex: "#071F27", role: "Encre principale et surfaces sombres" },
+  { name: "Viridian", hex: "#29C792", role: "Progression, actions et accents" },
+  { name: "Glace", hex: "#F3F8F7", role: "Logo inversé et surfaces claires" },
+  { name: "Ambre", hex: "#DFB77A", role: "Mise en valeur secondaire, avec retenue" },
+];
+
+export default function IdentityPage() {
+  return (
+    <main id="main" className="page identity">
+      <header className="page-hero t-deep identity-hero">
+        <div className="wrap page-hero-grid">
+          <div className="page-hero-copy">
+            <h1 className="d-l page-title">Un anneau, un C ouvert, une trajectoire.</h1>
+            <p className="lead">
+              Le symbole SPS CARBON est une seule forme tracée sur une grille de 64 unités. Son périmètre à six côtés évoque
+              l’anneau du carbone ; l’ouverture du côté droit dessine le C ; deux coupes parallèles descendent, comme une
+              trajectoire de réduction mesurée.
+            </p>
+            <a href="/brand/brand-kit.zip" download className="btn btn-mint">
+              <Icon name="download" /> Télécharger le kit complet
+            </a>
+          </div>
+          <div className="page-hero-visual identity-visual" aria-hidden="true">
+            <PageMotif name="construction" />
+          </div>
+        </div>
+      </header>
+
+      <div className="page-body t-ice">
+        <div className="wrap">
+          <h2 className="d-m identity-sub">Les fichiers</h2>
+          <div className="brand-gallery">
+            {assets.map((asset) => (
+              <article key={asset.file} className={`brand-sample is-${asset.theme}`}>
+                <div className={`brand-art is-${asset.type}`}>
+                  <img
+                    src={`/brand/${asset.file}.svg`}
+                    alt={asset.title}
+                    width={asset.type === "symbol" ? 96 : 300}
+                    height={asset.type === "symbol" ? 96 : 61}
+                  />
+                </div>
+                <div className="brand-sample-foot">
+                  <span>{asset.title}</span>
+                  <span className="brand-downloads">
+                    <a href={`/brand/${asset.file}.svg`} download aria-label={`${asset.title}, SVG`}>
+                      SVG
+                    </a>
+                    <a href={`/brand/${asset.file}.png`} download aria-label={`${asset.title}, PNG`}>
+                      PNG
+                    </a>
+                  </span>
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <h2 className="d-m identity-sub">La palette</h2>
+          <ul className="palette">
+            {palette.map((color) => (
+              <li key={color.hex}>
+                <span className="swatch" style={{ background: color.hex }} aria-hidden="true" />
+                <strong>{color.name}</strong>
+                <code>{color.hex}</code>
+                <span>{color.role}</span>
+              </li>
+            ))}
+          </ul>
+
+          <section className="brand-guidance">
+            <div>
+              <h2 className="d-m">Simple, à toutes les échelles.</h2>
+              <p>
+                Les versions SVG sont vectorielles, avec une typographie convertie en tracés. Les PNG ont un fond
+                transparent. Utilisez la signature complète sur vos documents et le symbole seul dans les espaces réduits.
+              </p>
+              <p>
+                Conservez les proportions et une marge libre d’au moins un quart du symbole autour du logo. Ne pas étirer,
+                pivoter, ajouter de contour ni fermer l’ouverture diagonale.
+              </p>
+            </div>
+            <a className="btn btn-dark" href="/brand/brand-kit.zip" download>
+              <Icon name="download" /> Récupérer tous les fichiers
+            </a>
+          </section>
+        </div>
+      </div>
+    </main>
+  );
+}

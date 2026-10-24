@@ -1,0 +1,31 @@
+{
+  "brand": "SPS-CARBON",
+  "parentBrand": "SAFEPERFORM SOLUTIONS",
+  "wordmark": "SPS CARBON",
+  "version": 2,
+  "symbolName": "Carbon ring",
+  "symbolViewBox": "0 0 64 64",
+  "logoViewBox": "0 0 314.873 64",
+  "palette": {
+    "petrol": "#071F27",
+    "viridian": "#29C792",
+    "ice": "#F3F8F7",
+    "amber": "#DFB77A",
+    "black": "#000000"
+  },
+  "font": {
+    "family": "Manrope",
+    "weight": 600,
+    "license": "SIL Open Font License 1.1",
+    "source": "https://github.com/google/fonts/tree/main/ofl/manrope",
+    "sha256": "3ae11c49db0455a3cc33e37d380f20fdb8c7f8b41dc07625c177e3d87a9d6ae6"
+  },
+  "construction": "A single filled six-sided carbon ring forms an open C. Two parallel descending diagonal cuts create the right-hand opening and express a reduction trajectory. No live text, strokes, filters, clipping masks, embedded bitmap images or external dependencies in logo masters.",
+  "minimumSize": {
+    "symbolPx": 24,
+    "logoWidthPx": 180,
+    "wordmarkWidthPx": 140
+  },
+  "clearSpace": "16 grid units beyond the visible artwork",
+  "previousVersion": "docs/archive/brand-v1"
+}
