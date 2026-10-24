@@ -12,3 +12,8 @@ publier-github.cmd
 publier-github.ps1
 publish-github.log
 publish-commit-message.txt
+corriger-auteur-vercel.cmd
+corriger-auteur-vercel.ps1
+reecrire-auteur.cmd
+reecrire-auteur.ps1
+strip-trailers.sh
