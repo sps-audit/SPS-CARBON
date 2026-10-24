@@ -3,17 +3,12 @@
 import Link from "next/link";
 import { HeroCockpit } from "./hero-cockpit";
 import { ScopeRings } from "./scope-rings";
-import { FeatureTour } from "./feature-tour";
-import { ProductPreview } from "./product-preview";
 import { SectorExplorer } from "./sector-explorer";
-import { CoastMap } from "./coast-map";
 import { useSiteActions } from "./site-frame";
 import { Odometer } from "./odometer";
 import { BeforeAfter } from "./before-after";
-import { RegTimeline } from "./reg-timeline";
 import { steps } from "@/lib/steps";
 import { Diagnostic } from "./diagnostic";
-import { Deliverables } from "./deliverables";
 
 const facts = [
   { value: 3, label: "scopes couverts, des opérations à la chaîne de valeur" },
@@ -183,7 +178,7 @@ export function HomePage() {
               <Link className="btn btn-mint" href="/contact">
                 Parlons de votre projet
               </Link>
-              <a className="btn btn-ghost" href="#plateforme">
+              <a className="btn btn-ghost" href="/plateforme">
                 Voir la plateforme
               </a>
             </div>
@@ -251,21 +246,6 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="chapter t-deep" id="echeances" aria-labelledby="timeline-title">
-        <div className="wrap">
-          <div className="chapter-head">
-            <h2 id="timeline-title" className="d-l" data-reveal="mask">
-              Les échéances qui comptent.
-            </h2>
-            <p className="lead" data-reveal>
-              Reporting ESG des sociétés cotées, engagement climatique national, MACF à l’export : le calendrier se resserre pour
-              les entreprises marocaines et leurs fournisseurs.
-            </p>
-          </div>
-          <RegTimeline />
-        </div>
-      </section>
-
       <section className="chapter t-dark" id="public" aria-labelledby="audience-title">
         <div className="wrap">
           <div className="chapter-head">
@@ -299,26 +279,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="chapter t-ice" id="plateforme" aria-labelledby="platform-title">
-        <div className="wrap">
-          <div className="chapter-head">
-            <h2 id="platform-title" className="d-l" data-reveal="mask">
-              Une plateforme, de la facture au plan d’action.
-            </h2>
-            <p className="lead" data-reveal>
-              Six modules pour passer de données éparpillées à des décisions documentées. Faites défiler : chaque étape
-              s’affiche à l’écran.
-            </p>
-          </div>
-          <FeatureTour />
-          <p className="footnote">
-            Plateforme en développement : ces écrans illustrent le parcours cible avec des données fictives. La disponibilité
-            de chaque module est précisée lors du cadrage.
-          </p>
-        </div>
-      </section>
-
-      <section className="chapter t-dark scopes-chapter" id="scopes" aria-labelledby="scopes-title">
+      <section className="chapter t-deep scopes-chapter" id="scopes" aria-labelledby="scopes-title">
         <div className="wrap">
           <div className="chapter-head">
             <h2 id="scopes-title" className="d-l" data-reveal="mask">
@@ -330,23 +291,6 @@ export function HomePage() {
             </p>
           </div>
           <ScopeRings />
-        </div>
-      </section>
-
-      <section className="chapter t-deep demo-chapter" id="demonstration" aria-labelledby="demo-title">
-        <div className="wrap">
-          <div className="chapter-head">
-            <h2 id="demo-title" className="d-l" data-reveal="mask">
-              Essayez la démonstration.
-            </h2>
-            <p className="lead" data-reveal>
-              Changez de source, parcourez les mois, ouvrez le calcul. Une entreprise fictive, des facteurs illustratifs, la
-              vraie logique de lecture.
-            </p>
-          </div>
-          <div data-reveal="rise">
-            <ProductPreview />
-          </div>
         </div>
       </section>
 
@@ -379,38 +323,6 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="chapter t-deep" id="livrables" aria-labelledby="deliverables-title">
-        <div className="wrap">
-          <div className="chapter-head">
-            <h2 id="deliverables-title" className="d-l" data-reveal="mask">
-              Ce que vous recevez.
-            </h2>
-            <p className="lead" data-reveal>
-              Des documents que vous pouvez présenter à votre direction, à vos clients, à votre banque ou à un vérificateur. Pas
-              seulement un chiffre.
-            </p>
-          </div>
-          <Deliverables />
-        </div>
-      </section>
-
-      <section className="chapter t-ice" id="diagnostic" aria-labelledby="diagnostic-title">
-        <div className="wrap grid diag-layout">
-          <div className="diag-head">
-            <h2 id="diagnostic-title" className="d-l" data-reveal="mask">
-              Diagnostic express.
-            </h2>
-            <p className="lead" data-reveal>
-              Cinq questions, une minute. Découvrez votre point de départ et les données à préparer, puis transmettez votre
-              contexte en un clic.
-            </p>
-          </div>
-          <div className="diag-wrap" data-reveal="rise">
-            <Diagnostic />
-          </div>
-        </div>
-      </section>
-
       <section className="chapter t-dark" id="offres" aria-labelledby="offers-title">
         <div className="wrap">
           <div className="chapter-head">
@@ -435,6 +347,53 @@ export function HomePage() {
                 <Link href={offer.href} className="link link-light" aria-label={`En savoir plus : ${offer.name}`}>
                   En savoir plus
                 </Link>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="chapter t-ice" id="diagnostic" aria-labelledby="diagnostic-title">
+        <div className="wrap grid diag-layout">
+          <div className="diag-head">
+            <h2 id="diagnostic-title" className="d-l" data-reveal="mask">
+              Diagnostic express.
+            </h2>
+            <p className="lead" data-reveal>
+              Cinq questions, une minute. Découvrez votre point de départ et les données à préparer, puis transmettez votre
+              contexte en un clic.
+            </p>
+          </div>
+          <div className="diag-wrap" data-reveal="rise">
+            <Diagnostic />
+          </div>
+        </div>
+      </section>
+
+      <section className="chapter t-deep" id="confiance" aria-labelledby="trust-title">
+        <div className="wrap">
+          <div className="chapter-head">
+            <h2 id="trust-title" className="d-l" data-reveal="mask">
+              Vos données, sous contrôle.
+            </h2>
+            <p className="lead" data-reveal>
+              Des principes posés dès la conception. La plateforme étant en développement, leur mise en œuvre est précisée à
+              chaque étape du projet.
+            </p>
+          </div>
+          <div className="trust-grid">
+            {trust.map((item, n) => (
+              <article className="trust spot" key={item.title} data-reveal="panel" style={i(n)}>
+                <span className="trust-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    {n === 0 && <path d="M12 3 4 6v6c0 5 8 9 8 9s8-4 8-9V6Z M9 12l2 2 4-4" />}
+                    {n === 1 && <path d="M8 11V7a4 4 0 0 1 8 0v4 M5 11h14v10H5Z M12 15v2" />}
+                    {n === 2 && <path d="M12 7v5l3 2 M3 12a9 9 0 1 0 3-6.7 M3 4v4h4" />}
+                    {n === 3 && <path d="M4 20h16 M6 20V10 M10 20V10 M14 20V10 M18 20V10 M3 10l9-6 9 6Z" />}
+                  </svg>
+                </span>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
               </article>
             ))}
           </div>
@@ -479,36 +438,6 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="chapter t-deep" id="confiance" aria-labelledby="trust-title">
-        <div className="wrap">
-          <div className="chapter-head">
-            <h2 id="trust-title" className="d-l" data-reveal="mask">
-              Vos données, sous contrôle.
-            </h2>
-            <p className="lead" data-reveal>
-              Des principes posés dès la conception. La plateforme étant en développement, leur mise en œuvre est précisée à
-              chaque étape du projet.
-            </p>
-          </div>
-          <div className="trust-grid">
-            {trust.map((item, n) => (
-              <article className="trust spot" key={item.title} data-reveal="panel" style={i(n)}>
-                <span className="trust-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24">
-                    {n === 0 && <path d="M12 3 4 6v6c0 5 8 9 8 9s8-4 8-9V6Z M9 12l2 2 4-4" />}
-                    {n === 1 && <path d="M8 11V7a4 4 0 0 1 8 0v4 M5 11h14v10H5Z M12 15v2" />}
-                    {n === 2 && <path d="M12 7v5l3 2 M3 12a9 9 0 1 0 3-6.7 M3 4v4h4" />}
-                    {n === 3 && <path d="M4 20h16 M6 20V10 M10 20V10 M14 20V10 M18 20V10 M3 10l9-6 9 6Z" />}
-                  </svg>
-                </span>
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
       <section className="chapter t-dark" id="secteurs" aria-labelledby="sectors-title">
         <div className="wrap">
           <div className="chapter-head">
@@ -521,30 +450,6 @@ export function HomePage() {
             </p>
           </div>
           <SectorExplorer />
-        </div>
-      </section>
-
-      <section className="chapter t-deep cabinet-chapter" aria-labelledby="cabinet-title">
-        <div className="wrap grid">
-          <div className="cabinet-map">
-            <CoastMap />
-          </div>
-          <div className="cabinet-copy">
-            <h2 id="cabinet-title" className="d-l" data-reveal="mask">
-              Un cabinet marocain derrière la plateforme.
-            </h2>
-            <p className="lead" data-reveal>
-              SPS-CARBON est développé par SAFEPERFORM SOLUTIONS, cabinet d’audit, de conseil et de formation en management
-              QHSE et RSE, basé à El Jadida.
-            </p>
-            <p data-reveal>
-              Nos consultants connaissent les sites industriels, les systèmes de management et les exigences des donneurs
-              d’ordre. La plateforme apporte la structure ; l’équipe apporte le jugement et l’accompagnement.
-            </p>
-            <Link href="/cabinet" className="link link-light">
-              Découvrir le cabinet
-            </Link>
-          </div>
         </div>
       </section>
 

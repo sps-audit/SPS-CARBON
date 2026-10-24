@@ -3,6 +3,7 @@ import { Archivo } from "next/font/google";
 import "./sps.css";
 import { SiteFrame } from "@/components/site-frame";
 import { publicOrigin, shareMetadata } from "@/lib/share";
+import { THEME_BOOT, THEME_COLORS } from "@/lib/theme";
 
 // Archivo: an industrial grotesque with a width axis. Wide cuts for headlines,
 // normal width for reading. Downloaded at build time and self-hosted by Next.js.
@@ -27,7 +28,10 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#04151A",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: THEME_COLORS.light },
+    { media: "(prefers-color-scheme: dark)", color: THEME_COLORS.dark },
+  ],
 };
 
 export default function RootLayout({
@@ -36,7 +40,7 @@ export default function RootLayout({
   return (
     <html lang="fr" className={archivo.variable} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOT }} />
       </head>
       <body>
         <SiteFrame>{children}</SiteFrame>

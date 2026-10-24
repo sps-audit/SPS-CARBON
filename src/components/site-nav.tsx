@@ -33,7 +33,7 @@ export const navSections: Section[] = [
       { label: "Pilotage et plan d’action", href: "/plateforme#pilotage", note: "Des priorités, pas seulement un total" },
       { label: "Feuille de route produit", href: "/plateforme#trajectoire", note: "Un socle ciblé, des extensions" },
     ],
-    feature: { kicker: "Démonstration", title: "Explorez l’espace client avec des données fictives.", href: "/#demonstration", cta: "Essayer la démonstration", visual: "screen" },
+    feature: { kicker: "Démonstration", title: "Explorez l’espace client avec des données fictives.", href: "/plateforme#demonstration", cta: "Essayer la démonstration", visual: "screen" },
   },
   {
     href: "/solutions",

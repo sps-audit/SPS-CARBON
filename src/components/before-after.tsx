@@ -35,7 +35,7 @@ export function BeforeAfter() {
     const check = () => {
       frame = 0;
       const rect = element.getBoundingClientRect();
-      if (rect.top < window.innerHeight * 0.72 && rect.bottom > 0) {
+      if (rect.top < window.innerHeight * 0.72) {
         setLive(true);
         window.removeEventListener("scroll", schedule);
         if (reduced || touched.current) return;

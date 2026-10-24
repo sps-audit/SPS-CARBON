@@ -15,7 +15,7 @@ export function Odometer({ value, delay = 0, suffix }: { value: number; delay?: 
     const check = () => {
       frame = 0;
       const rect = element.getBoundingClientRect();
-      if (rect.top < window.innerHeight * 0.9 && rect.bottom > 0) {
+      if (rect.top < window.innerHeight * 0.9) {
         setRun(true);
         window.removeEventListener("scroll", schedule);
         window.removeEventListener("resize", schedule);

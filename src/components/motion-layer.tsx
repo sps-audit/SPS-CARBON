@@ -66,7 +66,7 @@ export function MotionLayer() {
       const vh = window.innerHeight || 1;
       pending = pending.filter((element) => {
         const rect = element.getBoundingClientRect();
-        if (rect.top < vh * 0.88 && rect.bottom > 0) {
+        if (rect.top < vh * 0.88) {
           element.classList.add("is-in");
           return false;
         }

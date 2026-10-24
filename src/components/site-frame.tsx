@@ -9,6 +9,7 @@ import { MotionLayer } from "./motion-layer";
 import { SiteNav, navSections } from "./site-nav";
 import { PageTransition } from "./page-transition";
 import { StickyCta } from "./sticky-cta";
+import { ThemeToggle } from "./theme-toggle";
 import { hexPoints } from "@/lib/geometry";
 import { company } from "@/lib/company";
 
@@ -92,7 +93,8 @@ export function SiteFrame({ children }: { children: ReactNode }) {
       <header className={`site-header ${scrolled ? "is-scrolled" : ""} ${menu ? "is-open" : ""}`}>
         <div className="site-header-inner">
           <Link href="/" aria-label="SPS CARBON, accueil" className="site-brand">
-            <img src="/brand/logo-light.svg" width="204" height="32" alt="SPS CARBON" />
+            <img className="logo-on-dark" src="/brand/logo-light.svg" width="204" height="32" alt="SPS CARBON" />
+            <img className="logo-on-light" src="/brand/logo-dark.svg" width="204" height="32" alt="" aria-hidden="true" />
           </Link>
           <SiteNav pathname={pathname} />
           <button
@@ -157,6 +159,7 @@ export function SiteFrame({ children }: { children: ReactNode }) {
               </a>
             </div>
           </nav>
+          <ThemeToggle />
           <Link className="btn btn-mint btn-small site-cta" href="/contact">
             Parlons de votre projet
           </Link>
@@ -193,7 +196,8 @@ export function SiteFrame({ children }: { children: ReactNode }) {
         )}
         <div className="wrap footer-grid">
           <div className="footer-company">
-            <img src="/brand/logo-light.svg" width="236" height="37" alt="SPS CARBON" />
+            <img className="logo-on-dark" src="/brand/logo-light.svg" width="236" height="37" alt="SPS CARBON" />
+            <img className="logo-on-light" src="/brand/logo-dark.svg" width="236" height="37" alt="" aria-hidden="true" />
             <p>
               Une initiative de SAFEPERFORM SOLUTIONS, cabinet d’audit, de conseil et de formation en management QHSE et RSE.
             </p>
