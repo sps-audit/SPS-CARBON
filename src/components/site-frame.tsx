@@ -92,7 +92,7 @@ export function SiteFrame({ children }: { children: ReactNode }) {
       <header className={`site-header ${scrolled ? "is-scrolled" : ""} ${menu ? "is-open" : ""}`}>
         <div className="site-header-inner">
           <Link href="/" aria-label="SPS CARBON, accueil" className="site-brand">
-            <img src="/brand/logo-light.svg" width="172" height="35" alt="SPS CARBON" />
+            <img src="/brand/logo-light.svg" width="204" height="32" alt="SPS CARBON" />
           </Link>
           <SiteNav pathname={pathname} />
           <button
@@ -193,7 +193,7 @@ export function SiteFrame({ children }: { children: ReactNode }) {
         )}
         <div className="wrap footer-grid">
           <div className="footer-company">
-            <img src="/brand/logo-light.svg" width="190" height="39" alt="SPS CARBON" />
+            <img src="/brand/logo-light.svg" width="236" height="37" alt="SPS CARBON" />
             <p>
               Une initiative de SAFEPERFORM SOLUTIONS, cabinet d’audit, de conseil et de formation en management QHSE et RSE.
             </p>

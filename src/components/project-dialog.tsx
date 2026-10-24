@@ -123,8 +123,8 @@ export function ProjectDialog({
       <div className="dialog-top">
         <img
           src="/brand/logo-dark.svg"
-          width="138"
-          height="30"
+          width="170"
+          height="27"
           alt="SPS CARBON"
         />
         <button className="icon-button" onClick={onClose} aria-label="Fermer">

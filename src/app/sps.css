@@ -465,7 +465,8 @@ h3 {
 }
 
 .site-brand img {
-  width: 172px;
+  display: block;
+  width: 204px;
   height: auto;
 }
 
@@ -1290,7 +1291,7 @@ h3 {
 }
 
 .footer-company img {
-  width: 190px;
+  width: 236px;
   height: auto;
 }
 
@@ -2346,7 +2347,7 @@ h3 {
 }
 
 .dialog-top img {
-  width: 138px;
+  width: 170px;
   height: auto;
 }
 
@@ -2851,7 +2852,7 @@ h3 {
     font-size: 1rem;
   }
   .site-brand img {
-    width: 148px;
+    width: 172px;
   }
   .footer-grid {
     grid-template-columns: 1fr 1fr;

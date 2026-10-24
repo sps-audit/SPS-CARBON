@@ -12,7 +12,7 @@ from fontTools.pens.transformPen import TransformPen
 from fontTools.pens.boundsPen import BoundsPen
 
 OUT = ROOT / "public/brand"
-FONT = OUT / "fonts/Manrope-Variable.ttf"
+FONT = OUT / "fonts/Archivo-Variable.ttf"
 font = TTFont(FONT)
 cmap = font.getBestCmap()
 units = font["head"].unitsPerEm
@@ -24,8 +24,9 @@ PETROL, VIRIDIAN, ICE, AMBER = "#071F27", "#29C792", "#F3F8F7", "#DFB77A"
 MARK = "M58 32V18L32 3L6 18V46L32 61L58 46V40L46 33V39L32 47L18 39V25L32 17L46 25Z"
 mark = f'<path d="{MARK}"/>'
 
-def outlined_text(text, size, x=0, baseline=0, weight=600, tracking=.65):
-    gs = font.getGlyphSet(location={"wght":weight})
+def outlined_text(text, size, x=0, baseline=0, weight=600, tracking=.65, width=100):
+    """Outline text at a weight/width of the variable font; tracking in user units."""
+    gs = font.getGlyphSet(location={"wght":weight, "wdth":width})
     s = size / units
     cursor = x
     paths = []
@@ -39,14 +40,26 @@ def outlined_text(text, size, x=0, baseline=0, weight=600, tracking=.65):
         cursor += glyph.width*s + tracking
     return "".join(paths), cursor-x-tracking
 
-font_size = 35.5
-glyphs = font.getGlyphSet(location={"wght":600})
+# Wordmark v3: Archivo cut wide (wdth 125), like the site headlines. "SPS" heavy,
+# "CARBON" regular and widely tracked: the same solid/open contrast as the ring.
+WIDE = 125
+SPS_WEIGHT, CARBON_WEIGHT = 780, 470
+CAP = 24  # cap height in symbol units (the ring is 58 units tall)
+glyphs = font.getGlyphSet(location={"wght":SPS_WEIGHT, "wdth":WIDE})
 cap = BoundsPen(glyphs)
 glyphs[cmap[ord("H")]].draw(cap)
-cap_h = (cap.bounds[3]-cap.bounds[1])*font_size/units
-word, word_width = outlined_text("SPS CARBON", font_size, 82, 32+cap_h/2)
+font_size = CAP * units / (cap.bounds[3]-cap.bounds[1])
+cap_h = CAP
+
+def wordmark(x, baseline):
+    sps, w1 = outlined_text("SPS", font_size, x, baseline, SPS_WEIGHT, .03*font_size, WIDE)
+    gap = .34*font_size
+    carbon, w2 = outlined_text("CARBON", font_size, x+w1+gap, baseline, CARBON_WEIGHT, .085*font_size, WIDE)
+    return sps+carbon, w1+gap+w2
+
+word, word_width = wordmark(82, 32+cap_h/2)
 full_width = round(82+word_width+6, 3)
-word_only, ww = outlined_text("SPS CARBON", font_size, 3, cap_h+3)
+word_only, ww = wordmark(3, cap_h+3)
 
 def svg(body, width, height, fill, label):
     return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" '
@@ -61,7 +74,7 @@ for suffix, color in (("dark",PETROL),("light",ICE),("black","#000000"),("viridi
 (OUT/"favicon.svg").write_text(svg(mark,64,64,PETROL,"SPS CARBON"),encoding="utf-8")
 
 def line(text,size,x,y,color,weight=500,tracking=.1):
-    p,_ = outlined_text(text,size,x,y,weight,tracking)
+    p,_ = outlined_text(text,size,x,y,weight,tracking,100)
     return f'<g fill="{color}">{p}</g>'
 
 def lockup(x,y,width,color):
@@ -71,9 +84,9 @@ def symbol(x,y,size,color):
     return f'<g transform="translate({x} {y}) scale({size/64})" fill="{color}">{mark}</g>'
 
 sheet = f'<rect width="1600" height="1180" fill="{ICE}"/>'
-sheet += line("SPS CARBON",27,72,76,PETROL,600,.8)
+sheet += lockup(72,44,230,PETROL)
 sheet += line("Carbon, measured. Progress, made visible.",19,72,113,"#49636A")
-sheet += line("02 / CARBON RING",12,1300,76,"#49636A",600,.8)
+sheet += line("03 / CARBON RING",12,1300,76,"#49636A",600,.8)
 sheet += f'<rect x="72" y="158" width="1456" height="360" fill="{PETROL}"/>'
 sheet += lockup(280,270,1040,ICE)
 sheet += line("PRIMARY / ICE ON PETROL",11,104,486,"#93B4B8",600,1)
@@ -95,14 +108,14 @@ sheet += line("VECTOR MASTERS / 2026",10,1322,1134,"#49636A",500,.7)
 (OUT/"logo-family.svg").write_text(svg(sheet,1600,1180,PETROL,"SPS CARBON carbon-ring identity family"),encoding="utf-8")
 
 manifest = {
-    "brand":"SPS-CARBON", "parentBrand":"SAFEPERFORM SOLUTIONS", "wordmark":"SPS CARBON", "version":2,
+    "brand":"SPS-CARBON", "parentBrand":"SAFEPERFORM SOLUTIONS", "wordmark":"SPS CARBON", "version":3,
     "symbolName":"Carbon ring", "symbolViewBox":"0 0 64 64", "logoViewBox":f"0 0 {full_width} 64",
     "palette":{"petrol":PETROL,"viridian":VIRIDIAN,"ice":ICE,"amber":AMBER,"black":"#000000"},
-    "font":{"family":"Manrope","weight":600,"license":"SIL Open Font License 1.1","source":"https://github.com/google/fonts/tree/main/ofl/manrope","sha256":hashlib.sha256(FONT.read_bytes()).hexdigest()},
+    "font":{"family":"Archivo","weights":{"SPS":SPS_WEIGHT,"CARBON":CARBON_WEIGHT},"width":WIDE,"license":"SIL Open Font License 1.1","source":"https://github.com/google/fonts/tree/main/ofl/archivo","sha256":hashlib.sha256(FONT.read_bytes()).hexdigest()},
     "construction":"A single filled six-sided carbon ring forms an open C. Two parallel descending diagonal cuts create the right-hand opening and express a reduction trajectory. No live text, strokes, filters, clipping masks, embedded bitmap images or external dependencies in logo masters.",
     "minimumSize":{"symbolPx":24,"logoWidthPx":180,"wordmarkWidthPx":140},
     "clearSpace":"16 grid units beyond the visible artwork",
-    "previousVersion":"docs/archive/brand-v1"
+    "previousVersion":"docs/archive/brand-v2"
 }
 (OUT/"brand-manifest.json").write_text(json.dumps(manifest,indent=2)+"\n",encoding="utf-8")
 print(json.dumps({"logoWidth":full_width,"capHeight":cap_h,"symbol":MARK,"fontSha256":manifest["font"]["sha256"]}))
