@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef } from "react";
-import { useScrollProgress } from "./motion";
+import { useEffect, useRef } from "react";
+import { onMediaChange, useScrollProgress } from "./motion";
 
 /* Key dates for Moroccan companies. Sources listed under the timeline. */
 const events = [
@@ -17,22 +17,102 @@ const events = [
 // "Today" sits between the 4th and 5th events (October 2026).
 const todayAfter = 3;
 
+/*
+ * Wide screens: a horizontal rail filled by scroll progress (--p).
+ * Tablets and phones: a vertical rail that fills up to the reading line; each
+ * event lights up as it crosses that line and dims again when scrolled back.
+ */
 export function RegTimeline() {
   const ref = useRef<HTMLDivElement>(null);
   useScrollProgress(ref, 0.85, 0.15);
+
+  useEffect(() => {
+    const root = ref.current;
+    if (!root) return;
+    const vertical = window.matchMedia("(max-width: 1080px)");
+    const motion = window.matchMedia("(prefers-reduced-motion: no-preference)");
+    const list = root.querySelector("ol");
+    const items = Array.from(root.querySelectorAll<HTMLLIElement>("ol > li"));
+    let frame = 0;
+
+    const reset = () => {
+      root.classList.remove("is-scrubbed");
+      for (const name of ["--rail-top", "--track", "--fill", "--head"]) root.style.removeProperty(name);
+      for (const item of items) item.classList.remove("is-lit");
+    };
+
+    const centre = (item: Element | undefined) => {
+      const box = item?.querySelector(".tl-dot")?.getBoundingClientRect();
+      return box ? box.top + box.height / 2 : 0;
+    };
+
+    const update = () => {
+      frame = 0;
+      if (!list || !vertical.matches) {
+        reset();
+        return;
+      }
+      // The rail runs from the first event to the last one.
+      const top = list.getBoundingClientRect().top;
+      const start = centre(items[0]) - top;
+      const track = centre(items[items.length - 1]) - top - start;
+      root.style.setProperty("--rail-top", `${start}px`);
+      root.style.setProperty("--track", `${track}px`);
+      if (!motion.matches || !document.documentElement.classList.contains("js")) {
+        root.classList.remove("is-scrubbed");
+        root.style.removeProperty("--fill");
+        root.style.removeProperty("--head");
+        return;
+      }
+      // It fills up to the reading line; events above that line are lit.
+      const line = window.innerHeight * 0.62;
+      const fill = Math.max(0, Math.min(track, line - top - start));
+      root.classList.add("is-scrubbed");
+      root.style.setProperty("--fill", `${fill}px`);
+      root.style.setProperty("--head", `${list.offsetTop + start + fill}px`);
+      for (const item of items) item.classList.toggle("is-lit", centre(item) <= line);
+    };
+
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    const stopVertical = onMediaChange(vertical, schedule);
+    const stopMotion = onMediaChange(motion, schedule);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      stopVertical();
+      stopMotion();
+    };
+  }, []);
+
   return (
     <div className="timeline" ref={ref}>
-      <div className="timeline-rail" aria-hidden="true">
-        <span />
-      </div>
+      <p className="tl-legend" aria-hidden="true">
+        <span className="tl-ma">Maroc</span>
+        <span className="tl-eu">Union européenne</span>
+      </p>
+      <span className="tl-head" aria-hidden="true" />
       <ol>
         {events.map((event, index) => (
-          <li key={event.title} className={`tl-${event.tag === "UE" ? "eu" : "ma"}`} style={{ ["--n" as string]: index / (events.length - 1) }}>
+          <li
+            key={event.title}
+            className={`tl-${event.tag === "UE" ? "eu" : "ma"} ${index > todayAfter ? "is-future" : ""}`}
+            style={{ ["--n" as string]: index / (events.length - 1) }}
+          >
             <span className="tl-dot" aria-hidden="true" />
             <time>{event.date}</time>
-            <span className="tl-tag">{event.tag}</span>
-            <h3>{event.title}</h3>
-            <p>{event.text}</p>
+            <div className="tl-card">
+              <span className="tl-tag">{event.tag}</span>
+              {index > todayAfter && <span className="tl-soon">À venir</span>}
+              <h3>{event.title}</h3>
+              <p>{event.text}</p>
+            </div>
             {index === todayAfter && (
               <span className="tl-today" aria-label="Nous sommes ici : octobre 2026">
                 <i aria-hidden="true" />
