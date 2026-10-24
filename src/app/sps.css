@@ -33,6 +33,7 @@
   --k-ink: #071f27;
   --k-ice: #f3f8f7;
   --k-mint: #29c792;
+  --k-petrol-700: #174450;
 
   --font: var(--font-archivo), "Archivo", "Segoe UI", system-ui, -apple-system, sans-serif;
   --gutter: clamp(20px, 5vw, 80px);
@@ -132,7 +133,7 @@ button {
 
 .t-ice :focus-visible,
 .project-dialog :focus-visible {
-  outline-color: var(--petrol-700);
+  outline-color: var(--k-petrol-700);
 }
 
 .skip-link {
@@ -364,7 +365,7 @@ h3 {
 }
 
 .btn-dark:hover {
-  --btn-bg: var(--petrol-700);
+  --btn-bg: var(--k-petrol-700);
 }
 
 .btn-ghost {
@@ -2211,9 +2212,9 @@ h3 {
 .form-field select:focus,
 .form-field textarea:focus,
 .text-field input:focus {
-  outline: 2px solid var(--petrol-700);
+  outline: 2px solid var(--k-petrol-700);
   outline-offset: 0;
-  border-color: var(--petrol-700);
+  border-color: var(--k-petrol-700);
   background: var(--white);
 }
 
@@ -2456,7 +2457,7 @@ h3 {
 }
 
 .sector-options label:has(input:focus-visible) {
-  outline: 2px solid var(--petrol-700);
+  outline: 2px solid var(--k-petrol-700);
   outline-offset: 2px;
 }
 
@@ -2496,7 +2497,7 @@ h3 {
 }
 
 .button.button-dark:hover::before {
-  background: var(--petrol-700);
+  background: var(--k-petrol-700);
 }
 
 .button.button-dark svg {
@@ -7072,7 +7073,7 @@ h3 {
 }
 
 .sector-options label:focus-within {
-  outline: 2px solid var(--petrol-700);
+  outline: 2px solid var(--k-petrol-700);
   outline-offset: 2px;
 }
 
@@ -7081,7 +7082,7 @@ h3 {
     outline: none;
   }
   .sector-options label:has(input:focus-visible) {
-    outline: 2px solid var(--petrol-700);
+    outline: 2px solid var(--k-petrol-700);
     outline-offset: 2px;
   }
 }

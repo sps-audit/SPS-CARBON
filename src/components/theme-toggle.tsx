@@ -1,26 +1,16 @@
 "use client";
 
 import { useEffect, useSyncExternalStore, type MouseEvent } from "react";
-import { onMediaChange } from "./motion";
-import { THEME_COLORS, THEME_KEY, type Theme } from "@/lib/theme";
+import { DEFAULT_THEME, THEME_COLORS, THEME_KEY, type Theme } from "@/lib/theme";
 
 /*
- * Switch between the light and dark versions. The new version spreads from
+ * Switch between the light version (default) and the dark one. The new version spreads from
  * the button as a hexagon (the shape of the SPS-CARBON ring) where the browser
  * supports view transitions; otherwise, or with reduced motion, it switches at once.
  */
 
 function current(): Theme {
-  return document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
-}
-
-function stored(): Theme | null {
-  try {
-    const value = localStorage.getItem(THEME_KEY);
-    return value === "light" || value === "dark" ? value : null;
-  } catch {
-    return null;
-  }
+  return document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
 }
 
 function apply(theme: Theme) {
@@ -31,14 +21,14 @@ function apply(theme: Theme) {
 function subscribe(onChange: () => void) {
   const observer = new MutationObserver(onChange);
   observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-  // Without a saved choice, follow the device when its setting changes.
-  const system = window.matchMedia("(prefers-color-scheme: light)");
-  const stop = onMediaChange(system, () => {
-    if (!stored()) apply(system.matches ? "light" : "dark");
-  });
+  // Another tab changed the version: follow it.
+  const onStorage = (event: StorageEvent) => {
+    if (event.key === THEME_KEY && (event.newValue === "light" || event.newValue === "dark")) apply(event.newValue);
+  };
+  window.addEventListener("storage", onStorage);
   return () => {
     observer.disconnect();
-    stop();
+    window.removeEventListener("storage", onStorage);
   };
 }
 
@@ -50,7 +40,7 @@ function hexagon(x: number, y: number, r: number) {
 type TransitionDocument = Document & { startViewTransition?: (update: () => void) => { ready: Promise<void> } };
 
 export function ThemeToggle({ className = "" }: { className?: string }) {
-  const theme = useSyncExternalStore(subscribe, current, () => "dark" as Theme);
+  const theme = useSyncExternalStore(subscribe, current, () => DEFAULT_THEME);
   const light = theme === "light";
 
   // Keep the browser bar colour in step with a saved choice.
