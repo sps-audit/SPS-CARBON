@@ -85,6 +85,7 @@ export const navSections: Section[] = [
     short: "Checklist des données et repères pratiques",
     intro: "Des repères pratiques pour préparer vos données et lire un rapport carbone.",
     entries: [
+      { label: "Normes carbone expliquées", href: "/normes" },
       { label: "Avant le premier inventaire", href: "/ressources#premier-inventaire" },
       { label: "Scope 1, 2 et 3", href: "/ressources#scopes" },
       { label: "Lire les données d’électricité", href: "/ressources#electricite" },

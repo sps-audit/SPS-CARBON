@@ -8161,3 +8161,494 @@ html[data-theme="light"] .process-n {
   background: var(--k-ink);
   color: var(--k-mint);
 }
+
+/* ==========================================================================
+   Carbon standards page: situation filter, five-stage map, detail panel
+   ========================================================================== */
+
+.frameworks-link {
+  color: var(--mint);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+  white-space: nowrap;
+}
+
+.nx-situations {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.nx-label {
+  margin-right: 6px;
+  font-size: 0.8125rem;
+  font-weight: 650;
+  color: var(--mute-d);
+}
+
+.nx-situations button {
+  min-height: 40px;
+  padding: 8px 14px;
+  border: 1px solid var(--line-d-strong);
+  background: transparent;
+  color: var(--text-d);
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 550;
+  cursor: pointer;
+  transition: background 0.2s var(--ease), border-color 0.2s var(--ease), color 0.2s var(--ease);
+}
+
+.nx-situations button:hover {
+  border-color: var(--mint);
+}
+
+.nx-situations button[aria-pressed="true"] {
+  background: var(--k-mint);
+  border-color: var(--k-mint);
+  color: var(--k-petrol);
+}
+
+.nx-count {
+  flex-basis: 100%;
+  margin: 6px 0 0;
+  font-size: 0.8125rem;
+  color: var(--mute-d);
+}
+
+/* The map */
+.nx-map {
+  position: relative;
+  list-style: none;
+  margin: 44px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0 18px;
+}
+
+.nx-map::before,
+.nx-map::after {
+  content: "";
+  position: absolute;
+  left: 16px;
+  right: 0;
+  top: 17px;
+  height: 2px;
+  background: var(--line-d-strong);
+}
+
+.nx-map::after {
+  background: linear-gradient(90deg, var(--mint-soft), var(--mint));
+  transform-origin: left;
+}
+
+.nx-stage {
+  position: relative;
+  display: grid;
+  align-content: start;
+}
+
+/* Wide screens: the five stages light up from left to right */
+@media (min-width: 961px) {
+  .nx-stage {
+    --stage-delay: calc(var(--i) * 0.28s);
+  }
+}
+
+html[data-theme="light"] .nx-n {
+  background: var(--k-ink);
+  color: var(--k-mint);
+}
+
+.nx-stage-head {
+  display: grid;
+  gap: 6px;
+  padding-right: 8px;
+}
+
+.nx-n {
+  position: relative;
+  z-index: 1;
+  width: 34px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 8px;
+  background: var(--k-mint);
+  color: var(--k-petrol);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+}
+
+.nx-stage-head strong {
+  font-size: 1.0625rem;
+  line-height: 1.25;
+  font-weight: 650;
+  font-variation-settings: "wdth" 108;
+}
+
+.nx-stage-head small {
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--mute-d);
+}
+
+.nx-list {
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.nx-norm {
+  position: relative;
+  width: 100%;
+  display: grid;
+  gap: 4px;
+  padding: 12px 14px 13px;
+  text-align: left;
+  background: var(--petrol-850);
+  border: 1px solid var(--line-d);
+  color: var(--text-d);
+  font: inherit;
+  cursor: pointer;
+  transition: border-color 0.2s var(--ease), background 0.2s var(--ease), opacity 0.3s var(--ease), transform 0.25s var(--ease);
+}
+
+.nx-norm:hover {
+  border-color: var(--mint);
+  transform: translateY(-2px);
+}
+
+.nx-norm.is-selected {
+  border-color: var(--mint);
+  background: rgba(41, 199, 146, 0.1);
+  box-shadow: inset 3px 0 0 var(--mint);
+}
+
+.nx-norm.is-dim {
+  opacity: 0.36;
+}
+
+.nx-norm.is-match::after {
+  content: "";
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--k-mint);
+  box-shadow: 0 0 0 4px rgba(41, 199, 146, 0.2);
+}
+
+.nx-code {
+  font-size: 0.9375rem;
+  line-height: 1.25;
+  font-weight: 650;
+  font-variation-settings: "wdth" 110;
+  padding-right: 14px;
+}
+
+.nx-rel {
+  font-size: 0.75rem;
+  color: var(--mute-d);
+}
+
+/* Detail */
+.nx-detail {
+  margin-top: 44px;
+  scroll-margin-top: calc(var(--header) + 20px);
+  background: var(--petrol-850);
+  border: 1px solid var(--line-d);
+  border-top: 2px solid var(--mint);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 22px), calc(100% - 38px) 100%, 0 100%);
+}
+
+.nx-detail-inner {
+  padding: clamp(24px, 3vw, 40px);
+}
+
+.nx-detail-head {
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+  padding-bottom: 24px;
+  margin-bottom: 26px;
+  border-bottom: 1px solid var(--line-d);
+}
+
+.nx-badge {
+  padding: 3px 9px;
+  background: var(--k-mint);
+  color: var(--k-petrol);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.nx-detail-head h3 {
+  margin: 4px 0 0;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  line-height: 1.05;
+  font-weight: 650;
+  font-variation-settings: "wdth" 115;
+}
+
+.nx-name {
+  margin: 0;
+  font-size: 1.0625rem;
+  color: var(--text-d);
+}
+
+.nx-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--mute-d);
+}
+
+.nx-meta span + span::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 7px;
+  margin-right: 10px;
+  vertical-align: 1px;
+  background: var(--mint);
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+}
+
+.nx-cols {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 44px);
+}
+
+.nx-cols h4 {
+  margin: 0 0 10px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--mint);
+}
+
+.nx-cols p {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: var(--mute-d);
+}
+
+.nx-cols .hex-list {
+  margin-top: 14px;
+  font-size: 0.875rem;
+  color: var(--mute-d);
+}
+
+.nx-us {
+  padding-left: 18px;
+  border-left: 2px solid var(--mint);
+}
+
+.nx-us p {
+  color: var(--text-d);
+}
+
+/* Motion: the rail draws, stages light up, standards print in, the panel scans */
+@media (prefers-reduced-motion: no-preference) {
+  .js .nx:not(.is-live) .nx-map::after {
+    transform: scaleX(0);
+  }
+  .js .nx.is-live .nx-map::after {
+    transition: transform 1.6s var(--ease-scan, var(--ease));
+  }
+  .js .nx-stage:not(.is-lit) .nx-n {
+    background: var(--petrol-800);
+    color: var(--mute-d);
+    transform: scale(0.7);
+  }
+  .js .nx-stage.is-lit .nx-n {
+    transition: transform 0.6s var(--ease-deploy, var(--ease)), background 0.4s var(--ease), color 0.4s var(--ease);
+    transition-delay: calc(0.15s + var(--stage-delay, 0s));
+  }
+  .js .nx-stage:not(.is-lit) .nx-list li {
+    clip-path: inset(0 100% 0 0);
+  }
+  .js .nx-stage.is-lit .nx-list li {
+    clip-path: inset(0 0 0 0);
+    transition: clip-path 0.7s var(--ease-scan, var(--ease));
+    transition-delay: calc(0.3s + var(--stage-delay, 0s) + var(--j) * 0.08s);
+  }
+  .js .nx-detail-inner {
+    animation: nx-scan 0.6s var(--ease-scan, var(--ease)) both;
+  }
+  .js .nx-norm.is-match::after {
+    animation: nx-ping 1.6s var(--ease-out) 2;
+  }
+}
+
+@keyframes nx-scan {
+  from {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0.4;
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+}
+
+@keyframes nx-ping {
+  0% {
+    box-shadow: 0 0 0 0 rgba(41, 199, 146, 0.55);
+  }
+  100% {
+    box-shadow: 0 0 0 12px rgba(41, 199, 146, 0);
+  }
+}
+
+/* Commitments and call to action */
+.norm-commit {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 40px);
+}
+
+.norm-commit li {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  padding-top: 26px;
+  border-top: 1px solid var(--line-l-strong);
+}
+
+.norm-commit-n {
+  width: 34px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  background: var(--k-ink);
+  color: var(--k-mint);
+  font-weight: 700;
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+}
+
+.norm-commit h3 {
+  margin: 0;
+}
+
+.norm-commit p {
+  margin: 0;
+  color: var(--mute-l);
+}
+
+.norm-cta {
+  margin-top: clamp(40px, 5vw, 64px);
+  padding: 26px 28px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px 32px;
+  background: var(--white);
+  border: 1px solid var(--line-l);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 28px) 100%, 0 100%);
+}
+
+.norm-cta p {
+  margin: 0;
+  color: var(--mute-l);
+}
+
+.norm-cta .norm-cta-title {
+  color: var(--ink);
+  font-size: 1.25rem;
+  font-weight: 650;
+  font-variation-settings: "wdth" 110;
+  margin-bottom: 4px;
+}
+
+.norm-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 24px;
+}
+
+.norm-note {
+  margin: 18px 0 0;
+  font-size: 0.8125rem;
+  color: var(--mute-l);
+}
+
+html[data-theme="light"] .norm-cta {
+  background: var(--ice);
+}
+
+@media (max-width: 960px) {
+  .nx-map {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+    padding-left: 0;
+  }
+  .nx-map::before,
+  .nx-map::after {
+    left: 16px;
+    right: auto;
+    top: 18px;
+    bottom: 18px;
+    width: 2px;
+    height: auto;
+  }
+  .nx-map::after {
+    transform-origin: top;
+  }
+  .js .nx:not(.is-live) .nx-map::after {
+    transform: scaleY(0);
+  }
+  .nx-stage {
+    grid-template-columns: 34px minmax(0, 1fr);
+    column-gap: 16px;
+  }
+  .nx-stage-head {
+    grid-column: 1 / -1;
+    grid-template-columns: 34px minmax(0, 1fr);
+    column-gap: 16px;
+    align-items: center;
+  }
+  .nx-n {
+    grid-row: 1 / span 2;
+    margin: 0;
+  }
+  .nx-list {
+    grid-column: 2;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 12px;
+  }
+  .nx-cols {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .norm-commit {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .nx-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .nx-situations button {
+    flex: 1 1 auto;
+  }
+  .nx-label {
+    flex-basis: 100%;
+  }
+}

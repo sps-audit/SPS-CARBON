@@ -16,6 +16,7 @@ const names: Record<string, string> = {
   "/methodologie": "Méthodologie",
   "/cabinet": "Le cabinet",
   "/ressources": "Ressources",
+  "/normes": "Normes carbone",
   "/contact": "Contact",
   "/mentions-legales": "Mentions légales",
   "/confidentialite": "Confidentialité",

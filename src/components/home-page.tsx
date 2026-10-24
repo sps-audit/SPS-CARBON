@@ -219,7 +219,10 @@ export function HomePage() {
             </div>
           ))}
           <p className="frameworks-note" data-reveal>
-            Se référer à un standard ne vaut pas certification : une vérification indépendante reste une mission distincte.
+            Se référer à un standard ne vaut pas certification : une vérification indépendante reste une mission distincte.{" "}
+            <Link href="/normes" className="frameworks-link">
+              Voir toutes les normes carbone
+            </Link>
           </p>
         </div>
       </section>

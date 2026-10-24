@@ -22,6 +22,7 @@ const nav = [
   { href: "/methodologie", label: "Méthodologie" },
   { href: "/cabinet", label: "Le cabinet" },
   { href: "/ressources", label: "Ressources" },
+  { href: "/normes", label: "Normes carbone" },
 ];
 
 export function SiteFrame({ children }: { children: ReactNode }) {
