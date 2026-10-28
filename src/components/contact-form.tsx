@@ -4,42 +4,80 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { company } from "@/lib/company";
 
+// Indexes are used in links (?sujet=N): keep the order, append new subjects at the end.
 const subjects = [
   "Préparer un premier inventaire carbone",
   "Explorer le Scope 3 et la chaîne de valeur",
   "Préciser un besoin MACF / CBAM",
   "Découvrir le projet de plateforme",
   "Échanger sur un autre besoin",
+  "Répondre à un questionnaire carbone",
+  "Proposer un partenariat",
 ];
+
+// Step 1: the reason for the request, in the order a visitor thinks of it.
+const reasons = [
+  { subject: 0, title: "Réaliser mon premier bilan carbone", text: "Vos opérations et votre énergie, Scopes 1 et 2" },
+  { subject: 5, title: "Répondre à un client ou à une banque", text: "Un questionnaire ou une demande d’émissions à traiter" },
+  { subject: 1, title: "Élargir au Scope 3", text: "Achats, transport, déchets et fournisseurs" },
+  { subject: 2, title: "Préparer le MACF / CBAM", text: "Les données produit pour votre client européen" },
+  { subject: 3, title: "Découvrir la plateforme", text: "La démonstration et la feuille de route" },
+  { subject: 6, title: "Proposer un partenariat", text: "Bureau d’études, expert-comptable, fédération…" },
+  { subject: 4, title: "Un autre besoin", text: "Formation, système de management, question ponctuelle" },
+];
+
+const siteOptions = ["Un seul site", "2 à 5 sites", "Plus de 5 sites", "Je ne sais pas encore"];
+const deadlineOptions = ["Moins de 3 mois", "3 à 6 mois", "Plus de 6 mois", "Pas d’échéance précise"];
 
 export function ContactForm() {
   const [fields, setFields] = useState({
     name: "",
     organisation: "",
     subject: subjects[0],
+    sites: "",
+    deadline: "",
     message: "",
   });
-  const [review, setReview] = useState(false);
+  const [stage, setStage] = useState<"reason" | "details" | "review">("reason");
+  const review = stage === "review";
+  const reasonHeading = useRef<HTMLHeadingElement>(null);
+  const detailsHeading = useRef<HTMLHeadingElement>(null);
+  const skipFocus = useRef(true);
   const [status, setStatus] = useState("");
   const reviewHeading = useRef<HTMLHeadingElement>(null);
   const nameInput = useRef<HTMLInputElement>(null);
   const messageInput = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    if (review) reviewHeading.current?.focus();
-  }, [review]);
+    // No focus move on arrival (first render, or a reason carried in the link).
+    if (skipFocus.current) {
+      skipFocus.current = false;
+      return;
+    }
+    if (stage === "review") reviewHeading.current?.focus();
+    if (stage === "details") detailsHeading.current?.focus();
+    if (stage === "reason") reasonHeading.current?.focus();
+  }, [stage]);
 
   // Context carried from the diagnostic express (?sujet=…&contexte=…), shown for review.
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const subject = subjects[Number(params.get("sujet"))];
+    const raw = params.get("sujet");
+    const subject = raw !== null && raw !== "" ? subjects[Number(raw)] : undefined;
     const context = params.get("contexte");
+    const sites = params.get("sites");
     if (!subject && !context) return;
     setFields((current) => ({
       ...current,
       subject: subject ?? current.subject,
-      message: context && !current.message ? `Contexte issu du diagnostic express :\n${context}\n\n` : current.message,
+      sites: sites && siteOptions.includes(sites) ? sites : current.sites,
+      message: context && !current.message ? `Contexte transmis depuis le site :\n${context}\n\n` : current.message,
     }));
+    // The reason is already known: go straight to the details.
+    if (subject) {
+      skipFocus.current = true;
+      setStage("details");
+    }
   }, []);
 
   const body = [
@@ -51,6 +89,8 @@ export function ContactForm() {
     ...(fields.organisation.trim()
       ? [`Entreprise : ${fields.organisation.trim()}`]
       : []),
+    ...(fields.sites ? [`Sites concernés : ${fields.sites}`] : []),
+    ...(fields.deadline ? [`Échéance : ${fields.deadline}`] : []),
     "",
     "Cordialement,",
     fields.name.trim(),
@@ -67,7 +107,7 @@ export function ContactForm() {
       else messageInput.current?.focus();
       return;
     }
-    setReview(true);
+    setStage("review");
     setStatus("Votre brouillon est prêt à être relu. Aucun message n’a été envoyé.");
   }
 
@@ -85,17 +125,74 @@ export function ContactForm() {
   }
 
   function editMessage() {
-    setReview(false);
+    setStage("details");
     setStatus("Vous pouvez modifier votre message avant de le préparer à nouveau.");
     requestAnimationFrame(() => nameInput.current?.focus());
   }
 
+  const currentReason = reasons.find((reason) => subjects[reason.subject] === fields.subject);
+
   return (
     <div className="contact-form">
-      {!review ? (
+      <ol className="form-progress" aria-hidden="true">
+        {["Votre besoin", "Vos informations", "Relecture"].map((label, n) => {
+          const at = ["reason", "details", "review"].indexOf(stage);
+          return (
+            <li key={label} className={n < at ? "is-done" : n === at ? "is-current" : ""}>
+              <span>{n + 1}</span>
+              {label}
+            </li>
+          );
+        })}
+      </ol>
+      {stage === "reason" ? (
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            setStage("details");
+          }}
+          aria-labelledby="contact-reason-title"
+        >
+          <p className="form-step">Étape 1 sur 3</p>
+          <h2 id="contact-reason-title" ref={reasonHeading} tabIndex={-1}>
+            Quelle est la raison de votre demande ?
+          </h2>
+          <fieldset className="reason-grid">
+            <legend className="sr-only">Raison de votre demande</legend>
+            {reasons.map((reason) => {
+              const on = fields.subject === subjects[reason.subject];
+              return (
+                <label key={reason.subject} className={`reason ${on ? "is-on" : ""}`}>
+                  <input
+                    type="radio"
+                    name="reason"
+                    checked={on}
+                    onChange={() => setFields({ ...fields, subject: subjects[reason.subject] })}
+                  />
+                  <strong>{reason.title}</strong>
+                  <small>{reason.text}</small>
+                </label>
+              );
+            })}
+          </fieldset>
+          <button className="btn btn-dark" type="submit">
+            Continuer
+          </button>
+        </form>
+      ) : !review ? (
         <form onSubmit={prepareMessage} aria-labelledby="contact-form-title">
-          <p className="form-step">Étape 1 sur 2</p>
-          <h2 id="contact-form-title">Préparons votre premier échange.</h2>
+          <p className="form-step">Étape 2 sur 3</p>
+          <h2 id="contact-form-title" ref={detailsHeading} tabIndex={-1}>
+            Préparons votre premier échange.
+          </h2>
+          <p className="form-reason">
+            <span>
+              Votre besoin : <strong>{currentReason?.title ?? fields.subject}</strong>
+            </span>
+            <button type="button" className="link" onClick={() => setStage("reason")}>
+              Modifier
+            </button>
+          </p>
           <p>
             Décrivez votre activité, votre objectif et les éventuelles échéances.
             Les champs marqués d’un astérisque sont obligatoires.
@@ -132,23 +229,39 @@ export function ContactForm() {
               />
             </div>
           </div>
-          <div className="form-field">
-            <label htmlFor="contact-subject">Votre sujet *</label>
-            <select
-              id="contact-subject"
-              name="subject"
-              required
-              value={fields.subject}
-              onChange={(event) =>
-                setFields({ ...fields, subject: event.target.value })
-              }
-            >
-              {subjects.map((subject) => (
-                <option key={subject} value={subject}>
-                  {subject}
-                </option>
-              ))}
-            </select>
+          <div className="form-grid">
+            <div className="form-field">
+              <label htmlFor="contact-sites">Sites concernés</label>
+              <select
+                id="contact-sites"
+                name="sites"
+                value={fields.sites}
+                onChange={(event) => setFields({ ...fields, sites: event.target.value })}
+              >
+                <option value="">Facultatif</option>
+                {siteOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="form-field">
+              <label htmlFor="contact-deadline">Échéance</label>
+              <select
+                id="contact-deadline"
+                name="deadline"
+                value={fields.deadline}
+                onChange={(event) => setFields({ ...fields, deadline: event.target.value })}
+              >
+                <option value="">Facultatif</option>
+                {deadlineOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
           <div className="form-field">
             <label htmlFor="contact-message">Votre message *</label>
@@ -180,7 +293,7 @@ export function ContactForm() {
         </form>
       ) : (
         <section className="draft-review" aria-labelledby="contact-review-title">
-          <p className="form-step">Étape 2 sur 2</p>
+          <p className="form-step">Étape 3 sur 3</p>
           <h2 id="contact-review-title" ref={reviewHeading} tabIndex={-1}>
             Votre message, prêt à être relu.
           </h2>

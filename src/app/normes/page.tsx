@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PageMotif } from "@/components/motifs";
 import { NormsExplorer } from "@/components/norms-explorer";
+import { RegTimeline } from "@/components/reg-timeline";
 import { shareMetadata } from "@/lib/share";
 
 const title = "Normes carbone | SPS-CARBON";
@@ -65,6 +66,20 @@ export default function NormesPage() {
         </div>
       </section>
 
+      <section className="chapter t-deep" id="echeances" aria-labelledby="timeline-title">
+        <div className="wrap">
+          <div className="chapter-head">
+            <h2 id="timeline-title" className="d-l" data-reveal="mask">
+              Les échéances à retenir.
+            </h2>
+            <p className="lead" data-reveal>
+              Le reporting ESG au Maroc et le MACF en Europe avancent en parallèle. Voici où nous en sommes, et ce qui arrive.
+            </p>
+          </div>
+          <RegTimeline />
+        </div>
+      </section>
+
       <section className="chapter t-ice" id="engagement" aria-labelledby="commit-title">
         <div className="wrap">
           <div className="chapter-head">
@@ -95,7 +110,7 @@ export default function NormesPage() {
               <Link className="btn btn-dark" href="/contact">
                 Parlons de votre projet
               </Link>
-              <Link className="link" href="/#diagnostic">
+              <Link className="link" href="/outils#diagnostic">
                 Faire le diagnostic express
               </Link>
             </div>

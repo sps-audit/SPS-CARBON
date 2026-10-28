@@ -16,13 +16,34 @@ import { company } from "@/lib/company";
 const SiteActions = createContext({ openChecklist: () => {} });
 export const useSiteActions = () => useContext(SiteActions);
 
-const nav = [
-  { href: "/plateforme", label: "La plateforme" },
-  { href: "/solutions", label: "Solutions" },
-  { href: "/methodologie", label: "Méthodologie" },
-  { href: "/cabinet", label: "Le cabinet" },
-  { href: "/ressources", label: "Ressources" },
-  { href: "/normes", label: "Normes carbone" },
+const footerColumns = [
+  {
+    title: "La plateforme",
+    links: [
+      { href: "/plateforme", label: "Vue d’ensemble" },
+      { href: "/plateforme#demonstration", label: "Démonstration" },
+      { href: "/methodologie", label: "Méthodologie" },
+      { href: "/normes", label: "Normes carbone" },
+    ],
+  },
+  {
+    title: "Solutions et offres",
+    links: [
+      { href: "/solutions#inventaire-essentiel", label: "Bilan essentiel" },
+      { href: "/solutions#chaine-de-valeur", label: "Bilan complet" },
+      { href: "/solutions#cbam", label: "Accompagnement MACF" },
+      { href: "/offres", label: "Comparer les offres" },
+    ],
+  },
+  {
+    title: "Outils gratuits",
+    links: [
+      { href: "/outils#calculateur", label: "Calculateur express" },
+      { href: "/outils#macf", label: "Vérificateur MACF" },
+      { href: "/outils#diagnostic", label: "Diagnostic express" },
+      { href: "/ressources", label: "Ressources" },
+    ],
+  },
 ];
 
 export function SiteFrame({ children }: { children: ReactNode }) {
@@ -152,7 +173,7 @@ export function SiteFrame({ children }: { children: ReactNode }) {
               <Link href="/contact" className="btn btn-mint m-cta" aria-current={current("/contact")} onClick={closeMenu}>
                 Parlons de votre projet
               </Link>
-              <Link href="/#diagnostic" className="m-alt" onClick={closeMenu}>
+              <Link href="/outils#diagnostic" className="m-alt" onClick={closeMenu}>
                 Faire le diagnostic express
               </Link>
               <a href={`mailto:${company.email}`} className="m-mail">
@@ -207,19 +228,24 @@ export function SiteFrame({ children }: { children: ReactNode }) {
             </a>
             <address>{company.address}</address>
           </div>
+          {footerColumns.map((column) => (
+            <div key={column.title}>
+              <h3>{column.title}</h3>
+              <ul>
+                {column.links.map((item) => (
+                  <li key={item.href}>
+                    <Link href={item.href}>{item.label}</Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
           <div>
-            <h3>Explorer</h3>
+            <h3>Le cabinet</h3>
             <ul>
-              {nav.map((item) => (
-                <li key={item.href}>
-                  <Link href={item.href}>{item.label}</Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h3>Passer à l’action</h3>
-            <ul>
+              <li>
+                <Link href="/cabinet">SAFEPERFORM SOLUTIONS</Link>
+              </li>
               <li>
                 <Link href="/contact">Contact</Link>
               </li>
@@ -229,9 +255,7 @@ export function SiteFrame({ children }: { children: ReactNode }) {
                 </button>
               </li>
             </ul>
-          </div>
-          <div>
-            <h3>Informations</h3>
+            <h3 className="footer-sub">Informations</h3>
             <ul>
               <li>
                 <Link href="/mentions-legales">Mentions légales</Link>
@@ -254,6 +278,9 @@ export function SiteFrame({ children }: { children: ReactNode }) {
             <i aria-hidden="true" />
             Plateforme en développement
           </span>
+          <Link href="/cookies" className="footer-clean">
+            Sans traceur publicitaire ni mesure d’audience
+          </Link>
           <a href="#main">Retour en haut</a>
         </div>
       </footer>

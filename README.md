@@ -25,7 +25,9 @@ The production build is a static export in `out/`. `npm start` serves that expor
 
 - French presentation site (v3) built on the symbol's own geometry: a canvas lattice hero where data cells converge into the SPS ring, scroll-drawn Scope 1/2/3 perimeters, a sticky invoice-to-decision story, offers, a sector source explorer, reasons to choose, a coastline map to El Jadida, resources and FAQ.
 - A distinct signature animation on every page (see `docs/design/website-v3-direction.md`), all respecting reduced-motion preferences.
-- Eleven pages: home, platform, solutions, methodology, company, resources, contact and four legal information pages.
+- Fourteen pages: home, platform, solutions, offers, free tools, methodology, carbon standards, company, resources, contact and four legal information pages.
+- v6 visual direction "Instrument": glass surfaces, pill controls, floating header, a cockpit hero with a live 2030 reduction slider and a live bento of platform modules.
+- v5 (benchmark against greenly.earth, see `docs/research/2026-10-28-greenly-benchmark.md`): one-platform panel on the home page, `/offres` with comparison table, options and an interactive scope builder, `/outils` with an express Scope 1 and 2 calculator (sourced, editable factors) and a MACF / CBAM checker, a three-step guided contact request, six-module tour on the platform page, deliverables on solutions, regulatory timeline on standards.
 - Interactive illustrative carbon preview: source tabs, monthly bars, and explained calculations.
 - Accessible native dialog with sector-based preparation checklist and a real local download.
 - Responsive navigation, FAQ, reduced-motion support and an explicit globe pause control.
@@ -60,4 +62,4 @@ All master logos have outlined text and can be used without installing fonts. Co
 
 ## Documentation and verification
 
-Domain research lives in `docs/research/`. The current direction is `docs/design/website-v3-direction.md`; current verification is `docs/design/verification-v3.md`. Earlier directions and verifications are kept for reference. v3 was checked visually in Chromium through a preview harness; run `npm run build` locally to confirm the static export.
+Domain research lives in `docs/research/`. The current direction is `docs/design/website-v6-direction.md` (visual direction B, "Instrument"; content upgrades in v5; earlier: v4 and `docs/design/website-v3-direction.md`); current verification is `docs/design/verification-v3.md`. Earlier directions and verifications are kept for reference. v3 was checked visually in Chromium through a preview harness; run `npm run build` locally to confirm the static export.

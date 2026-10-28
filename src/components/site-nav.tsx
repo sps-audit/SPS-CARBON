@@ -17,7 +17,7 @@ type Section = {
   intro: string;
   numbered?: boolean;
   entries: Entry[];
-  feature: { kicker: string; title: string; href: string; cta: string; visual: "screen" | "rings" | "steps" | "map" | "sheet" };
+  feature: { kicker: string; title: string; href: string; cta: string; visual: "screen" | "rings" | "steps" | "map" | "sheet" | "plans" | "calc" };
 };
 
 export const navSections: Section[] = [
@@ -31,7 +31,7 @@ export const navSections: Section[] = [
       { label: "Contrôle qualité", href: "/plateforme#revue", note: "Les anomalies remontent avant le calcul" },
       { label: "Calcul traçable", href: "/plateforme#tracabilite", note: "Chaque tonne remonte à sa preuve" },
       { label: "Pilotage et plan d’action", href: "/plateforme#pilotage", note: "Des priorités, pas seulement un total" },
-      { label: "Feuille de route produit", href: "/plateforme#trajectoire", note: "Un socle ciblé, des extensions" },
+      { label: "Méthodologie", href: "/methodologie", note: "Six étapes, GHG Protocol et ISO 14064-1" },
     ],
     feature: { kicker: "Démonstration", title: "Explorez l’espace client avec des données fictives.", href: "/plateforme#demonstration", cta: "Essayer la démonstration", visual: "screen" },
   },
@@ -47,23 +47,33 @@ export const navSections: Section[] = [
       { label: "Selon votre secteur", href: "/solutions#entreprises", note: "Industrie, services, commerce, export" },
       { label: "Livrables et cadrage", href: "/solutions#livrables", note: "Ce que vous recevez, et quand" },
     ],
-    feature: { kicker: "Diagnostic express", title: "Cinq questions pour trouver votre point de départ.", href: "/#diagnostic", cta: "Faire le diagnostic", visual: "rings" },
+    feature: { kicker: "Diagnostic express", title: "Cinq questions pour trouver votre point de départ.", href: "/outils#diagnostic", cta: "Faire le diagnostic", visual: "rings" },
   },
   {
-    href: "/methodologie",
-    label: "Méthodologie",
-    short: "Six étapes, GHG Protocol et ISO 14064-1",
-    intro: "Six étapes pour un résultat solide, documenté et explicable.",
-    numbered: true,
+    href: "/offres",
+    label: "Offres",
+    short: "Formules, comparatif, options et prix",
+    intro: "Trois formules, des options selon votre besoin, une proposition chiffrée après le cadrage.",
     entries: [
-      { label: "Définir ce que l’on mesure", href: "/methodologie#perimetre" },
-      { label: "Identifier les sources", href: "/methodologie#sources" },
-      { label: "Vérifier la qualité des données", href: "/methodologie#qualite" },
-      { label: "Choisir les facteurs, documenter", href: "/methodologie#calcul" },
-      { label: "Restituer avec les bonnes clés", href: "/methodologie#rapport" },
-      { label: "Organiser la réduction", href: "/methodologie#amelioration" },
+      { label: "Les trois formules", href: "/offres#formules", note: "Essentiel, complet, MACF" },
+      { label: "Comparer les formules", href: "/offres#comparer", note: "Ce que chacune inclut" },
+      { label: "Options", href: "/offres#options", note: "Sites, formation, vérification…" },
+      { label: "Comment est fixé le prix", href: "/offres#prix", note: "Quatre éléments, aucun abonnement" },
     ],
-    feature: { kicker: "Référentiels", title: "Une démarche fondée sur le GHG Protocol et l’ISO 14064-1.", href: "/methodologie", cta: "Lire la méthode", visual: "steps" },
+    feature: { kicker: "Configurateur", title: "Composez votre périmètre en trois questions.", href: "/offres#composer", cta: "Composer mon périmètre", visual: "plans" },
+  },
+  {
+    href: "/outils",
+    label: "Outils",
+    short: "Calculateur express, vérificateur MACF, diagnostic",
+    intro: "Des outils gratuits, sans inscription, calculés dans votre navigateur.",
+    entries: [
+      { label: "Calculateur express", href: "/outils#calculateur", note: "Scopes 1 et 2, sources affichées" },
+      { label: "Vérificateur MACF / CBAM", href: "/outils#macf", note: "Vos exportations sont-elles concernées ?" },
+      { label: "Diagnostic express", href: "/outils#diagnostic", note: "Votre point de départ en 5 questions" },
+      { label: "Checklist des données", href: "/outils#checklist", note: "Les documents à réunir" },
+    ],
+    feature: { kicker: "Outil gratuit", title: "Estimez vos Scopes 1 et 2 à partir de vos factures.", href: "/outils#calculateur", cta: "Ouvrir le calculateur", visual: "calc" },
   },
   {
     href: "/cabinet",
@@ -86,6 +96,7 @@ export const navSections: Section[] = [
     intro: "Des repères pratiques pour préparer vos données et lire un rapport carbone.",
     entries: [
       { label: "Normes carbone expliquées", href: "/normes" },
+      { label: "Méthodologie en six étapes", href: "/methodologie" },
       { label: "Avant le premier inventaire", href: "/ressources#premier-inventaire" },
       { label: "Scope 1, 2 et 3", href: "/ressources#scopes" },
       { label: "Lire les données d’électricité", href: "/ressources#electricite" },
@@ -111,6 +122,28 @@ function Visual({ kind }: { kind: Section["feature"]["visual"] }) {
         <i />
         <i />
         <i />
+      </div>
+    );
+  if (kind === "plans")
+    return (
+      <div className="mv mv-plans">
+        {[2, 3, 4].map((n, i) => (
+          <span key={n} style={{ ["--i" as string]: i }}>
+            {Array.from({ length: n }, (_, k) => (
+              <i key={k} />
+            ))}
+          </span>
+        ))}
+      </div>
+    );
+  if (kind === "calc")
+    return (
+      <div className="mv mv-calc">
+        <span>kWh</span>
+        <b>×</b>
+        <span>facteur</span>
+        <b>=</b>
+        <strong>tCO₂e</strong>
       </div>
     );
   if (kind === "steps")

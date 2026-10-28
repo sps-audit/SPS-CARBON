@@ -1,14 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { HeroCockpit } from "./hero-cockpit";
+import { HeroInstrument } from "./hero-instrument";
 import { ScopeRings } from "./scope-rings";
 import { SectorExplorer } from "./sector-explorer";
 import { useSiteActions } from "./site-frame";
 import { Odometer } from "./odometer";
 import { BeforeAfter } from "./before-after";
 import { steps } from "@/lib/steps";
-import { Diagnostic } from "./diagnostic";
+import { plans } from "@/lib/offers";
+import { PlatformBento } from "./platform-bento";
 
 const facts = [
   { value: 3, label: "scopes couverts, des opérations à la chaîne de valeur" },
@@ -65,31 +66,6 @@ const audiences = [
 ];
 
 
-const offers = [
-  {
-    name: "Bilan essentiel",
-    scope: "Scopes 1 et 2",
-    text: "Vos opérations et votre énergie : combustibles, véhicules, procédés, électricité. La base de toute démarche carbone.",
-    items: ["Périmètre et collecte guidée", "Calculs et hypothèses documentés", "Restitution à la direction"],
-    href: "/solutions#inventaire-essentiel",
-  },
-  {
-    name: "Bilan complet",
-    scope: "Scopes 1, 2 et 3",
-    text: "Toute la chaîne de valeur : achats, transport, déchets, déplacements. Avec les catégories qui comptent vraiment pour vous.",
-    items: ["Examen des quinze catégories", "Collecte auprès des contributeurs", "Plan de réduction priorisé"],
-    href: "/solutions#chaine-de-valeur",
-    featured: true,
-  },
-  {
-    name: "Accompagnement MACF",
-    scope: "Export vers l’UE",
-    text: "Pour les marchandises concernées par le CBAM : les données de production à transmettre à votre client européen.",
-    items: ["Analyse des produits concernés", "Données de production et intrants", "Dossier technique"],
-    href: "/solutions#cbam",
-  },
-];
-
 const comparison = [
   ["Pensé pour les entreprises marocaines", "À construire soi-même", "Variable", "Oui, en français, sources locales"],
   ["Accompagnement par des consultants", "Non", "Rarement inclus", "Cabinet QHSE et RSE à vos côtés"],
@@ -129,7 +105,7 @@ const trust = [
 const faq = [
   {
     q: "Que puis-je découvrir aujourd’hui ?",
-    a: "Une présentation détaillée, une démonstration interactive avec des données fictives et une checklist adaptée à votre activité. La plateforme est en développement : l’accompagnement se fait aujourd’hui avec nos consultants, et les espaces clients ouvriront progressivement.",
+    a: "Une présentation détaillée, une démonstration interactive avec des données fictives, des outils gratuits (calculateur express, vérificateur MACF, diagnostic) et une checklist adaptée à votre activité. La plateforme est en développement : l’accompagnement se fait aujourd’hui avec nos consultants, et les espaces clients ouvriront progressivement.",
   },
   {
     q: "Quelles données faut-il pour commencer ?",
@@ -141,7 +117,7 @@ const faq = [
   },
   {
     q: "Comment est fixé le prix ?",
-    a: "Selon le nombre de sites, les sources à examiner, la qualité des données et les livrables attendus. Vous recevez une proposition après le cadrage. Aucun abonnement n’est vendu sur ce site.",
+    a: "Selon le nombre de sites, les sources à examiner, la qualité des données et les livrables attendus. Vous recevez une proposition après le cadrage, et la page Offres compare ce que chaque formule inclut. Aucun abonnement n’est vendu sur ce site.",
   },
   {
     q: "Mon entreprise est-elle concernée par le MACF ?",
@@ -159,39 +135,7 @@ export function HomePage() {
   const { openChecklist } = useSiteActions();
   return (
     <main id="main" className="home">
-      <section className="hero t-deep" aria-labelledby="hero-title">
-        <div className="hero-glow" aria-hidden="true" />
-        <div className="wrap hero-grid">
-          <div className="hero-copy">
-            <p className="hero-by">Plateforme de comptabilité carbone pour les entreprises au Maroc</p>
-            <h1 id="hero-title" className="d-xl">
-              <span className="line"><span>Mesurez, pilotez</span></span>
-              <span className="line"><span>et réduisez</span></span>
-              <span className="line"><span>vos émissions.</span></span>
-            </h1>
-            <p className="lead hero-lead">
-              SPS-CARBON réunit vos données d’énergie, de carburant, d’achats et de transport, calcule vos émissions des
-              Scopes 1, 2 et 3 avec une méthode traçable et vous aide à décider où agir. Avec l’accompagnement d’un cabinet
-              QHSE et RSE marocain.
-            </p>
-            <div className="hero-actions">
-              <Link className="btn btn-mint" href="/contact">
-                Parlons de votre projet
-              </Link>
-              <a className="btn btn-ghost" href="/plateforme">
-                Voir la plateforme
-              </a>
-            </div>
-          </div>
-          <HeroCockpit />
-        </div>
-        <div className="wrap hero-foot">
-          <p>
-            <span className="status-dot" aria-hidden="true" />
-            Plateforme en développement. Les écrans présentés utilisent des données fictives.
-          </p>
-        </div>
-      </section>
+      <HeroInstrument />
 
       <section className="facts t-dark" aria-label="Ce que couvre SPS-CARBON">
         <div className="wrap facts-grid">
@@ -224,6 +168,29 @@ export function HomePage() {
               Voir toutes les normes carbone
             </Link>
           </p>
+        </div>
+      </section>
+
+      <section className="chapter t-deep bento-chapter" id="plateforme" aria-labelledby="bento-title">
+        <div className="wrap">
+          <div className="chapter-head">
+            <h2 id="bento-title" className="d-l" data-reveal="mask">
+              Tout votre carbone, sur un seul écran.
+            </h2>
+            <p className="lead" data-reveal>
+              Chaque module répond à une question de la direction. Essayez-les : ils réagissent. Écrans illustratifs, données
+              fictives.
+            </p>
+          </div>
+          <PlatformBento />
+          <div className="pillars-cta" data-reveal>
+            <Link href="/plateforme" className="btn btn-dark">
+              Découvrir la plateforme
+            </Link>
+            <Link href="/plateforme#demonstration" className="link">
+              Essayer la démonstration
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -337,9 +304,12 @@ export function HomePage() {
             </p>
           </div>
           <div className="offer-cards">
-            {offers.map((offer, n) => (
+            {plans.map((offer, n) => (
               <article key={offer.name} className={`offer-card spot ${offer.featured ? "is-featured" : ""}`} data-reveal="panel" style={i(n)}>
-                <span className="offer-scope">{offer.scope}</span>
+                <div className="offer-top">
+                  <span className="offer-scope">{offer.scope}</span>
+                  {offer.badge && <span className="offer-badge">{offer.badge}</span>}
+                </div>
                 <h3>{offer.name}</h3>
                 <p>{offer.text}</p>
                 <ul className="hex-list">
@@ -353,22 +323,57 @@ export function HomePage() {
               </article>
             ))}
           </div>
+          <div className="offers-more" data-reveal>
+            <p>Comparez ce que chaque formule inclut, ajoutez des options et composez votre périmètre.</p>
+            <Link href="/offres" className="btn btn-ghost btn-small">
+              Comparer les offres
+            </Link>
+          </div>
         </div>
       </section>
 
-      <section className="chapter t-ice" id="diagnostic" aria-labelledby="diagnostic-title">
-        <div className="wrap grid diag-layout">
-          <div className="diag-head">
-            <h2 id="diagnostic-title" className="d-l" data-reveal="mask">
-              Diagnostic express.
+      <section className="chapter t-ice" id="outils" aria-labelledby="tools-title">
+        <div className="wrap">
+          <div className="chapter-head">
+            <h2 id="tools-title" className="d-l" data-reveal="mask">
+              Commencez gratuitement.
             </h2>
             <p className="lead" data-reveal>
-              Cinq questions, une minute. Découvrez votre point de départ et les données à préparer, puis transmettez votre
-              contexte en un clic.
+              Trois outils sans inscription pour estimer, vérifier et préparer. Les calculs restent dans votre navigateur.
             </p>
           </div>
-          <div className="diag-wrap" data-reveal="rise">
-            <Diagnostic />
+          <div className="tool-cards">
+            <Link href="/outils#calculateur" className="tool-card" data-reveal="panel" style={i(0)}>
+              <span className="tool-visual tv-eq" aria-hidden="true">
+                <span>12 400 L</span>
+                <b>×</b>
+                <span>2,68</span>
+                <b>=</b>
+                <strong>33,2 t</strong>
+              </span>
+              <h3>Calculateur express</h3>
+              <p>Vos émissions des Scopes 1 et 2 à partir de vos factures, avec chaque facteur et sa source.</p>
+              <span className="link">Estimer mes émissions</span>
+            </Link>
+            <Link href="/outils#macf" className="tool-card" data-reveal="panel" style={i(1)}>
+              <span className="tool-visual tv-verdict" aria-hidden="true">
+                <i />
+                <span>Très probablement concerné</span>
+              </span>
+              <h3>Vérificateur MACF</h3>
+              <p>Ciment, acier, aluminium, engrais : vos exportations vers l’UE sont-elles concernées par le CBAM ?</p>
+              <span className="link">Vérifier en 1 minute</span>
+            </Link>
+            <Link href="/outils#diagnostic" className="tool-card" data-reveal="panel" style={i(2)}>
+              <span className="tool-visual tv-steps" aria-hidden="true">
+                {[0, 1, 2, 3, 4].map((n) => (
+                  <i key={n} className={n < 3 ? "is-done" : ""} />
+                ))}
+              </span>
+              <h3>Diagnostic express</h3>
+              <p>Cinq questions pour trouver votre point de départ et les données à préparer en priorité.</p>
+              <span className="link">Faire le diagnostic</span>
+            </Link>
           </div>
         </div>
       </section>

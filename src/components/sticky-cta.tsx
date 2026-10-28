@@ -37,8 +37,8 @@ export function StickyCta({ pathname, hidden }: { pathname: string; hidden: bool
 
   return (
     <div className={`sticky-cta ${visible ? "is-visible" : ""}`} aria-hidden={!visible} inert={!visible}>
-      <Link href="/#diagnostic" className="sticky-cta-alt">
-        Diagnostic express
+      <Link href="/outils" className="sticky-cta-alt">
+        Outils gratuits
       </Link>
       <Link href="/contact" className="btn btn-mint btn-small">
         Parlons de votre projet

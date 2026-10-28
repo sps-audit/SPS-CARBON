@@ -1,6 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import { ProductPreview } from "./product-preview";
+import { FeatureTour } from "./feature-tour";
+import { Deliverables } from "./deliverables";
 import { Diagnostic } from "./diagnostic";
 import { ScopeRings } from "./scope-rings";
 import { SectorExplorer } from "./sector-explorer";
@@ -17,6 +20,7 @@ export function PageShowcase({ slug }: { slug: string }) {
 
   if (slug === "plateforme")
     return (
+      <>
       <section className="chapter t-deep page-showcase" id="demonstration" aria-labelledby="showcase-title">
         <div className="wrap">
           <div className="chapter-head">
@@ -33,10 +37,25 @@ export function PageShowcase({ slug }: { slug: string }) {
           </div>
         </div>
       </section>
+      <section className="chapter t-ice" id="modules" aria-labelledby="modules-title">
+        <div className="wrap">
+          <div className="chapter-head">
+            <h2 id="modules-title" className="d-l" data-reveal="mask">
+              Six modules, un seul fil.
+            </h2>
+            <p className="lead" data-reveal>
+              De la demande de données au dossier partagé : chaque module reprend ce que le précédent a produit, sans ressaisie.
+            </p>
+          </div>
+          <FeatureTour />
+        </div>
+      </section>
+      </>
     );
 
   if (slug === "solutions")
     return (
+      <>
       <section className="chapter t-ice page-showcase" id="diagnostic" aria-labelledby="showcase-title">
         <div className="wrap grid diag-layout">
           <div className="diag-head">
@@ -53,6 +72,26 @@ export function PageShowcase({ slug }: { slug: string }) {
           </div>
         </div>
       </section>
+      <section className="chapter t-deep" id="livrables" aria-labelledby="deliverables-title">
+        <div className="wrap">
+          <div className="chapter-head">
+            <h2 id="deliverables-title" className="d-l" data-reveal="mask">
+              Ce que vous recevez.
+            </h2>
+            <p className="lead" data-reveal>
+              Des documents que votre direction lit, que vos clients comprennent et qu’un vérificateur peut relire.
+            </p>
+          </div>
+          <Deliverables />
+          <div className="showcase-cta" data-reveal>
+            <p>Comparez ce que chaque formule inclut, puis composez votre périmètre.</p>
+            <Link href="/offres" className="btn btn-mint">
+              Comparer les offres
+            </Link>
+          </div>
+        </div>
+      </section>
+      </>
     );
 
   if (slug === "methodologie")
