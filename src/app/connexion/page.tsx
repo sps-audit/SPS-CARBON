@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { AuthShell } from "@/components/auth/auth-shell";
 import { LoginForm } from "@/components/auth/login-form";
 import { shareMetadata } from "@/lib/share";
 
@@ -14,9 +13,6 @@ export const metadata: Metadata = {
 };
 
 export default function LoginPage() {
-  return (
-    <AuthShell>
-      <LoginForm />
-    </AuthShell>
-  );
+  // The frame (landscape, card, tabs) is shared with /inscription: see site-frame.tsx.
+  return <LoginForm />;
 }

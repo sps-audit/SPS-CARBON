@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "rea
 import Link from "next/link";
 import { company } from "@/lib/company";
 import { canSend, deliver, mailDraft } from "@/lib/deliver";
-import { AuthTabs } from "./auth-tabs";
+import { useAuthTabs } from "./auth-shell";
 
 /*
  * "Créer un espace entreprise": four short steps, then a review before
@@ -100,6 +100,8 @@ export function SignupForm() {
   const [step, setStep] = useState(0);
   const [errors, setErrors] = useState<Errors>({});
   const [state, setState] = useState<"form" | "sending" | "sent" | "draft">("form");
+  // The tabs belong to the first screen only, as before; later steps fold them away.
+  useAuthTabs(step === 0 && (state === "form" || state === "sending"));
   const [copied, setCopied] = useState("");
   const heading = useRef<HTMLHeadingElement>(null);
   const form = useRef<HTMLFormElement>(null);
@@ -272,7 +274,6 @@ export function SignupForm() {
 
   return (
     <section className="auth-panel" aria-labelledby="su-title">
-      {step === 0 && <AuthTabs active="inscription" />}
       <h1 id="su-title" ref={heading} tabIndex={-1} className="auth-title">
         {["L’espace de votre entreprise", "Votre interlocuteur", "Votre démarche", "Vérification"][step]}
       </h1>

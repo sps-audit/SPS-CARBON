@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { AuthShell } from "@/components/auth/auth-shell";
 import { SignupForm } from "@/components/auth/signup-form";
 import { shareMetadata } from "@/lib/share";
 
@@ -10,9 +9,6 @@ const description =
 export const metadata: Metadata = { title, description, ...shareMetadata(title, description) };
 
 export default function SignupPage() {
-  return (
-    <AuthShell wide>
-      <SignupForm />
-    </AuthShell>
-  );
+  // The frame (landscape, card, tabs) is shared with /connexion: see site-frame.tsx.
+  return <SignupForm />;
 }

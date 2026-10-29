@@ -4,7 +4,6 @@ import { useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { company } from "@/lib/company";
 import { Icon } from "../icons";
-import { AuthTabs } from "./auth-tabs";
 
 /*
  * Sign-in, e-mail first: the address is asked before anything else, so no
@@ -43,7 +42,6 @@ export function LoginForm() {
   if (stage === "pilot") {
     return (
       <section className="auth-panel" aria-labelledby="pilot-title">
-        <AuthTabs active="connexion" />
         <h1 id="pilot-title" ref={heading} tabIndex={-1} className="auth-title">
           Votre espace s’ouvre sur invitation.
         </h1>
@@ -85,7 +83,6 @@ export function LoginForm() {
 
   return (
     <section className="auth-panel" aria-labelledby="login-title">
-      <AuthTabs active="connexion" />
       <h1 id="login-title" className="auth-title">
         Connexion à votre espace
       </h1>

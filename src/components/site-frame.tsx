@@ -8,6 +8,7 @@ import { ProjectDialog } from "./project-dialog";
 import { MotionLayer } from "./motion-layer";
 import { SiteNav, navSections } from "./site-nav";
 import { PageTransition } from "./page-transition";
+import { AuthShell } from "./auth/auth-shell";
 import { StickyCta } from "./sticky-cta";
 import { ThemeToggle } from "./theme-toggle";
 import { Trajectory } from "./trajectory";
@@ -123,7 +124,8 @@ export function SiteFrame({ children }: { children: ReactNode }) {
         <a className="skip-link" href="#main">
           Aller au contenu
         </a>
-        {children}
+        {/* One frame for both pages, so switching between them never rebuilds it. */}
+        <AuthShell>{children}</AuthShell>
         <ProjectDialog open={dialog} onClose={closeChecklist} />
       </SiteActions.Provider>
     );
