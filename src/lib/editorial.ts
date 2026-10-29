@@ -282,46 +282,20 @@ export const editorialPages: EditorialPage[] = [
   {
     slug: "cabinet",
     kicker: "Le cabinet",
-    title: "La démarche carbone, ancrée dans le management de l’entreprise.",
+    title: "SAFEPERFORM SOLUTIONS, le cabinet à l’origine de SPS-CARBON.",
     description:
-      "SPS-CARBON est porté par SAFEPERFORM SOLUTIONS SARL AU, cabinet d’audit, de conseil et de formation en management QHSE et RSE, basé à El Jadida.",
+      "Implanté à El Jadida, SAFEPERFORM SOLUTIONS SARL AU accompagne les entreprises dans leurs démarches de management QHSE et de responsabilité sociétale. Le cabinet associe formation, conseil et audit pour aider les équipes à comprendre leurs exigences, organiser leurs pratiques et progresser. SPS-CARBON prolonge cette démarche dans la comptabilité carbone, pour relier les données environnementales aux décisions de l’entreprise.",
     sections: [
       {
-        id: "identite",
-        title: "SAFEPERFORM SOLUTIONS, à l’origine du projet",
+        id: "carbone",
+        title: "Pourquoi un cabinet QHSE et RSE porte SPS-CARBON",
         body: [
-          "SAFEPERFORM SOLUTIONS SARL AU inscrit son activité dans l’audit, le conseil et la formation. Ses domaines d’intervention concernent le management QHSE — qualité, hygiène, sécurité et environnement — ainsi que la responsabilité sociétale des entreprises.",
-          "SPS-CARBON porte cette volonté dans le champ des émissions de gaz à effet de serre : donner aux entreprises une démarche structurée pour rassembler leurs informations, comprendre leurs résultats et préparer leurs décisions. Le projet associe une approche de conseil à la conception d’un outil numérique.",
+          "Une démarche carbone mobilise plusieurs pratiques familières aux systèmes de management : définir un périmètre, répartir les responsabilités, recueillir les justificatifs, examiner les écarts et suivre les actions.",
+          "Avec SPS-CARBON, SAFEPERFORM SOLUTIONS met cette logique au service des entreprises qui cherchent à comprendre leurs émissions et à organiser leur démarche environnementale. L’objectif est de rendre les informations exploitables par la direction comme par les équipes qui les produisent.",
         ],
         bullets: [
-          "Raison sociale : SAFEPERFORM SOLUTIONS SARL AU.",
-          "Implantation : El Jadida, Maroc.",
-          "Activités : audit, conseil et formation en management QHSE et RSE.",
-        ],
-      },
-      {
-        id: "conviction",
-        title: "Une information environnementale qui aide à agir",
-        body: [
-          "Notre conviction est qu’une donnée environnementale prend sa valeur lorsqu’elle peut être comprise par ceux qui décident et par ceux qui agissent sur le terrain. Une démarche carbone doit relier la comptabilité, la maintenance, les achats et les opérations autour d’informations cohérentes.",
-          "L’ambition de SPS-CARBON est de rendre ce lien plus simple. Les indicateurs doivent aider à poser les bonnes questions : quels postes expliquent le résultat, quelles données restent fragiles, quelles actions méritent une étude et comment suivre les progrès dans le temps.",
-        ],
-        bullets: [
-          "Rendre les résultats lisibles sans effacer leurs limites.",
-          "Rapprocher la donnée, la preuve et la décision.",
-          "Installer une démarche d’amélioration qui puisse se poursuivre d’un exercice à l’autre.",
-        ],
-      },
-      {
-        id: "qhse-rse",
-        title: "Relier le carbone aux pratiques QHSE et RSE",
-        body: [
-          "Le management QHSE apporte des réflexes utiles à un inventaire : définir les responsabilités, maîtriser les documents, examiner les écarts et suivre les actions. Le carbone trouve sa place dans cette organisation lorsqu’il s’appuie sur les données et les processus déjà présents dans l’entreprise.",
-          "La RSE élargit cette lecture aux relations avec les fournisseurs, les clients et les autres parties prenantes. L’enjeu est de construire des informations compréhensibles et proportionnées aux demandes, tout en gardant une distinction claire entre objectifs annoncés, actions engagées et résultats démontrés.",
-        ],
-        bullets: [
-          "Utiliser les circuits existants de validation et de conservation documentaire.",
-          "Articuler les actions carbone avec les objectifs environnementaux et opérationnels.",
+          "S’appuyer sur les circuits existants de validation et de conservation des documents.",
+          "Articuler les actions carbone avec les objectifs QHSE, environnementaux et opérationnels.",
           "Préparer une communication étayée par un périmètre et des éléments vérifiables.",
         ],
       },

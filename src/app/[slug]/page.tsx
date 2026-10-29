@@ -7,6 +7,7 @@ import { EditorialIndex } from "@/components/editorial-index";
 import { PageHead } from "@/components/page-head";
 import type { InstrumentName } from "@/components/page-instruments";
 import { PageShowcase } from "@/components/page-showcase";
+import { CabinetEnd, CabinetShowcase } from "@/components/cabinet";
 import { Trajectory } from "@/components/trajectory";
 import { shareCards, shareMetadata, type ShareCard } from "@/lib/share";
 
@@ -93,7 +94,8 @@ export async function generateMetadata({
 export default async function EditorialPage({ params }: EditorialPageProps) {
   const { slug } = await params;
   const page = findPage(slug);
-  const contactPrompt = contactPrompts[slug];
+  // The firm page ends with its own references, contacts and call (CabinetEnd).
+  const contactPrompt = slug === "cabinet" ? undefined : contactPrompts[slug];
   const legal = legalSlugs.has(slug);
   const numbered = slug === "methodologie";
   const sections = page.sections.map((section) => ({
@@ -118,7 +120,7 @@ export default async function EditorialPage({ params }: EditorialPageProps) {
         )}
       </PageHead>
 
-      {!legal && <PageShowcase slug={slug} />}
+      {slug === "cabinet" ? <CabinetShowcase /> : !legal && <PageShowcase slug={slug} />}
 
       <div className={`chapter page-body ${legal ? "" : "s-tint"}`}>
         <div className="wrap page-layout">
@@ -161,6 +163,7 @@ export default async function EditorialPage({ params }: EditorialPageProps) {
           </article>
         </div>
       </div>
+      {slug === "cabinet" && <CabinetEnd />}
     </main>
   );
 }

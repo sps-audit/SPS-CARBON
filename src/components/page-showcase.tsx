@@ -9,7 +9,6 @@ import { ScopeChain } from "./scope-chain";
 import { SectorExplorer } from "./sector-explorer";
 import { Focus } from "./focus";
 import { useSiteActions } from "./site-frame";
-import { steps } from "@/lib/steps";
 
 /*
  * Each inner page opens with something to try or look at before the reading:
@@ -105,32 +104,6 @@ export function PageShowcase({ slug }: { slug: string }) {
             lead="Le GHG Protocol range chaque émission dans un scope, selon sa relation avec votre organisation. Choisissez-en un : c’est la base du périmètre que la méthode construit ensuite."
           />
           <ScopeChain />
-        </div>
-      </section>
-    );
-
-  if (slug === "cabinet")
-    return (
-      <section className="chapter page-showcase" id="parcours" aria-labelledby="showcase-title">
-        <div className="wrap">
-          <Head
-            id="showcase-title"
-            title="Travailler avec nous."
-            lead="Du premier échange au suivi annuel, vous savez à chaque étape ce que nous attendons de vous et ce que vous recevez."
-          />
-          <ol className="path" data-reveal="rise">
-            <svg className="path-line" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-              <line className="path-line-a" x1="0" y1="-22" x2="100" y2="78" pathLength={1} vectorEffect="non-scaling-stroke" />
-              <line className="path-line-b" x1="0" y1="0" x2="100" y2="100" pathLength={1} vectorEffect="non-scaling-stroke" />
-            </svg>
-            {steps.map((step, n) => (
-              <li key={step.title} style={{ ["--i" as string]: n }}>
-                <span className="path-n">{n + 1}</span>
-                <h3>{step.title}</h3>
-                <p>{step.text}</p>
-              </li>
-            ))}
-          </ol>
         </div>
       </section>
     );

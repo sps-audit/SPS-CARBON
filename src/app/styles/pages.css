@@ -1206,3 +1206,240 @@
     }
   }
 }
+
+/* ---------- Le cabinet: activities, sectors, team, values, references ---------- */
+@layer components {
+  .cab-trades {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    border-radius: var(--r-xl);
+    background: var(--line-2);
+    box-shadow: var(--glass-lit), 0 0 0 1px var(--line-2), var(--shadow-2);
+    overflow: hidden;
+  }
+
+  .cab-trade {
+    display: grid;
+    align-content: start;
+    gap: 0.85rem;
+    padding: clamp(1.5rem, 1rem + 1.5vw, 2.4rem);
+    background: var(--surface);
+    scroll-margin-top: calc(var(--header) + 1rem);
+  }
+
+  .cab-trade h3 {
+    font-size: var(--t-h3);
+    font-weight: 620;
+    letter-spacing: -0.02em;
+  }
+
+  .cab-trade-lead {
+    color: var(--signal);
+    font-weight: 600;
+  }
+
+  .cab-trade > p:not(.cab-trade-lead) {
+    color: var(--ink-2);
+  }
+
+  .cab-trade .check-list {
+    margin-top: 0.4rem;
+    font-size: var(--t-small);
+  }
+
+  .cab-note {
+    max-width: 46rem;
+    margin-top: 1.5rem;
+    color: var(--ink-3);
+    font-size: var(--t-small);
+  }
+
+  .cab-sectors {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .cab-sectors li {
+    display: flex;
+    align-items: center;
+    min-height: 4.5rem;
+    padding: 1rem 1.25rem;
+    border-radius: var(--r-l);
+    background: var(--surface);
+    box-shadow: 0 0 0 1px var(--line), var(--shadow-1);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .cab-team {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .cab-person {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 1.25rem;
+    padding: clamp(1.4rem, 1rem + 1.2vw, 2rem);
+    border-radius: var(--r-xl);
+    background: var(--surface);
+    box-shadow: 0 0 0 1px var(--line), var(--shadow-2);
+  }
+
+  .cab-person h3 {
+    font-size: 1.25rem;
+    font-weight: 620;
+    letter-spacing: -0.02em;
+  }
+
+  .cab-person p:last-child {
+    margin-top: 0.75rem;
+    color: var(--ink-2);
+  }
+
+  /* Initials in the soft cell of the logo, until confirmed portraits exist. */
+  .cab-monogram {
+    display: grid;
+    place-items: center;
+    width: 3.75rem;
+    height: 4.1rem;
+    clip-path: path("M27.6 1.3Q30 0 32.4 1.3L57.6 15.8Q60 17.2 60 19.9V48.1Q60 50.8 57.6 52.2L32.4 66.7Q30 68 27.6 66.7L2.4 52.2Q0 50.8 0 48.1V19.9Q0 17.2 2.4 15.8Z");
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 1.05rem;
+    font-weight: 660;
+    letter-spacing: 0.02em;
+  }
+
+  .cab-role {
+    margin-top: 0.2rem;
+    color: var(--signal);
+    font-size: var(--t-small);
+    font-weight: 600;
+  }
+
+  .cab-values {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1px;
+    border-radius: var(--r-xl);
+    background: var(--line-2);
+    box-shadow: 0 0 0 1px var(--line-2);
+    overflow: hidden;
+  }
+
+  .cab-values > div {
+    display: grid;
+    align-content: start;
+    gap: 0.6rem;
+    padding: clamp(1.25rem, 1rem + 1vw, 1.9rem);
+    background: var(--surface);
+  }
+
+  .cab-values dt {
+    font-size: 1.25rem;
+    font-weight: 640;
+    letter-spacing: -0.02em;
+  }
+
+  .cab-values dd {
+    color: var(--ink-2);
+    font-size: var(--t-small);
+  }
+
+  .cab-end {
+    display: grid;
+    gap: clamp(2rem, 1.5rem + 2vw, 3.5rem);
+  }
+
+  .cab-refs h2 {
+    font-size: var(--t-h3);
+    font-weight: 620;
+    letter-spacing: -0.02em;
+  }
+
+  .cab-refs ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1.25rem;
+  }
+
+  .cab-refs li {
+    padding: 0.7rem 1.2rem;
+    border-radius: 999px;
+    box-shadow: inset 0 0 0 1px var(--line-2);
+    font-size: 1.0625rem;
+    font-weight: 600;
+  }
+
+  .cab-contacts {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .cab-contacts article {
+    display: grid;
+    align-content: start;
+    gap: 0.45rem;
+    padding: clamp(1.4rem, 1rem + 1.2vw, 2rem);
+    border-radius: var(--r-xl);
+    background: var(--surface);
+    box-shadow: 0 0 0 1px var(--line), var(--shadow-1);
+  }
+
+  .cab-contacts h3 {
+    font-size: 1.125rem;
+    font-weight: 640;
+  }
+
+  .cab-contacts a {
+    justify-self: start;
+    font-size: 1.0625rem;
+    font-weight: 580;
+    text-decoration-color: var(--signal-fill);
+  }
+
+  .cab-contacts p:not(.cab-role),
+  .cab-contacts address {
+    color: var(--ink-2);
+    font-size: var(--t-small);
+    font-style: normal;
+  }
+
+  @media (max-width: 1000px) {
+    .cab-trades {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .cab-values {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 700px) {
+    .cab-sectors {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cab-team,
+    .cab-contacts {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .cab-values {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .cab-person {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+}
