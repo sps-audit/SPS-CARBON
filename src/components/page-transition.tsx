@@ -45,6 +45,9 @@ export function PageTransition() {
       if (url.origin !== window.location.origin || url.protocol.startsWith("mailto")) return;
       const bare = (path: string) => path.replace(/\/$/, "") || "/";
       if (bare(url.pathname) === bare(window.location.pathname)) return;
+      // Between the sign-in and account pages only the card changes: no cell.
+      const auth = /^\/(connexion|inscription)$/;
+      if (auth.test(bare(url.pathname)) && auth.test(bare(window.location.pathname))) return;
       if (/\.(zip|pdf|svg|png|jpg|txt|xlsx|csv)$/i.test(url.pathname)) return;
       const cell = body.current;
       const halo = ring.current;

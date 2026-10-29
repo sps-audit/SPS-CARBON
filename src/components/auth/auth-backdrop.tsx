@@ -1,6 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
+
+// When the landscape was first shown in this visit: moving between the sign-in
+// and account pages keeps it in place instead of fading it in again.
+let shownAt = 0;
 
 /*
  * The landscape behind the sign-in and account pages. It arrives softly
@@ -13,11 +17,17 @@ import { useEffect, useRef, useState } from "react";
 export function AuthBackdrop() {
   const scene = useRef<HTMLDivElement>(null);
   const photo = useRef<HTMLImageElement>(null);
-  const [ready, setReady] = useState(false);
+  const [ready, setReady] = useState(() => shownAt > 0);
+  const [instant] = useState(() => shownAt > 0);
+  const [since] = useState(() => (shownAt ? (performance.now() - shownAt) / 1000 : 0));
+  const show = () => {
+    if (!shownAt) shownAt = performance.now();
+    setReady(true);
+  };
 
   useEffect(() => {
     // Already decoded from the cache before the page became interactive.
-    if (photo.current?.complete && photo.current.naturalWidth) setReady(true);
+    if (photo.current?.complete && photo.current.naturalWidth) show();
 
     const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
     const still = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -43,7 +53,11 @@ export function AuthBackdrop() {
   }, []);
 
   return (
-    <div className={`auth-backdrop ${ready ? "is-ready" : ""}`} aria-hidden="true">
+    <div
+      className={`auth-backdrop ${ready ? "is-ready" : ""} ${instant ? "is-instant" : ""}`}
+      style={{ ["--since" as string]: `${-since.toFixed(2)}s` } as CSSProperties}
+      aria-hidden="true"
+    >
       <div className="auth-scene" ref={scene}>
         <picture className="auth-photo">
           <source media="(orientation: portrait)" type="image/avif" srcSet="/images/auth/paysage-portrait-1290.avif" />
@@ -59,7 +73,7 @@ export function AuthBackdrop() {
             height={1081}
             decoding="async"
             fetchPriority="high"
-            onLoad={() => setReady(true)}
+            onLoad={show}
           />
         </picture>
       </div>
