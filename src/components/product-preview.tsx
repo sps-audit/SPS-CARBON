@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { Icon } from "./icons";
-import { Odometer } from "./odometer";
+import { Reading } from "./reading";
+import { useInView } from "./motion";
 import { type DemoView, electricityKwh, fuelLitres, illustrativeFactors, months, formatNumber } from "@/lib/demo-data";
 
 /*
@@ -46,28 +47,10 @@ export function ProductPreview() {
   const share = totals.electricity / totals.overview;
   const circumference = 2 * Math.PI * 52;
 
+  const seen = useInView(root, "0px 0px -25% 0px");
   useEffect(() => {
-    const element = root.current;
-    if (!element) return;
-    let frame = 0;
-    const check = () => {
-      frame = 0;
-      const rect = element.getBoundingClientRect();
-      if (rect.top < window.innerHeight * 0.75) {
-        setLive(true);
-        window.removeEventListener("scroll", schedule);
-      }
-    };
-    const schedule = () => {
-      if (!frame) frame = requestAnimationFrame(check);
-    };
-    schedule();
-    window.addEventListener("scroll", schedule, { passive: true });
-    return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", schedule);
-    };
-  }, []);
+    if (seen) setLive(true);
+  }, [seen]);
 
   function choose(next: DemoView) {
     setView(next);
@@ -101,7 +84,7 @@ export function ProductPreview() {
           <i />
         </span>
         <span className="app-crumb">SPS-CARBON / Atelier Atlas / Bilan 2025</span>
-        <span className="app-fict">Démonstration, données fictives</span>
+        <span className="demo-chip app-fict">Démonstration, données d’exemple</span>
       </div>
 
       <div className="app-shell">
@@ -159,8 +142,8 @@ export function ProductPreview() {
           <div className="app-kpis">
             <div className="app-kpi app-kpi-main">
               <span>Émissions de la période</span>
-              <strong>
-                <Odometer value={Math.round(total)} delay={300} />
+              <strong className="readout">
+                <Reading value={Math.round(total)} />
                 <small>tCO₂e</small>
               </strong>
               <svg viewBox="0 0 100 40" preserveAspectRatio="none" className="app-spark" aria-hidden="true">

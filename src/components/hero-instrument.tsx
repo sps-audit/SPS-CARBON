@@ -1,14 +1,18 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
 import Link from "next/link";
+import { Focus } from "./focus";
+import { Reading } from "./reading";
 
 /*
- * Home hero, "Instrument": the product is the hero. A glass dashboard lies in
- * perspective under the headline; three glass cards float above it and drift
- * with the pointer (fine pointers only, never under reduced motion). The
- * reduction goal is a real control: the 2030 projection and the example plan
- * recalculate as it moves. Fictional company and figures, labelled as such.
+ * Home hero, "Instrument de précision": the product is the hero. A glass
+ * dashboard is read by a scan line as the page opens, then settles flat as the
+ * page scrolls (--hp). Three glass cards float above it and drift with the
+ * pointer (fine pointers only, never under reduced motion). The reduction goal
+ * is a real control: the 2030 projection, the curve and the example plan
+ * follow it, and the figures settle like a meter needle. Hovering the chart
+ * reads any year. Fictional company and figures, labelled as such.
  */
 
 const BASE = 2910;
@@ -23,9 +27,11 @@ const ACTIONS = [
 const nf = new Intl.NumberFormat("fr-FR");
 const y = (t: number) => 22 + ((3200 - t) / 1700) * 176;
 const line = (pts: number[][]) => pts.map((p, i) => `${i ? "L" : "M"} ${p[0]} ${p[1].toFixed(1)}`).join(" ");
+const XS = [12, 167, 322, 477, 632, 788];
 
 export function HeroInstrument() {
   const [goal, setGoal] = useState(30);
+  const [read, setRead] = useState<number | null>(null);
   const stage = useRef<HTMLDivElement>(null);
 
   // Pointer drift, written to CSS variables (no re-render per frame).
@@ -42,7 +48,7 @@ export function HeroInstrument() {
       el.style.setProperty("--mx", nx.toFixed(3));
       el.style.setProperty("--my", ny.toFixed(3));
     };
-    const onMove = (event: PointerEvent) => {
+    const onMove = (event: globalThis.PointerEvent) => {
       if (!fine.matches || calm.matches) return;
       nx = (event.clientX / window.innerWidth - 0.5) * 2;
       ny = (event.clientY / window.innerHeight - 0.5) * 2;
@@ -55,118 +61,140 @@ export function HeroInstrument() {
     };
   }, []);
 
-  const xs = [12, 167, 322, 477, 632, 788];
-  const trend = xs.map((x, i) => [x, y(BASE * Math.pow(1.012, i))]);
-  const plan = xs.map((x, i) => [x, y(BASE * (1 - (goal / 100) * Math.pow(i / 5, 1.25)))]);
+  const value = (i: number) => BASE * (1 - (goal / 100) * Math.pow(i / 5, 1.25));
+  const trendValue = (i: number) => BASE * Math.pow(1.012, i);
+  const trend = XS.map((x, i) => [x, y(trendValue(i))]);
+  const plan = XS.map((x, i) => [x, y(value(i))]);
   const planD = line(plan);
   const t2030 = Math.round(BASE * (1 - goal / 100));
   const progress = { ["--p" as string]: `${((goal / 45) * 100).toFixed(1)}%` } as CSSProperties;
 
+  function onChart(event: PointerEvent<SVGSVGElement>) {
+    const box = event.currentTarget.getBoundingClientRect();
+    const x = ((event.clientX - box.left) / box.width) * 800;
+    let best = 0;
+    XS.forEach((px, i) => {
+      if (Math.abs(px - x) < Math.abs(XS[best] - x)) best = i;
+    });
+    setRead(best);
+  }
+
   return (
-    <section className="hero hero-i t-deep" aria-labelledby="hero-title">
-      <div className="hero-i-light" aria-hidden="true" />
-      <div className="wrap hero-i-head">
-        <Link href="/outils" className="hero-i-news">
+    <section className="hero" aria-labelledby="hero-title">
+      <div className="wrap hero-head">
+        <Link href="/outils" className="hero-news">
           <span>Nouveau</span>
           Calculateur express et vérificateur MACF, gratuits
         </Link>
-        <h1 id="hero-title" className="hero-i-title">
-          <span className="line">
-            <span>Votre bilan carbone,</span>
-          </span>
-          <span className="line">
-            <span>enfin pilotable.</span>
-          </span>
-        </h1>
-        <p className="hero-i-lead">
-          Collecte, contrôle, calcul des Scopes 1, 2 et 3 et plan d’action dans un seul espace, pour les entreprises au
-          Maroc, avec l’appui d’un cabinet QHSE et RSE.
+        <Focus as="h1" id="hero-title" className="t-display hero-title" delay={120}>
+          Votre bilan carbone, enfin pilotable.
+        </Focus>
+        <p className="t-lead hero-lead" data-reveal="rise" style={{ ["--i" as string]: 4 }}>
+          Collecte, contrôle, calcul des Scopes 1, 2 et 3 et plan d’action dans un seul espace, pour les entreprises au Maroc,
+          avec l’appui d’un cabinet QHSE et RSE.
         </p>
-        <div className="hero-i-actions">
-          <Link className="btn btn-dark" href="/contact">
+        <div className="hero-actions" data-reveal="rise" style={{ ["--i" as string]: 5 }}>
+          <Link className="btn" href="/contact">
             Parlons de votre projet
           </Link>
-          <Link className="btn btn-glass" href="/plateforme#demonstration">
+          <Link className="btn btn-quiet" href="/plateforme#demonstration">
             Essayer la démonstration
           </Link>
         </div>
-        <ul className="hero-trust" aria-label="Cadres de référence de la méthode">
+        <ul className="hero-frames" aria-label="Cadres de référence de la méthode" data-reveal="rise" style={{ ["--i" as string]: 6 }}>
           {["GHG Protocol", "ISO 14064-1", "MACF / CBAM", "Loi 09-08"].map((name) => (
-            <li key={name}>
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="m5 12 4 4L19 6" />
-              </svg>
-              {name}
-            </li>
+            <li key={name}>{name}</li>
           ))}
         </ul>
-        <p className="hero-i-status">
-          <span className="status-dot" aria-hidden="true" />
-          Plateforme en développement. Les écrans présentés utilisent des données fictives.
-        </p>
       </div>
 
-      <div className="hero-i-stage" ref={stage}>
-        <div className="hero-i-deck glass" aria-hidden="true">
-          <div className="hid-side">
-            <p className="hid-org">
-              <span>AA</span>
-              Atelier Atlas
-            </p>
-            <span className="is-on">Vue d’ensemble</span>
-            <span>Collecte</span>
-            <span>Contrôles</span>
-            <span>Plan d’action</span>
-            <span>Rapports</span>
-          </div>
-          <div className="hid-main">
-            <div className="hid-top">
-              <div>
-                <p className="hid-k">Projection 2030, objectif −{goal} %</p>
-                <p className="hid-total">
-                  <strong>{nf.format(t2030)}</strong>
-                  <span>tCO₂e</span>
-                </p>
-              </div>
-              <p className="hid-note">Bilan 2025 : 2 910 tCO₂e, entreprise fictive</p>
+      <div className="hero-stage" ref={stage}>
+        <div className="hero-deck" aria-hidden="true">
+          <div className="hero-deck-glass" data-reveal="scan" style={{ ["--scan-delay" as string]: "380ms" }}>
+            <div className="hd-side">
+              <p className="hd-org">
+                <span>AA</span>
+                Atelier Atlas
+              </p>
+              <span className="is-on">Vue d’ensemble</span>
+              <span>Collecte</span>
+              <span>Contrôles</span>
+              <span>Plan d’action</span>
+              <span>Rapports</span>
             </div>
-            <svg className="hid-chart" viewBox="0 0 800 220" preserveAspectRatio="none">
-              <defs>
-                <linearGradient id="hidArea" x1="0" x2="0" y1="0" y2="1">
-                  <stop offset="0" stopColor="#29C792" stopOpacity="0.32" />
-                  <stop offset="1" stopColor="#29C792" stopOpacity="0" />
-                </linearGradient>
-              </defs>
-              <path className="hid-grid" d="M0 44 H800 M0 110 H800 M0 176 H800" />
-              <path className="hid-trend" d={line(trend)} />
-              <path d={`${planD} L 788 220 L 12 220 Z`} fill="url(#hidArea)" />
-              <path className="hid-plan" d={planD} />
-              <circle className="hid-end" cx="788" cy={plan[5][1].toFixed(1)} r="7" />
-            </svg>
-            <div className="hid-years">
-              {YEARS.map((year) => (
-                <span key={year}>{year}</span>
-              ))}
+            <div className="hd-main">
+              <div className="hd-top">
+                <div>
+                  <p className="hd-k">Projection 2030, objectif −{goal} %</p>
+                  <p className="hd-total readout">
+                    <Reading value={t2030} from={BASE} />
+                    <small>tCO₂e</small>
+                  </p>
+                </div>
+                <span className="demo-chip">Entreprise fictive, données d’exemple</span>
+              </div>
+              <div className="hd-chart-wrap">
+                <svg
+                  className="hd-chart"
+                  viewBox="0 0 800 220"
+                  preserveAspectRatio="none"
+                  onPointerMove={onChart}
+                  onPointerLeave={() => setRead(null)}
+                >
+                  <defs>
+                    <linearGradient id="hdArea" x1="0" x2="0" y1="0" y2="1">
+                      <stop offset="0" stopColor="#29C792" stopOpacity="0.3" />
+                      <stop offset="1" stopColor="#29C792" stopOpacity="0" />
+                    </linearGradient>
+                  </defs>
+                  <path className="hd-grid" d="M0 44 H800 M0 110 H800 M0 176 H800" />
+                  <path className="hd-trend" d={line(trend)} />
+                  <path className="hd-area" d={`${planD} L 788 220 L 12 220 Z`} fill="url(#hdArea)" />
+                  <path className="hd-plan" d={planD} />
+                  <circle className="hd-end" cx="788" cy={plan[5][1].toFixed(1)} r="6" />
+                  {read !== null && (
+                    <g className="hd-cross">
+                      <line x1={XS[read]} x2={XS[read]} y1="0" y2="220" />
+                      <circle cx={XS[read]} cy={plan[read][1].toFixed(1)} r="5" />
+                    </g>
+                  )}
+                </svg>
+                {read !== null && (
+                  <p
+                    className="hd-read"
+                    style={{ left: `${(XS[read] / 800) * 100}%`, ["--side" as string]: read > 3 ? "-100%" : "0%" }}
+                  >
+                    <strong>{YEARS[read]}</strong>
+                    <span>Plan : {nf.format(Math.round(value(read)))} t</span>
+                    <span>Tendance : {nf.format(Math.round(trendValue(read)))} t</span>
+                  </p>
+                )}
+              </div>
+              <div className="hd-years">
+                {YEARS.map((year) => (
+                  <span key={year}>{year}</span>
+                ))}
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="hero-i-float hif-quality glass" aria-hidden="true">
-          <p className="hif-title">
-            <i className="hif-hex is-amber" />
+        <div className="hero-float hf-quality" aria-hidden="true">
+          <p className="hf-title">
+            <i className="hf-dot is-check" />
             Contrôle qualité
           </p>
-          <p className="hif-sub">2 points à vérifier avant le calcul</p>
-          <span className="hif-alert">Facture de mars saisie deux fois</span>
-          <span className="hif-alert">Gaz déclaré en m³ au lieu de kg</span>
+          <p className="hf-sub">2 points à vérifier avant le calcul</p>
+          <span className="hf-alert">Facture de mars saisie deux fois</span>
+          <span className="hf-alert">Gaz déclaré en m³ au lieu de kg</span>
         </div>
 
-        <div className="hero-i-float hif-goal glass">
-          <label htmlFor="hero-goal" className="hif-title">
+        <div className="hero-float hf-goal">
+          <label htmlFor="hero-goal" className="hf-title">
             Objectif de réduction 2030
           </label>
-          <p className="hif-value" aria-live="polite">
-            <strong>−{goal} %</strong>
+          <p className="hf-value" aria-live="polite">
+            <strong className="readout">−{goal} %</strong>
             <span>{nf.format(t2030)} tCO₂e en 2030</span>
           </p>
           <input
@@ -181,7 +209,7 @@ export function HeroInstrument() {
             onChange={(event) => setGoal(Number(event.target.value))}
             aria-valuetext={`Réduction de ${goal} %, ${nf.format(t2030)} tonnes en 2030`}
           />
-          <ul className="hif-actions">
+          <ul className="hf-actions">
             {ACTIONS.map((action) => (
               <li key={action.name} className={goal >= action.from ? "is-in" : ""}>
                 <span>{action.name}</span>
@@ -189,22 +217,21 @@ export function HeroInstrument() {
               </li>
             ))}
           </ul>
-          <p className="hif-foot">Plan d’exemple : les effets se chiffrent avec vous.</p>
+          <p className="hf-foot">Plan d’exemple : les effets se chiffrent avec vous.</p>
         </div>
 
-        <div className="hero-i-float hif-proof glass" aria-hidden="true">
-          <p className="hif-title">Électricité, mars 2025</p>
-          <p className="hif-eq">
+        <div className="hero-float hf-proof" aria-hidden="true">
+          <p className="hf-title">Électricité, mars 2025</p>
+          <p className="hf-eq">
             <span>10 000 kWh</span>
             <b>×</b>
             <span>0,551</span>
             <b>=</b>
             <strong>5,51 t</strong>
           </p>
-          <p className="hif-sub">Facture jointe, facteur sourcé, version 1</p>
+          <p className="hf-sub">Facture jointe, facteur sourcé, version 1</p>
         </div>
       </div>
-
     </section>
   );
 }

@@ -4,8 +4,10 @@ import { notFound } from "next/navigation";
 import { editorialPages } from "@/lib/editorial";
 import { legalPages } from "@/lib/legal";
 import { EditorialIndex } from "@/components/editorial-index";
-import { PageMotif, type MotifName } from "@/components/motifs";
+import { PageHead } from "@/components/page-head";
+import type { InstrumentName } from "@/components/page-instruments";
 import { PageShowcase } from "@/components/page-showcase";
+import { Trajectory } from "@/components/trajectory";
 import { shareMetadata } from "@/lib/share";
 
 type EditorialPageProps = {
@@ -15,12 +17,12 @@ type EditorialPageProps = {
 const pages = [...editorialPages, ...legalPages];
 const legalSlugs = new Set(legalPages.map((page) => page.slug));
 
-const motifs: Record<string, MotifName> = {
-  plateforme: "collecte",
-  solutions: "perimetres",
-  methodologie: "trajectoire",
-  cabinet: "ancrage",
-  ressources: "reperes",
+const instruments: Record<string, InstrumentName> = {
+  plateforme: "plateforme",
+  solutions: "solutions",
+  methodologie: "methodologie",
+  cabinet: "cabinet",
+  ressources: "ressources",
 };
 
 const contactPrompts: Record<
@@ -94,7 +96,6 @@ export default async function EditorialPage({ params }: EditorialPageProps) {
   const contactPrompt = contactPrompts[slug];
   const legal = legalSlugs.has(slug);
   const numbered = slug === "methodologie";
-  const motif = motifs[slug] ?? "clarte";
   const sections = page.sections.map((section) => ({
     ...section,
     title: sectionTitle(section.title),
@@ -102,26 +103,19 @@ export default async function EditorialPage({ params }: EditorialPageProps) {
 
   return (
     <main id="main" className={legal ? "page page-legal" : "page"}>
-      <header className={`page-hero t-deep motif-${motif}-hero`}>
-        <div className="wrap page-hero-grid">
-          <div className="page-hero-copy">
-            <nav className="crumbs" aria-label="Fil d’Ariane">
-              <Link href="/">Accueil</Link>
-              <span aria-hidden="true">/</span>
-              <span aria-current="page">{page.kicker}</span>
-            </nav>
-            <h1 className="d-l page-title" data-reveal="mask">{page.title}</h1>
-            <p className="lead">{page.description}</p>
-          </div>
-          <div className="page-hero-visual" aria-hidden="true">
-            <PageMotif name={motif} count={sections.length} />
-          </div>
-        </div>
-      </header>
+      <PageHead crumb={page.kicker} title={page.title} lead={page.description} instrument={legal ? undefined : instruments[slug]}>
+        {slug === "plateforme" && (
+          <p className="page-status">
+            <i aria-hidden="true" />
+            En cours de déploiement : les missions sont menées dès aujourd’hui avec la méthode SPS-CARBON, les espaces clients
+            ouvrent progressivement.
+          </p>
+        )}
+      </PageHead>
 
       {!legal && <PageShowcase slug={slug} />}
 
-      <div className="page-body t-ice">
+      <div className={`chapter page-body ${legal ? "" : "s-tint"}`}>
         <div className="wrap page-layout">
           <aside className="page-aside">
             <EditorialIndex sections={sections} numbered={numbered} />
@@ -129,13 +123,7 @@ export default async function EditorialPage({ params }: EditorialPageProps) {
 
           <article className="page-article" aria-label={page.kicker}>
             {sections.map((section, index) => (
-              <section
-                className="page-section"
-                id={section.id}
-                key={section.id}
-                aria-labelledby={`${section.id}-title`}
-                data-reveal
-              >
+              <section className="page-section" id={section.id} key={section.id} aria-labelledby={`${section.id}-title`} data-reveal="rise">
                 {numbered && (
                   <span className="page-step" aria-hidden="true">
                     Étape {index + 1}
@@ -146,7 +134,7 @@ export default async function EditorialPage({ params }: EditorialPageProps) {
                   <p key={paragraph}>{paragraph}</p>
                 ))}
                 {section.bullets && section.bullets.length > 0 && (
-                  <ul className="hex-list">
+                  <ul className="dash-list">
                     {section.bullets.map((bullet) => (
                       <li key={bullet}>{bullet}</li>
                     ))}
@@ -156,14 +144,11 @@ export default async function EditorialPage({ params }: EditorialPageProps) {
             ))}
 
             {contactPrompt && (
-              <section
-                data-reveal
-                className="page-callout t-dark"
-                aria-labelledby="page-contact-title"
-              >
+              <section data-reveal="rise" className="page-callout s-night" aria-labelledby="page-contact-title">
+                <Trajectory className="page-callout-line" />
                 <h2 id="page-contact-title">{contactPrompt.title}</h2>
                 <p>{contactPrompt.description}</p>
-                <Link className="btn btn-mint" href="/contact">
+                <Link className="btn btn-signal" href="/contact">
                   {contactPrompt.label}
                 </Link>
               </section>

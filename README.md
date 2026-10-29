@@ -23,6 +23,7 @@ The production build is a static export in `out/`. `npm start` serves that expor
 
 ## What is included
 
+- **v7 "Instrument de précision" (29 October 2026, see `docs/design/website-v7-direction.md`)**: every page rebuilt on one system. Mona Sans (OFL, self-hosted in `src/app/fonts`, optical size, width and weight axes); brand palette only; glass reserved for product screens and the header; the logo's two parallel cuts as the graphic device; a motion language taken from instruments (headlines that come into focus, scan-line reveals, needle-settle figures, the pinned "De la facture à la décision" story on the home page, a reading gauge on long pages, a shutter page transition, a diagonal theme sweep). Styles are split by layer in `src/app/styles/` (tokens, base, controls, chrome, sections, home, pages, product, tools, contact, motion) with CSS cascade layers; scroll effects share one reader (`src/components/scroll-store.ts`) and never force a layout while scrolling.
 - French presentation site (v3) built on the symbol's own geometry: a canvas lattice hero where data cells converge into the SPS ring, scroll-drawn Scope 1/2/3 perimeters, a sticky invoice-to-decision story, offers, a sector source explorer, reasons to choose, a coastline map to El Jadida, resources and FAQ.
 - A distinct signature animation on every page (see `docs/design/website-v3-direction.md`), all respecting reduced-motion preferences.
 - Fourteen pages: home, platform, solutions, offers, free tools, methodology, carbon standards, company, resources, contact and four legal information pages.
@@ -37,7 +38,7 @@ The product is still in development. There are no real customer accounts, verifi
 
 ## Stack
 
-Next.js 16 / React 19 / TypeScript / custom CSS (`src/app/sps.css`) / Canvas 2D / SVG. Manrope is self-hosted under its OFL licence. The coastline in `src/lib/coast.ts` is projected from public-domain Natural Earth data; see `public/data/SOURCES.md`. Page visuals are drawn in code from the brand symbol; the generated landscape and port images remain in `public/images` (the landscape is still used as the social preview image). GSAP stays installed but the v3 pages do not use it. No paid service or external database is required to run the presentation.
+Next.js 16 / React 19 / TypeScript / custom CSS (`src/app/styles/*.css`, imported in order by `src/app/layout.tsx`) / SVG. Mona Sans is self-hosted under its OFL licence (`src/app/fonts/OFL-MonaSans.txt`). The coastline in `src/lib/coast.ts` is projected from public-domain Natural Earth data; see `public/data/SOURCES.md`. Page visuals are drawn in code from the brand symbol; the generated landscape and port images remain in `public/images` (the landscape is still used as the social preview image). GSAP stays installed but the v3 pages do not use it. No paid service or external database is required to run the presentation.
 
 The legal pages describe the local preview and flag deployment-specific information still to finalize: actual hosting and mail providers, processing locations, retention and applicable CNDP formalities. They do not certify compliance. The underlying research and launch checklist are in `docs/research/2026-10-24-moroccan-website-legal.md`.
 

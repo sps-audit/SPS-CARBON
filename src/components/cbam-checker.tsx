@@ -193,7 +193,7 @@ export function CbamChecker() {
             {result.concerned && (
               <>
                 <p className="checker-sub">Ce que votre client européen vous demandera</p>
-                <ul className="hex-list">
+                <ul className="dash-list">
                   {asks.map((ask) => (
                     <li key={ask}>{ask}</li>
                   ))}
@@ -212,7 +212,7 @@ export function CbamChecker() {
             <div className="builder-actions">
               <Link
                 href={`/contact?sujet=${result.concerned ? 2 : 0}&contexte=${encodeURIComponent(context)}`}
-                className="btn btn-mint"
+                className="btn btn-signal"
               >
                 {result.concerned ? "Préparer mes données MACF" : "Commencer par un bilan"}
               </Link>

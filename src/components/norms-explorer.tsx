@@ -137,7 +137,7 @@ export function NormsExplorer() {
               <h4>Ce que c’est</h4>
               <p>{norm.what}</p>
               {norm.details && (
-                <ul className="hex-list">
+                <ul className="dash-list">
                   {norm.details.map((line) => (
                     <li key={line}>{line}</li>
                   ))}

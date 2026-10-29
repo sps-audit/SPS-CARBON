@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { ContactForm } from "@/components/contact-form";
-import { PageMotif } from "@/components/motifs";
+import { PageHead } from "@/components/page-head";
 import { company } from "@/lib/company";
 import { shareMetadata } from "@/lib/share";
 
@@ -14,27 +13,14 @@ export const metadata: Metadata = { title, description, ...shareMetadata(title, 
 export default function ContactPage() {
   return (
     <main id="main" className="page">
-      <header className="page-hero t-deep">
-        <div className="wrap page-hero-grid">
-          <div className="page-hero-copy">
-            <nav className="crumbs" aria-label="Fil d’Ariane">
-              <Link href="/">Accueil</Link>
-              <span aria-hidden="true">/</span>
-              <span aria-current="page">Contact</span>
-            </nav>
-            <h1 className="d-l page-title" data-reveal="mask">Votre démarche commence par une conversation.</h1>
-            <p className="lead">
-              Un premier inventaire, une demande client ou des données à structurer : parlons de votre activité et des
-              décisions que vous souhaitez éclairer.
-            </p>
-          </div>
-          <div className="page-hero-visual" aria-hidden="true">
-            <PageMotif name="conversation" />
-          </div>
-        </div>
-      </header>
+      <PageHead
+        crumb="Contact"
+        title="Votre démarche commence par une conversation."
+        lead="Un premier inventaire, une demande client ou des données à structurer : parlons de votre activité et des décisions que vous souhaitez éclairer."
+        instrument="contact"
+      />
 
-      <div className="page-body t-ice">
+      <div className="chapter is-tight contact-body s-tint">
         <div className="wrap contact-layout">
           <aside className="contact-info" aria-labelledby="contact-info-title">
             <h2 id="contact-info-title">SAFEPERFORM SOLUTIONS</h2>
@@ -48,7 +34,7 @@ export default function ContactPage() {
             </a>
             <address>{company.address}</address>
             <h3>Pour préparer notre échange</h3>
-            <ul className="hex-list">
+            <ul className="dash-list">
               <li>Votre secteur d’activité et les sites concernés.</li>
               <li>L’objectif de la démarche et son destinataire.</li>
               <li>La période étudiée et les éventuelles échéances.</li>

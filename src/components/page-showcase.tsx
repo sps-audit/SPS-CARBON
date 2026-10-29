@@ -5,8 +5,9 @@ import { ProductPreview } from "./product-preview";
 import { FeatureTour } from "./feature-tour";
 import { Deliverables } from "./deliverables";
 import { Diagnostic } from "./diagnostic";
-import { ScopeRings } from "./scope-rings";
+import { ScopeChain } from "./scope-chain";
 import { SectorExplorer } from "./sector-explorer";
+import { Focus } from "./focus";
 import { useSiteActions } from "./site-frame";
 import { steps } from "@/lib/steps";
 
@@ -15,119 +16,116 @@ import { steps } from "@/lib/steps";
  * the demo for the platform, the diagnostic for the solutions, the scopes for
  * the method, the way of working for the firm, the checklist for the resources.
  */
+function Head({ id, title, lead, split = true }: { id: string; title: string; lead: string; split?: boolean }) {
+  return (
+    <div className={`head ${split ? "is-split" : ""}`}>
+      <Focus className="t-h2" id={id}>
+        {title}
+      </Focus>
+      <p className="t-lead" data-reveal="rise">
+        {lead}
+      </p>
+    </div>
+  );
+}
+
 export function PageShowcase({ slug }: { slug: string }) {
   const { openChecklist } = useSiteActions();
 
   if (slug === "plateforme")
     return (
       <>
-      <section className="chapter t-deep page-showcase" id="demonstration" aria-labelledby="showcase-title">
-        <div className="wrap">
-          <div className="chapter-head">
-            <h2 id="showcase-title" className="d-l" data-reveal="mask">
-              Voyez-la fonctionner.
-            </h2>
-            <p className="lead" data-reveal>
-              Une entreprise fictive, des facteurs illustratifs : changez de source, parcourez les mois et ouvrez le détail d’un
-              calcul. La suite de la page explique chaque principe.
-            </p>
+        <section className="chapter page-showcase" id="demonstration" aria-labelledby="showcase-title">
+          <div className="wrap">
+            <Head
+              id="showcase-title"
+              title="Voyez-la fonctionner."
+              lead="Une entreprise fictive, des facteurs illustratifs : changez de source, parcourez les mois et ouvrez le détail d’un calcul."
+            />
+            <div data-reveal="rise">
+              <ProductPreview />
+            </div>
           </div>
-          <div data-reveal="rise">
-            <ProductPreview />
+        </section>
+        <section className="chapter s-tint" id="modules" aria-labelledby="modules-title">
+          <div className="wrap">
+            <Head
+              id="modules-title"
+              title="Six modules, un seul fil."
+              lead="De la demande de données au dossier partagé : chaque module reprend ce que le précédent a produit, sans ressaisie."
+            />
+            <FeatureTour />
           </div>
-        </div>
-      </section>
-      <section className="chapter t-ice" id="modules" aria-labelledby="modules-title">
-        <div className="wrap">
-          <div className="chapter-head">
-            <h2 id="modules-title" className="d-l" data-reveal="mask">
-              Six modules, un seul fil.
-            </h2>
-            <p className="lead" data-reveal>
-              De la demande de données au dossier partagé : chaque module reprend ce que le précédent a produit, sans ressaisie.
-            </p>
-          </div>
-          <FeatureTour />
-        </div>
-      </section>
+        </section>
       </>
     );
 
   if (slug === "solutions")
     return (
       <>
-      <section className="chapter t-ice page-showcase" id="diagnostic" aria-labelledby="showcase-title">
-        <div className="wrap grid diag-layout">
-          <div className="diag-head">
-            <h2 id="showcase-title" className="d-l" data-reveal="mask">
-              Quel parcours pour vous ?
-            </h2>
-            <p className="lead" data-reveal>
-              Cinq questions, une minute : votre point de départ et les données à préparer. Les trois parcours sont détaillés
-              juste après.
-            </p>
+        <section className="chapter page-showcase" id="diagnostic" aria-labelledby="showcase-title">
+          <div className="wrap diag-layout">
+            <Head
+              id="showcase-title"
+              split={false}
+              title="Quel parcours pour vous ?"
+              lead="Cinq questions, une minute : votre point de départ et les données à préparer. Les trois parcours sont détaillés juste après."
+            />
+            <div data-reveal="rise">
+              <Diagnostic />
+            </div>
           </div>
-          <div className="diag-wrap" data-reveal="rise">
-            <Diagnostic />
+        </section>
+        <section className="chapter s-tint" id="livrables" aria-labelledby="deliverables-title">
+          <div className="wrap">
+            <Head
+              id="deliverables-title"
+              title="Ce que vous recevez."
+              lead="Des documents que votre direction lit, que vos clients comprennent et qu’un vérificateur peut relire."
+            />
+            <Deliverables />
+            <div className="section-cta" data-reveal="rise">
+              <Link href="/offres" className="btn">
+                Comparer les offres
+              </Link>
+              <span className="t-meta">Ce que chaque formule inclut, et les options pour composer votre périmètre.</span>
+            </div>
           </div>
-        </div>
-      </section>
-      <section className="chapter t-deep" id="livrables" aria-labelledby="deliverables-title">
-        <div className="wrap">
-          <div className="chapter-head">
-            <h2 id="deliverables-title" className="d-l" data-reveal="mask">
-              Ce que vous recevez.
-            </h2>
-            <p className="lead" data-reveal>
-              Des documents que votre direction lit, que vos clients comprennent et qu’un vérificateur peut relire.
-            </p>
-          </div>
-          <Deliverables />
-          <div className="showcase-cta" data-reveal>
-            <p>Comparez ce que chaque formule inclut, puis composez votre périmètre.</p>
-            <Link href="/offres" className="btn btn-mint">
-              Comparer les offres
-            </Link>
-          </div>
-        </div>
-      </section>
+        </section>
       </>
     );
 
   if (slug === "methodologie")
     return (
-      <section className="chapter t-dark scopes-chapter page-showcase" id="trois-scopes" aria-labelledby="showcase-title">
+      <section className="chapter page-showcase" id="trois-scopes" aria-labelledby="showcase-title">
         <div className="wrap">
-          <div className="chapter-head">
-            <h2 id="showcase-title" className="d-l" data-reveal="mask">
-              Tout part des trois scopes.
-            </h2>
-            <p className="lead" data-reveal>
-              Le GHG Protocol range chaque émission dans un scope. Explorez-les : c’est la base du périmètre que la méthode
-              construit ensuite, étape par étape.
-            </p>
-          </div>
-          <ScopeRings />
+          <Head
+            id="showcase-title"
+            title="Tout part des trois scopes."
+            lead="Le GHG Protocol range chaque émission dans un scope, selon sa relation avec votre organisation. Choisissez-en un : c’est la base du périmètre que la méthode construit ensuite."
+          />
+          <ScopeChain />
         </div>
       </section>
     );
 
   if (slug === "cabinet")
     return (
-      <section className="chapter t-ice page-showcase" id="parcours" aria-labelledby="showcase-title">
+      <section className="chapter page-showcase" id="parcours" aria-labelledby="showcase-title">
         <div className="wrap">
-          <div className="chapter-head">
-            <h2 id="showcase-title" className="d-l" data-reveal="mask">
-              Travailler avec nous.
-            </h2>
-            <p className="lead" data-reveal>
-              Du premier échange au suivi annuel, vous savez à chaque étape ce que nous attendons de vous et ce que vous recevez.
-            </p>
-          </div>
-          <ol className="process" data-reveal="process">
+          <Head
+            id="showcase-title"
+            title="Travailler avec nous."
+            lead="Du premier échange au suivi annuel, vous savez à chaque étape ce que nous attendons de vous et ce que vous recevez."
+          />
+          <ol className="path" data-reveal="rise">
+            <svg className="path-line" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+              <line className="path-line-a" x1="0" y1="-22" x2="100" y2="78" pathLength={1} vectorEffect="non-scaling-stroke" />
+              <line className="path-line-b" x1="0" y1="0" x2="100" y2="100" pathLength={1} vectorEffect="non-scaling-stroke" />
+            </svg>
             {steps.map((step, n) => (
               <li key={step.title} style={{ ["--i" as string]: n }}>
-                <span className="process-n">{n + 1}</span>
+                <span className="path-n">{n + 1}</span>
                 <h3>{step.title}</h3>
                 <p>{step.text}</p>
               </li>
@@ -139,23 +137,21 @@ export function PageShowcase({ slug }: { slug: string }) {
 
   if (slug === "ressources")
     return (
-      <section className="chapter t-dark page-showcase" id="checklist" aria-labelledby="showcase-title">
+      <section className="chapter page-showcase" id="checklist" aria-labelledby="showcase-title">
         <div className="wrap">
-          <div className="chapter-head">
-            <h2 id="showcase-title" className="d-l" data-reveal="mask">
-              Préparez vos données.
-            </h2>
-            <p className="lead" data-reveal>
-              Choisissez votre secteur pour voir d’où viennent, en général, ses émissions. Puis créez la checklist des données à
-              réunir, à télécharger ou imprimer.
-            </p>
+          <Head
+            id="showcase-title"
+            title="Préparez vos données."
+            lead="Choisissez votre secteur pour voir d’où viennent, en général, ses émissions. Puis créez la checklist des données à réunir, à télécharger ou à imprimer."
+          />
+          <div data-reveal="rise">
+            <SectorExplorer />
           </div>
-          <SectorExplorer />
-          <div className="showcase-cta" data-reveal>
-            <p>La liste des données à réunir, selon votre activité.</p>
-            <button type="button" className="btn btn-mint" onClick={openChecklist}>
+          <div className="section-cta" data-reveal="rise">
+            <button type="button" className="btn" onClick={openChecklist}>
               Créer ma checklist
             </button>
+            <span className="t-meta">La liste des données à réunir, selon votre activité.</span>
           </div>
         </div>
       </section>

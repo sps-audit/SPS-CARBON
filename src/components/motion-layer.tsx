@@ -1,124 +1,148 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { onScrollFrame, requestScrollFrame } from "./scroll-store";
 
 /*
- * Site-wide motion: scroll progress, on-scroll reveals ([data-reveal]),
- * count-up figures ([data-count]) and a cursor spotlight on cards (.spot).
- * Content is only hidden when JavaScript runs (html.js) and motion is allowed.
+ * Site-wide motion engine (v7). One passive scroll loop, one pointer loop.
+ *
+ * - Reveals: [data-reveal] gets .is-in once its top passes 88 % of the viewport.
+ *   Variants are styled in motion.css: focus (headings come into focus word by
+ *   word), scan (an instrument panel is read by a scan line), rise (a quiet
+ *   focus-in for text and groups), stagger (children one after the other).
+ * - Page progress: the graduated line of the header (.site-progress i).
+ * - Hero settle: --hp on .hero-deck (0 at rest, 1 when the hero has scrolled away).
+ * - Pointer: a light follows the cursor on .spot surfaces, and the page-head
+ *   instrument tilts a little (--px, --py), mouse only, never under reduced motion.
+ *
+ * Geometry is measured once (and again when the page changes size), then each
+ * scroll frame only compares cached positions with scrollY and writes: no
+ * layout is forced while scrolling.
  */
 export function MotionLayer() {
-  const bar = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
   useEffect(() => {
-    let frame = 0;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => {
-      frame = 0;
-      const vh = window.innerHeight || 1;
-      const max = document.documentElement.scrollHeight - vh;
-      bar.current?.style.setProperty("transform", `scaleX(${max > 0 ? window.scrollY / max : 0})`);
-      // Scroll-linked depth: chapters straighten their diagonal edge as they arrive,
-      // the hero dashboard settles as it leaves. Native scroll only. All positions
-      // are read first, then written, and only when they change: no forced layout.
-      const sections = Array.from(document.querySelectorAll<HTMLElement>(".chapter, .site-footer"));
-      const tops = sections.map((section) => section.getBoundingClientRect().top);
-      const hero = document.querySelector<HTMLElement>(".hero");
-      const heroRect = hero?.getBoundingClientRect();
-      sections.forEach((section, i) => {
-        const e = reduce.matches ? 1 : Math.min(1, Math.max(0, (vh - tops[i]) / (vh * 0.75)));
-        const value = e.toFixed(3);
-        if (section.dataset.e !== value) {
-          section.dataset.e = value;
-          section.style.setProperty("--e", value);
-        }
-      });
-      if (hero && heroRect) {
-        const p = reduce.matches ? 0 : Math.min(1, Math.max(0, -heroRect.top / (heroRect.height * 0.85)));
+    const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
+    let lastProgress = "";
+    let lastHero = "";
+    let pending: HTMLElement[] = [];
+    let tops: number[] = [];
+    let heroTop = 0;
+    let heroHeight = 1;
+    let max = 1;
+    let bar: HTMLElement | null = null;
+    let hero: HTMLElement | null = null;
+    let deck: HTMLElement | null = null;
+    // Until the visitor scrolls, the page is "arriving": everything already on
+    // screen comes in, even after fonts or images move it a little.
+    const startY = window.scrollY;
+
+    const measure = () => {
+      const y = window.scrollY;
+      bar = document.querySelector<HTMLElement>(".site-progress i");
+      hero = document.querySelector<HTMLElement>(".hero");
+      deck = document.querySelector<HTMLElement>(".hero-deck");
+      max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      if (hero) {
+        const rect = hero.getBoundingClientRect();
+        heroTop = rect.top + y;
+        heroHeight = Math.max(1, rect.height);
+      }
+      pending = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]:not(.is-in)"));
+      tops = pending.map((element) => element.getBoundingClientRect().top + y);
+    };
+
+    const update = (y: number, vh: number) => {
+      const progress = Math.min(1, Math.max(0, y / max)).toFixed(4);
+      if (bar && progress !== lastProgress) {
+        lastProgress = progress;
+        bar.style.transform = `scaleX(${progress})`;
+      }
+      if (hero) {
+        const p = reduce.matches ? 0 : Math.min(1, Math.max(0, (y - heroTop) / (heroHeight * 0.85)));
         const value = p.toFixed(3);
-        if (hero.dataset.hp !== value) {
-          hero.dataset.hp = value;
-          hero.style.setProperty("--hp", value);
+        // Written on the one element that uses it, so nothing else is restyled.
+        if (value !== lastHero && deck) {
+          lastHero = value;
+          deck.style.setProperty("--hp", value);
         }
       }
+      if (pending.length) {
+        // On arrival everything already on screen comes in (no blank band at
+        // the fold); while scrolling, a little before the bottom edge.
+        const line = y + vh * (y === startY ? 1 : 0.92);
+        const keepEls: HTMLElement[] = [];
+        const keepTops: number[] = [];
+        pending.forEach((element, i) => {
+          if (tops[i] < line) element.classList.add("is-in");
+          else {
+            keepEls.push(element);
+            keepTops.push(tops[i]);
+          }
+        });
+        pending = keepEls;
+        tops = keepTops;
+      }
     };
-    const onScroll = () => {
-      if (!frame) frame = requestAnimationFrame(update);
+
+    let remeasure = 0;
+    const refresh = () => {
+      cancelAnimationFrame(remeasure);
+      remeasure = requestAnimationFrame(() => {
+        measure();
+        requestScrollFrame();
+      });
     };
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    // Pointer: a light follows the cursor on cards (.spot), and the page
-    // header instrument drifts a little (--px, --py, set on the page header
-    // only so the rest of the page is not restyled), mouse only.
-    const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
+
+    refresh();
+    const stopScroll = onScrollFrame(update);
+    window.addEventListener("resize", refresh);
+    document.fonts?.ready.then(refresh);
+    // The page grew or shrank (fonts, an accordion, a tab): positions are measured again.
+    const sizes = new ResizeObserver(refresh);
+    sizes.observe(document.body);
+    // Elements added later (a step, a panel) are picked up as they appear.
+    const added = new MutationObserver((mutations) => {
+      if (mutations.some((m) => Array.from(m.addedNodes).some((node) => node.nodeType === 1))) refresh();
+    });
+    added.observe(document.body, { childList: true, subtree: true });
+
     let drift = 0;
     let px = 0;
     let py = 0;
     const applyDrift = () => {
       drift = 0;
-      const header = document.querySelector<HTMLElement>(".page-hero");
-      if (!header) return;
-      header.style.setProperty("--px", px.toFixed(3));
-      header.style.setProperty("--py", py.toFixed(3));
+      const head = document.querySelector<HTMLElement>(".page-head");
+      if (!head) return;
+      head.style.setProperty("--px", px.toFixed(3));
+      head.style.setProperty("--py", py.toFixed(3));
     };
     const onPointer = (event: PointerEvent) => {
-      if (fine.matches && !reduce.matches) {
-        px = (event.clientX / window.innerWidth - 0.5) * 2;
-        py = (event.clientY / window.innerHeight - 0.5) * 2;
-        if (!drift) drift = requestAnimationFrame(applyDrift);
-      }
+      if (!fine.matches || reduce.matches) return;
+      px = (event.clientX / window.innerWidth - 0.5) * 2;
+      py = (event.clientY / window.innerHeight - 0.5) * 2;
+      if (!drift) drift = requestAnimationFrame(applyDrift);
       const card = (event.target as Element | null)?.closest?.(".spot") as HTMLElement | null;
       if (!card) return;
       const rect = card.getBoundingClientRect();
-      card.style.setProperty("--mx", `${event.clientX - rect.left}px`);
-      card.style.setProperty("--my", `${event.clientY - rect.top}px`);
+      card.style.setProperty("--mx", `${(event.clientX - rect.left).toFixed(0)}px`);
+      card.style.setProperty("--my", `${(event.clientY - rect.top).toFixed(0)}px`);
     };
     document.addEventListener("pointermove", onPointer, { passive: true });
-    return () => {
-      cancelAnimationFrame(frame);
-      cancelAnimationFrame(drift);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      document.removeEventListener("pointermove", onPointer);
-    };
-  }, []);
 
-  useEffect(() => {
-    // Reveal by position, not IntersectionObserver: hidden states use clip-path,
-    // and fully clipped targets are never reported as intersecting.
-    let pending = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]:not(.is-in)"));
-    let frame = 0;
-    const check = () => {
-      frame = 0;
-      const vh = window.innerHeight || 1;
-      pending = pending.filter((element) => {
-        const rect = element.getBoundingClientRect();
-        if (rect.top < vh * 0.88) {
-          element.classList.add("is-in");
-          return false;
-        }
-        return true;
-      });
-    };
-    const schedule = () => {
-      if (!frame) frame = requestAnimationFrame(check);
-    };
-    const start = requestAnimationFrame(() => {
-      window.dispatchEvent(new Event("resize"));
-      check();
-    });
-    window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule);
     return () => {
-      cancelAnimationFrame(start);
-      cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", schedule);
+      stopScroll();
+      cancelAnimationFrame(drift);
+      cancelAnimationFrame(remeasure);
+      sizes.disconnect();
+      added.disconnect();
+      window.removeEventListener("resize", refresh);
+      document.removeEventListener("pointermove", onPointer);
     };
   }, [pathname]);
 
-  return <div className="scroll-progress" ref={bar} aria-hidden="true" />;
+  return null;
 }

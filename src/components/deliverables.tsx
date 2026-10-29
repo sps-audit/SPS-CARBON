@@ -30,7 +30,7 @@ export function Deliverables() {
   const stack = useRef<HTMLDivElement>(null);
   useScrollProgress(stack, 0.95, 0.35);
   return (
-    <div className="deliv grid">
+    <div className="deliv">
       <div className="deliv-stack" ref={stack} aria-hidden="true">
         {docs.map((doc, index) => (
           <div className="deliv-doc" key={doc.name} style={{ ["--k" as string]: index }}>
@@ -55,7 +55,7 @@ export function Deliverables() {
       </div>
       <ul className="deliv-list">
         {docs.map((doc, index) => (
-          <li key={doc.name} data-reveal="rule" style={{ ["--i" as string]: index }}>
+          <li key={doc.name} data-reveal="rise" style={{ ["--i" as string]: index }}>
             <h3>{doc.name}</h3>
             <p>{doc.text}</p>
           </li>

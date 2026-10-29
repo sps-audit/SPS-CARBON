@@ -203,23 +203,29 @@ export function CarbonCalculator() {
         })}
       </div>
 
-      <aside className="calc-total" aria-label="Résultat de l’estimation">
+      <aside className="calc-total s-night" aria-label="Résultat de l’estimation">
         <p className="calc-total-label">Estimation Scopes 1 et 2</p>
         <p className="calc-total-value" aria-live="polite" aria-atomic="true">
           <strong>{tonnes(total)}</strong>
           <span>tCO₂e par an</span>
         </p>
-        <div className="calc-split" aria-hidden="true">
+        <div className={`calc-split${total ? "" : " is-empty"}`} aria-hidden="true">
           <i style={{ flexGrow: total ? s1 : 1 }} className="s1" />
           <i style={{ flexGrow: total ? s2 : 1 }} className="s2" />
         </div>
         <dl className="calc-scopes">
           <div>
-            <dt>Scope 1, combustibles</dt>
+            <dt>
+              <i className="calc-key s1" aria-hidden="true" />
+              Scope 1, combustibles
+            </dt>
             <dd>{tonnes(s1)} t</dd>
           </div>
           <div>
-            <dt>Scope 2, électricité</dt>
+            <dt>
+              <i className="calc-key s2" aria-hidden="true" />
+              Scope 2, électricité
+            </dt>
             <dd>{tonnes(s2)} t</dd>
           </div>
         </dl>
@@ -234,7 +240,7 @@ export function CarbonCalculator() {
           combustibles.
         </p>
         <div className="calc-actions">
-          <Link href={total > 0 ? href : "/contact?sujet=0"} className="btn btn-mint">
+          <Link href={total > 0 ? href : "/contact?sujet=0"} className="btn btn-signal">
             Passer à un vrai bilan
           </Link>
           <button

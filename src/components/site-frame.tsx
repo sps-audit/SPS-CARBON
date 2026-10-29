@@ -10,8 +10,12 @@ import { SiteNav, navSections } from "./site-nav";
 import { PageTransition } from "./page-transition";
 import { StickyCta } from "./sticky-cta";
 import { ThemeToggle } from "./theme-toggle";
-import { hexPoints } from "@/lib/geometry";
+import { Trajectory } from "./trajectory";
+import { onScrollFrame } from "./scroll-store";
 import { company } from "@/lib/company";
+
+// Pages that end with their own call to action: the footer skips its closing call there.
+const ownCall = new Set(["/contact", "/plateforme", "/solutions", "/methodologie", "/cabinet", "/ressources"]);
 
 const SiteActions = createContext({ openChecklist: () => {} });
 export const useSiteActions = () => useContext(SiteActions);
@@ -59,10 +63,14 @@ export function SiteFrame({ children }: { children: ReactNode }) {
   }, [pathname]);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    let last: boolean | null = null;
+    return onScrollFrame((y) => {
+      const next = y > 24;
+      if (next !== last) {
+        last = next;
+        setScrolled(next);
+      }
+    });
   }, []);
 
   useEffect(() => {
@@ -114,6 +122,9 @@ export function SiteFrame({ children }: { children: ReactNode }) {
       </a>
       <header className={`site-header ${scrolled ? "is-scrolled" : ""} ${menu ? "is-open" : ""}`}>
         <div className="site-header-inner">
+          <span className="site-progress" aria-hidden="true">
+            <i />
+          </span>
           <Link href="/" aria-label="SPS CARBON, accueil" className="site-brand">
             <img className="logo-on-dark" src="/brand/logo-light.svg" width="204" height="32" alt="SPS CARBON" />
             <img className="logo-on-light" src="/brand/logo-dark.svg" width="204" height="32" alt="" aria-hidden="true" />
@@ -170,7 +181,7 @@ export function SiteFrame({ children }: { children: ReactNode }) {
               ))}
             </ul>
             <div className="m-foot" style={{ ["--i" as string]: navSections.length }}>
-              <Link href="/contact" className="btn btn-mint m-cta" aria-current={current("/contact")} onClick={closeMenu}>
+              <Link href="/contact" className="btn btn-signal m-cta" aria-current={current("/contact")} onClick={closeMenu}>
                 Parlons de votre projet
               </Link>
               <Link href="/outils#diagnostic" className="m-alt" onClick={closeMenu}>
@@ -182,7 +193,7 @@ export function SiteFrame({ children }: { children: ReactNode }) {
             </div>
           </nav>
           <ThemeToggle />
-          <Link className="btn btn-mint btn-small site-cta" href="/contact">
+          <Link className="btn btn-small site-cta" href="/contact">
             Parlons de votre projet
           </Link>
         </div>
@@ -192,27 +203,24 @@ export function SiteFrame({ children }: { children: ReactNode }) {
 
       <StickyCta pathname={pathname} hidden={menu} />
 
-      <footer className={`site-footer t-deep ${pathname === "/contact" ? "is-compact" : ""}`}>
-        {pathname !== "/contact" && (
-          <div className="wrap footer-call">
-            <svg className="footer-signal" viewBox="-300 -300 600 600" aria-hidden="true">
-              {[60, 110, 160, 210, 260].map((r, n) => (
-                <polygon key={r} points={hexPoints(0, 0, r)} style={{ ["--n" as string]: n }} />
-              ))}
-            </svg>
-            <h2 className="d-l">
-              Votre premier inventaire
-              <br />
-              commence par un échange.
-            </h2>
-            <div className="footer-call-side">
-              <p>
-                Présentez votre activité, vos sites et votre objectif. Nous vous aidons à définir le bon périmètre avant tout
+      <footer className={`site-footer s-night ${ownCall.has(pathname) ? "is-compact" : ""}`}>
+        {!ownCall.has(pathname) && (
+          <div className="wrap footer-call" data-reveal="rise">
+            <Trajectory className="footer-trajectory" />
+            <div className="footer-call-copy">
+              <h2 className="t-h2">Votre premier inventaire commence par un échange.</h2>
+              <p className="t-lead">
+                Présentez votre activité, vos sites et votre objectif. Nous définissons avec vous le bon périmètre, avant tout
                 engagement.
               </p>
-              <Link className="btn btn-mint" href="/contact">
+            </div>
+            <div className="footer-call-actions">
+              <Link className="btn btn-signal" href="/contact">
                 Parlons de votre projet
               </Link>
+              <a className="link footer-call-mail" href={`mailto:${company.email}`}>
+                {company.email}
+              </a>
             </div>
           </div>
         )}
@@ -276,7 +284,7 @@ export function SiteFrame({ children }: { children: ReactNode }) {
           <span>© 2026 SAFEPERFORM SOLUTIONS SARL AU</span>
           <span className="footer-status">
             <i aria-hidden="true" />
-            Plateforme en développement
+            Plateforme en cours de déploiement
           </span>
           <Link href="/cookies" className="footer-clean">
             Sans traceur publicitaire ni mesure d’audience

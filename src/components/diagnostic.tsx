@@ -157,7 +157,7 @@ export function Diagnostic() {
             </div>
             <div className="diag-result-side">
               <p className="diag-label">À préparer en priorité</p>
-              <ul className="hex-list">
+              <ul className="dash-list">
                 {(prepare[answers.sector ?? "Industrie"] ?? prepare.Industrie).map((item) => (
                   <li key={item}>{item}</li>
                 ))}
@@ -165,15 +165,15 @@ export function Diagnostic() {
             </div>
             <div className="diag-actions">
               <Link
-                className="btn btn-mint"
+                className="btn btn-signal"
                 href={`/contact?sujet=${result.subject}&contexte=${encodeURIComponent(context)}`}
               >
                 Recevoir une proposition de cadrage
               </Link>
-              <button type="button" className="btn btn-ghost" onClick={openChecklist}>
+              <button type="button" className="btn btn-quiet" onClick={openChecklist}>
                 Créer ma checklist complète
               </button>
-              <Link href={result.href} className="link link-light">
+              <Link href={result.href} className="link">
                 Voir le détail de l’offre
               </Link>
               <button type="button" className="diag-back" onClick={restart}>

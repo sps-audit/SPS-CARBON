@@ -1,0 +1,481 @@
+/* Contact page, guided form, checklist dialog. */
+
+@layer components {
+  .contact-body {
+    padding-top: clamp(3rem, 2rem + 3vw, 5rem);
+  }
+
+  .contact-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+    gap: 2.5rem clamp(2rem, 1rem + 3vw, 5rem);
+    align-items: start;
+  }
+
+  .contact-info {
+    position: sticky;
+    top: calc(var(--header) + 2rem);
+    display: grid;
+    gap: 1rem;
+  }
+
+  .contact-info h2 {
+    font-size: 1.5rem;
+    font-weight: 620;
+    letter-spacing: -0.02em;
+  }
+
+  .contact-info > p {
+    color: var(--ink-2);
+  }
+
+  .contact-info h3 {
+    margin-top: 0.75rem;
+    font-size: 1rem;
+    font-weight: 620;
+  }
+
+  .contact-mail {
+    justify-self: start;
+    font-size: 1.15rem;
+    font-weight: 600;
+    text-decoration-color: var(--signal-fill);
+    text-decoration-thickness: 2px;
+  }
+
+  .contact-info address {
+    color: var(--ink-2);
+    font-size: var(--t-small);
+  }
+
+  .contact-form {
+    display: grid;
+    gap: 1.5rem;
+    padding: clamp(1.5rem, 1rem + 2.5vw, 3rem);
+    border-radius: var(--r-xl);
+    background: var(--surface);
+    box-shadow: var(--glass-lit), 0 0 0 1px var(--line), var(--shadow-3);
+  }
+
+  .contact-form form,
+  .draft-review {
+    display: grid;
+    gap: 1.25rem;
+    animation: panel-in 600ms var(--ease-out);
+  }
+
+  .contact-form h2 {
+    font-size: var(--t-h3);
+    font-weight: 620;
+    letter-spacing: -0.022em;
+    line-height: 1.2;
+  }
+
+  .contact-form h2:focus {
+    outline: none;
+  }
+
+  .contact-form form > p:not(.form-step):not(.form-reason):not(.form-notice),
+  .draft-review > p:not(.form-step):not(.form-notice) {
+    color: var(--ink-2);
+  }
+
+  .form-progress {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+
+  .form-progress li {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding-top: 0.85rem;
+    color: var(--ink-3);
+    font-size: 0.85rem;
+    font-weight: 560;
+  }
+
+  .form-progress li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 3px;
+    border-radius: 999px;
+    background: var(--line);
+  }
+
+  .form-progress li::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 3px;
+    border-radius: 999px;
+    background: var(--signal-fill);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    transition: transform 700ms var(--ease-out);
+  }
+
+  .form-progress li.is-done::after {
+    transform: none;
+  }
+
+  .form-progress li.is-current::after {
+    transform: scaleX(0.4);
+  }
+
+  .form-progress li.is-current,
+  .form-progress li.is-done {
+    color: var(--ink);
+  }
+
+  .form-progress span {
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1.5px var(--line-3);
+    font-size: 0.75rem;
+    font-weight: 640;
+  }
+
+  .form-progress li.is-current span {
+    box-shadow: inset 0 0 0 1.5px var(--signal);
+    color: var(--signal);
+  }
+
+  .form-progress li.is-done span {
+    background: var(--signal-fill);
+    color: var(--petrol);
+    box-shadow: none;
+  }
+
+  .form-step {
+    color: var(--ink-3);
+    font-size: var(--t-meta);
+    font-weight: 580;
+  }
+
+  .reason-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+  }
+
+  .form-reason {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    padding: 0.85rem 1rem;
+    border-radius: var(--r-m);
+    background: var(--signal-soft);
+    font-size: var(--t-small);
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .form-notice {
+    color: var(--ink-3);
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  .form-notice:empty {
+    display: none;
+  }
+
+  .contact-form button[type="submit"],
+  .draft-actions .btn {
+    justify-self: start;
+  }
+
+  .draft-meta {
+    display: grid;
+    gap: 0.5rem;
+    padding: 1rem 1.1rem;
+    border-radius: var(--r-m);
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+
+  .draft-meta div {
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    gap: 1rem;
+    font-size: var(--t-small);
+  }
+
+  .draft-meta dt {
+    color: var(--ink-3);
+  }
+
+  .draft-meta dd {
+    font-weight: 560;
+    overflow-wrap: anywhere;
+  }
+
+  .draft-body {
+    max-height: 20rem;
+    margin: 0;
+    padding: 1.1rem 1.2rem;
+    overflow: auto;
+    border-radius: var(--r-m);
+    background: color-mix(in srgb, var(--paper) 60%, var(--surface));
+    box-shadow: inset 0 0 0 1px var(--line);
+    font: inherit;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+  }
+
+  .draft-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.5rem;
+  }
+
+  @media (max-width: 1000px) {
+    .contact-layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .contact-info {
+      position: static;
+      order: 2;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .reason-grid,
+    .form-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .form-progress li {
+      font-size: 0;
+    }
+
+    .form-progress span {
+      font-size: 0.75rem;
+    }
+  }
+
+  /* ---------- Checklist dialog ---------- */
+  .project-dialog {
+    width: min(100% - 2rem, 40rem);
+    max-height: min(100% - 2rem, 52rem);
+    padding: 0;
+    border: 0;
+    border-radius: var(--r-xl);
+    background: var(--surface);
+    color: var(--ink);
+    box-shadow: var(--glass-lit), 0 0 0 1px var(--line), 0 40px 100px -30px rgba(7, 31, 39, 0.55);
+    overflow: auto;
+  }
+
+  .project-dialog[open] {
+    animation: dialog-in 520ms var(--ease-out);
+  }
+
+  .project-dialog::backdrop {
+    background: color-mix(in srgb, var(--petrol) 45%, transparent);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    animation: fade-in 400ms var(--ease);
+  }
+
+  @keyframes dialog-in {
+    from {
+      opacity: 0;
+      filter: blur(8px);
+      transform: translateY(16px) scale(0.98);
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  .dialog-top {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1rem 1rem 1.5rem;
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+  }
+
+  .dialog-top img {
+    width: 150px;
+    height: auto;
+  }
+
+  .dialog-content {
+    display: grid;
+    gap: 1.1rem;
+    padding: 1.75rem 1.75rem 2rem;
+  }
+
+  .dialog-content h2 {
+    font-size: var(--t-h3);
+    font-weight: 620;
+    letter-spacing: -0.022em;
+  }
+
+  .dialog-content h2:focus {
+    outline: none;
+  }
+
+  .dialog-content > p {
+    color: var(--ink-2);
+  }
+
+  .dialog-step {
+    display: flex;
+    justify-content: space-between;
+    color: var(--ink-3) !important;
+    font-size: var(--t-meta);
+    font-weight: 580;
+  }
+
+  .text-field {
+    display: grid;
+    gap: 0.45rem;
+    font-weight: 580;
+  }
+
+  .text-field span {
+    color: var(--ink-3);
+    font-weight: 500;
+  }
+
+  .sector-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .sector-options legend {
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+
+  .sector-options label {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.8rem 0.9rem;
+    border-radius: var(--r-m);
+    box-shadow: inset 0 0 0 1px var(--line);
+    font-size: 0.95rem;
+    font-weight: 540;
+    cursor: pointer;
+    transition: box-shadow var(--d-2) var(--ease), background-color var(--d-2) var(--ease);
+  }
+
+  .sector-options label:hover {
+    box-shadow: inset 0 0 0 1px var(--line-3);
+  }
+
+  .sector-options label.selected {
+    background: var(--signal-soft);
+    box-shadow: inset 0 0 0 1.5px var(--signal);
+  }
+
+  .sector-options input {
+    position: absolute;
+    opacity: 0;
+  }
+
+  .sector-options label:has(input:focus-visible) {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .sector-options svg:last-child {
+    margin-left: auto;
+    color: var(--signal);
+  }
+
+  .dialog-next {
+    justify-self: start;
+  }
+
+  .dialog-privacy,
+  .download-status,
+  .checklist-disclaimer {
+    color: var(--ink-3);
+    font-size: 0.82rem;
+  }
+
+  .checklist {
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .checklist li {
+    display: flex;
+    gap: 0.6rem;
+    padding: 0.6rem 0.75rem;
+    border-radius: 10px;
+    background: color-mix(in srgb, var(--paper) 60%, var(--surface));
+    font-size: 0.95rem;
+    animation: panel-in 500ms var(--ease-out) both;
+  }
+
+  .checklist li:nth-child(2) { animation-delay: 50ms; }
+  .checklist li:nth-child(3) { animation-delay: 100ms; }
+  .checklist li:nth-child(4) { animation-delay: 150ms; }
+  .checklist li:nth-child(5) { animation-delay: 200ms; }
+  .checklist li:nth-child(n + 6) { animation-delay: 250ms; }
+
+  .checklist svg {
+    flex: none;
+    color: var(--signal);
+  }
+
+  .checklist-note {
+    display: grid;
+    gap: 0.3rem;
+    padding: 1rem;
+    border-radius: var(--r-m);
+    background: var(--check-soft);
+  }
+
+  .checklist-note p {
+    color: var(--ink-2);
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 560px) {
+    .sector-options {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+}

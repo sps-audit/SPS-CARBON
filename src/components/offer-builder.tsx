@@ -143,7 +143,7 @@ export function OfferBuilder() {
             <h3>{plan.name}</h3>
             <p className="builder-scope">{plan.scope}</p>
             <p>{plan.forWho}</p>
-            <ul className="hex-list">
+            <ul className="dash-list">
               {plan.items.map((item) => (
                 <li key={item}>{item}</li>
               ))}
@@ -157,7 +157,7 @@ export function OfferBuilder() {
               </p>
             )}
             <div className="builder-actions">
-              <Link href={href} className="btn btn-mint">
+              <Link href={href} className="btn btn-signal">
                 Demander ma proposition
               </Link>
               <Link href={plan.href} className="link">

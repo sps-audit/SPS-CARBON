@@ -4,9 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 /*
- * Desktop navigation: a gliding indicator and a mega panel that morphs between
- * sections, each with its contents and a featured entry. Keyboard: focusing a
- * top link opens its panel; Tab continues into the panel; Escape closes.
+ * Desktop navigation: a gliding indicator and a panel that drops from the
+ * header bar for each section, with its contents and a featured entry drawn as
+ * a small instrument. Keyboard: focusing a top link opens its panel; Tab
+ * continues into the panel; Escape closes.
  */
 
 type Entry = { label: string; href: string; note?: string };
@@ -194,18 +195,30 @@ export function SiteNav({ pathname }: { pathname: string }) {
     closeTimer.current = window.setTimeout(() => setOpen(null), delay);
   }
 
-  // Indicator follows the open item, rests on the current page.
+  // Indicator follows the open item, rests on the current page. Measured again
+  // once the web font has loaded and whenever the window is resized.
   useEffect(() => {
-    const index = open ?? (currentIndex >= 0 ? currentIndex : null);
-    const link = index !== null ? links.current[index] : null;
-    const host = nav.current;
-    if (!link || !host) {
-      setMark(null);
-      return;
-    }
-    const a = link.getBoundingClientRect();
-    const b = host.getBoundingClientRect();
-    setMark({ x: a.left - b.left, w: a.width });
+    const measure = () => {
+      const index = open ?? (currentIndex >= 0 ? currentIndex : null);
+      const link = index !== null ? links.current[index] : null;
+      // Measured against the header bar, which also positions the panels.
+      const host = nav.current?.closest<HTMLElement>(".site-header-inner") ?? null;
+      if (!link || !host) {
+        setMark(null);
+        return;
+      }
+      const a = link.getBoundingClientRect();
+      const b = host.getBoundingClientRect();
+      setMark({ x: a.left - b.left, w: a.width });
+    };
+    measure();
+    let alive = true;
+    document.fonts?.ready.then(() => alive && measure());
+    window.addEventListener("resize", measure);
+    return () => {
+      alive = false;
+      window.removeEventListener("resize", measure);
+    };
   }, [open, currentIndex]);
 
   useEffect(() => {
@@ -275,7 +288,7 @@ export function SiteNav({ pathname }: { pathname: string }) {
               <div className="mega-intro">
                 <p className="mega-kicker">{section.label}</p>
                 <p className="mega-lead">{section.intro}</p>
-                <Link href={section.href} className="link link-light" tabIndex={open === index ? 0 : -1}>
+                <Link href={section.href} className="link" tabIndex={open === index ? 0 : -1}>
                   Voir la page
                 </Link>
               </div>

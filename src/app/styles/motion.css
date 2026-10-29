@@ -1,0 +1,217 @@
+/*
+ * Motion language "Instrument de précision".
+ * Hidden states only exist when JavaScript runs (html.js) and the visitor
+ * allows motion. Everything animates transform, opacity, filter or clip-path.
+ */
+
+@layer motion {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Mise au point: headings come into focus word by word. */
+    html.js [data-reveal="focus"] .fw {
+      display: inline-block;
+      opacity: 0;
+      filter: blur(10px);
+      transform: translateY(0.14em);
+      transition:
+        opacity 700ms var(--ease),
+        filter 900ms var(--ease-out),
+        transform 900ms var(--ease-out);
+      transition-delay: calc(var(--fd, 0ms) + var(--w, 0) * 42ms);
+    }
+
+    html.js [data-reveal="focus"].is-in .fw {
+      opacity: 1;
+      filter: blur(0);
+      transform: none;
+    }
+
+    /* Quiet focus-in for text blocks and groups. */
+    html.js [data-reveal="rise"],
+    html.js [data-reveal=""] {
+      opacity: 0;
+      transform: translateY(14px);
+      transition:
+        opacity 800ms var(--ease),
+        transform 1000ms var(--ease-out);
+      transition-delay: calc(var(--i, 0) * 70ms);
+    }
+
+    html.js [data-reveal="rise"].is-in,
+    html.js [data-reveal=""].is-in {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* Stagger: the children of a group arrive one after the other. */
+    html.js [data-reveal="stagger"] > * {
+      opacity: 0;
+      transform: translateY(16px);
+      transition:
+        opacity 700ms var(--ease),
+        transform 900ms var(--ease-out);
+    }
+
+    html.js [data-reveal="stagger"].is-in > * {
+      opacity: 1;
+      transform: none;
+    }
+
+    html.js [data-reveal="stagger"].is-in > :nth-child(2) { transition-delay: 70ms; }
+    html.js [data-reveal="stagger"].is-in > :nth-child(3) { transition-delay: 140ms; }
+    html.js [data-reveal="stagger"].is-in > :nth-child(4) { transition-delay: 210ms; }
+    html.js [data-reveal="stagger"].is-in > :nth-child(5) { transition-delay: 280ms; }
+    html.js [data-reveal="stagger"].is-in > :nth-child(6) { transition-delay: 350ms; }
+    html.js [data-reveal="stagger"].is-in > :nth-child(7) { transition-delay: 420ms; }
+    html.js [data-reveal="stagger"].is-in > :nth-child(n + 8) { transition-delay: 490ms; }
+
+    /* Balayage: an instrument is read by a scan line, its content resolving behind it. */
+    html.js [data-reveal="scan"] {
+      clip-path: inset(-80px -80px calc(100% + 0px) -80px);
+    }
+
+    html.js [data-reveal="scan"].is-in {
+      animation: scan-clip 1150ms var(--ease-io) forwards;
+      animation-delay: var(--scan-delay, 0ms);
+    }
+
+    html.js [data-reveal="scan"]::after {
+      content: "";
+      position: absolute;
+      z-index: 20;
+      left: -1px;
+      right: -1px;
+      top: 0;
+      height: 100%;
+      pointer-events: none;
+      border-radius: inherit;
+      background:
+        linear-gradient(90deg, transparent, var(--signal-fill) 18%, var(--signal-fill) 82%, transparent) top / 100% 1.5px no-repeat,
+        linear-gradient(180deg, color-mix(in srgb, var(--signal-fill) 16%, transparent), transparent 70px) top / 100% 70px no-repeat;
+      opacity: 0;
+      transform: translateY(0);
+    }
+
+    html.js [data-reveal="scan"].is-in::after {
+      animation: scan-line 1150ms var(--ease-io) forwards;
+      animation-delay: var(--scan-delay, 0ms);
+    }
+
+    @keyframes scan-clip {
+      from {
+        clip-path: inset(-80px -80px 100% -80px);
+      }
+      to {
+        clip-path: inset(-80px -80px -80px -80px);
+      }
+    }
+
+    @keyframes scan-line {
+      0% {
+        opacity: 0;
+        transform: translateY(0);
+      }
+      8% {
+        opacity: 1;
+      }
+      86% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(100%);
+      }
+    }
+
+    /* A hairline draws from the left. */
+    html.js [data-reveal="rule"] {
+      transform: scaleX(0);
+      transform-origin: 0 50%;
+      transition: transform 1100ms var(--ease-io);
+      transition-delay: calc(var(--i, 0) * 80ms);
+    }
+
+    html.js [data-reveal="rule"].is-in {
+      transform: none;
+    }
+
+    /* The brand device draws when its section arrives. */
+    html.js [data-reveal] .trajectory line {
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      transition: stroke-dashoffset 1800ms var(--ease-io);
+    }
+
+    html.js [data-reveal] .trajectory .trajectory-b {
+      transition-delay: 160ms;
+    }
+
+    html.js [data-reveal].is-in .trajectory line {
+      stroke-dashoffset: 0;
+    }
+
+    html.js [data-reveal] .trajectory-run {
+      opacity: 0;
+    }
+
+    html.js [data-reveal].is-in .trajectory-run {
+      opacity: 1;
+      animation: trajectory-run 9s var(--ease-io) 1.6s 3 both;
+    }
+
+    @keyframes trajectory-run {
+      0% {
+        transform: translate(0, 0);
+        opacity: 0;
+      }
+      8% {
+        opacity: 1;
+      }
+      85% {
+        opacity: 1;
+      }
+      100% {
+        transform: translate(100%, 55%);
+        opacity: 0;
+      }
+    }
+
+    /* Cursor light on instrument surfaces (.spot). */
+    .spot {
+      position: relative;
+    }
+
+    .spot::before {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      background: radial-gradient(420px circle at var(--mx, 50%) var(--my, -30%), color-mix(in srgb, var(--signal-fill) 11%, transparent), transparent 62%);
+      opacity: 0;
+      transition: opacity var(--d-3) var(--ease);
+    }
+
+    .spot:hover::before {
+      opacity: 1;
+    }
+  }
+
+  /* Reduced motion: the device is simply drawn, nothing travels. */
+  @media (prefers-reduced-motion: reduce) {
+    .trajectory-run {
+      display: none;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 1ms !important;
+      animation-delay: 0ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 1ms !important;
+      transition-delay: 0ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

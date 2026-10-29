@@ -1,7 +1,8 @@
 import { company } from "./company";
 import type { EditorialPage } from "./editorial";
 
-const revised = "Dernière révision : 24 octobre 2026.";
+const revised = "Dernière révision : 29 octobre 2026.";
+const host = "Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis";
 
 export const legalPages: EditorialPage[] = [
   {
@@ -13,9 +14,9 @@ export const legalPages: EditorialPage[] = [
     sections: [
       {
         id: "version",
-        title: "Une version locale en préparation",
+        title: "Mise à jour de ces mentions",
         body: [
-          `${revised} Ces mentions accompagnent la version locale de présentation du site. Avant sa publication, les informations relatives à l’hébergement, au représentant de l’éditeur et au capital social devront être complétées et les identifiants de l’entreprise confirmés.`,
+          `${revised} Ces mentions concernent le site de présentation ${company.brand}. Les informations relatives au représentant de l’éditeur et au capital social sont en cours de complément.`,
           "Les pages juridiques décrivent le périmètre actuellement prévu. Leur présence ne constitue pas une attestation de conformité ni une autorisation délivrée par une autorité.",
         ],
       },
@@ -23,8 +24,8 @@ export const legalPages: EditorialPage[] = [
         id: "editeur",
         title: "Éditeur et coordonnées",
         body: [
-          `${company.brand} est un projet porté par ${company.name}. ${company.activity}.`,
-          "Les informations ci-dessous proviennent des coordonnées et du document d’entreprise communiqués pour la préparation du site.",
+          `${company.brand} est porté par ${company.name}. ${company.activity}.`,
+          "Les informations ci-dessous proviennent du document d’entreprise de SAFEPERFORM SOLUTIONS.",
         ],
         bullets: [
           `Raison sociale : ${company.name}.`,
@@ -39,16 +40,16 @@ export const legalPages: EditorialPage[] = [
         id: "hebergement",
         title: "Hébergement du site",
         body: [
-          "Cette version fonctionne dans un environnement local de développement. Aucun hébergeur public n’est désigné à ce stade. L’identité et les coordonnées de l’hébergeur retenu seront précisées avant la mise en ligne.",
-          "Le choix de l’hébergement devra également permettre de documenter les journaux techniques, les prestataires, les pays de traitement et les éventuels transferts de données personnelles.",
+          `Le site est hébergé par ${host} (vercel.com). Il est diffusé sous forme de pages statiques, sans base de données ni compte utilisateur.`,
+          "L’hébergeur peut conserver des journaux techniques (adresse IP, page demandée, date et heure) nécessaires à la diffusion et à la sécurité du site. La politique de confidentialité en précise le cadre.",
         ],
       },
       {
         id: "objet",
         title: "Objet du site",
         body: [
-          "Le site présente l’approche SPS-CARBON, ses parcours envisagés et des ressources pour préparer une démarche carbone. Il permet de préparer une demande de contact et de consulter une démonstration illustrative.",
-          "Cette version ne permet pas de créer un compte client, de souscrire un abonnement, de commander ou de payer en ligne. Le périmètre, les livrables, les délais et les conditions d’une mission sont à préciser dans une proposition adaptée au besoin exprimé.",
+          "Le site présente l’approche SPS-CARBON, ses parcours d’accompagnement et des ressources pour préparer une démarche carbone. Il permet de préparer une demande de contact et de consulter une démonstration illustrative.",
+          "Le site ne permet pas de créer un compte client, de souscrire un abonnement, de commander ou de payer en ligne. Le périmètre, les livrables, les délais et les conditions d’une mission sont à préciser dans une proposition adaptée au besoin exprimé.",
         ],
       },
       {
@@ -73,7 +74,7 @@ export const legalPages: EditorialPage[] = [
         id: "version",
         title: "Le périmètre de cette information",
         body: [
-          `${revised} Cette politique décrit la version locale de présentation. Avant la mise en ligne, l’entreprise doit finaliser les prestataires et pays de traitement, les durées de conservation, les mesures opérationnelles et les formalités CNDP applicables. Aucun numéro de récépissé ou d’autorisation n’est annoncé sans justificatif.`,
+          `${revised} Cette politique concerne le site de présentation ${company.brand}, hébergé par Vercel Inc. aux États-Unis. Les durées de conservation, les mesures opérationnelles et les formalités CNDP applicables sont précisées dans cette page au fur et à mesure de leur accomplissement ; aucun numéro de récépissé ou d’autorisation n’est annoncé sans justificatif.`,
           "Cette page concerne les demandes de contact et la navigation sur le site. Elle ne décrit pas le fonctionnement d’une future plateforme de comptes clients ou de stockage de données carbone.",
         ],
       },
@@ -104,7 +105,7 @@ export const legalPages: EditorialPage[] = [
         title: "Destinataires et services techniques",
         body: [
           "Les demandes sont destinées aux personnes habilitées à y répondre au sein de SAFEPERFORM SOLUTIONS. Les fournisseurs nécessaires à la messagerie et à l’hébergement peuvent également intervenir dans le traitement selon les services retenus.",
-          "L’absence de base de données dans le site ne signifie pas l’absence de tout traitement : les courriels reçus et les éventuels journaux techniques doivent aussi être pris en compte. L’identité des prestataires, leurs pays et les conditions d’éventuels transferts à l’étranger restent à documenter avant la publication publique.",
+          "L’absence de base de données dans le site ne signifie pas l’absence de tout traitement : les courriels reçus et les journaux techniques de l’hébergeur sont aussi concernés. Vercel Inc. étant établie aux États-Unis, ces journaux peuvent être traités hors du Maroc, dans les conditions prévues par la loi n° 09-08 pour les transferts à l’étranger.",
         ],
       },
       {
@@ -112,7 +113,7 @@ export const legalPages: EditorialPage[] = [
         title: "Conservation et protection des échanges",
         body: [
           "Le principe retenu est de limiter les informations au besoin exprimé et de les conserver pendant la durée nécessaire au traitement et au suivi de la demande. Si l’échange aboutit à une mission, les informations nécessaires à cette relation relèvent de son cadre contractuel et des obligations applicables.",
-          "Les durées et règles de suppression des demandes sans suite, courriels, journaux et sauvegardes ne sont pas encore arrêtées pour le déploiement public. Elles doivent être définies avec les accès autorisés, les mesures de protection et les engagements des prestataires, puis reflétées dans cette page et les formalités applicables.",
+          "Les durées et règles de suppression des demandes sans suite, des courriels et des sauvegardes sont en cours de définition, avec les accès autorisés et les mesures de protection. Elles seront reflétées dans cette page et dans les formalités applicables.",
         ],
       },
       {
@@ -128,7 +129,7 @@ export const legalPages: EditorialPage[] = [
         id: "evolution",
         title: "Navigation et évolution du service",
         body: [
-          "La version de présentation n’intègre pas d’outil publicitaire ni de mesure d’audience. Ses ressources sont disponibles sans inscription. La page Cookies précise le périmètre technique de ce constat.",
+          "Le site n’intègre pas d’outil publicitaire ni de mesure d’audience. Ses ressources sont disponibles sans inscription. La page Cookies précise le périmètre technique de ce constat.",
           "L’ajout d’un formulaire serveur, de comptes clients, d’imports de fichiers ou de services tiers nécessitera une nouvelle information adaptée aux traitements réels. Les références CNDP correspondantes seront indiquées après accomplissement et vérification des démarches applicables.",
         ],
       },
@@ -139,21 +140,21 @@ export const legalPages: EditorialPage[] = [
     kicker: "Cookies et navigation",
     title: "Une présentation sans traceurs publicitaires.",
     description:
-      "Ce que fait la version actuelle dans votre navigateur et les vérifications prévues avant son déploiement public.",
+      "Ce que fait le site dans votre navigateur, et ce qu’il ne fait pas.",
     sections: [
       {
         id: "version",
-        title: "Un constat limité à la version locale",
+        title: "Ce que le site enregistre",
         body: [
-          `${revised} Cette information décrit le code de l’application locale. L’hébergement public n’étant pas encore défini, les éventuels cookies et journaux ajoutés par l’infrastructure devront être vérifiés avant publication.`,
-          "Aucun outil publicitaire ni outil de mesure d’audience n’est intégré à cette version. Ses images, polices et autres ressources visuelles sont servies avec le site.",
+          `${revised} Le code du site n’ajoute ni cookie publicitaire ni outil de mesure d’audience. Ses images, polices et autres ressources visuelles sont servies avec le site, sans appel à un service tiers.`,
+          "Votre choix entre la version claire et la version sombre est enregistré dans le stockage local de votre navigateur, sous la clé « sps-theme ». Il ne quitte pas votre appareil et vous pouvez l’effacer depuis les paramètres du navigateur. Les journaux techniques de l’hébergeur sont décrits dans la politique de confidentialité.",
         ],
       },
       {
         id: "fonctionnement",
         title: "Ce qui se passe dans votre navigateur",
         body: [
-          "Le code de cette version n’ajoute pas de cookie publicitaire ou analytique. Les ressources proposées peuvent être téléchargées sans créer de compte ni communiquer une adresse électronique.",
+          "Le code du site n’ajoute pas de cookie publicitaire ou analytique. Les ressources proposées peuvent être téléchargées sans créer de compte ni communiquer une adresse électronique.",
           "Les champs de contact servent à préparer un brouillon dans la page. La copie du message utilise votre presse-papiers à votre demande ; l’ouverture de la messagerie vous laisse décider de l’envoi. Ces actions ne constituent pas un outil de suivi publicitaire.",
         ],
       },
@@ -184,9 +185,9 @@ export const legalPages: EditorialPage[] = [
     sections: [
       {
         id: "version",
-        title: "Une présentation en cours de préparation",
+        title: "Le périmètre de ces conditions",
         body: [
-          `${revised} Ces conditions concernent la version locale du site ${company.brand}, porté par ${company.name}. Elles seront adaptées au périmètre effectivement publié et aux services disponibles.`,
+          `${revised} Ces conditions concernent le site ${company.brand}, porté par ${company.name}. Elles évoluent avec les services effectivement proposés.`,
           "La consultation ne crée pas de compte client, d’abonnement ou de commande. Les conditions d’une mission éventuelle sont définies dans les documents contractuels propres à cette mission.",
         ],
       },
@@ -202,8 +203,8 @@ export const legalPages: EditorialPage[] = [
         id: "demonstration",
         title: "Le statut de la démonstration",
         body: [
-          "La démonstration illustre un parcours de travail avec des données et des facteurs fictifs. Ses résultats ne doivent pas être utilisés pour un inventaire réel, une déclaration réglementaire, une communication environnementale ou une décision reposant sur des émissions vérifiées.",
-          "Les fonctionnalités annoncées comme prévues ou envisagées décrivent une trajectoire de développement. Elles ne constituent pas des services déjà disponibles. La démonstration ne doit pas recevoir de documents confidentiels ni de données réelles nécessitant un espace sécurisé.",
+          "La démonstration illustre un parcours de travail avec des données et des facteurs d’exemple. Ses résultats ne doivent pas être utilisés pour un inventaire réel, une déclaration réglementaire, une communication environnementale ou une décision reposant sur des émissions vérifiées.",
+          "La plateforme est en cours de déploiement : toutes les fonctionnalités présentées en démonstration ne sont pas encore des services ouverts. La démonstration ne doit pas recevoir de documents confidentiels ni de données réelles nécessitant un espace sécurisé.",
         ],
       },
       {

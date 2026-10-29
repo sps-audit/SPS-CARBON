@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Odometer } from "./odometer";
-import { useReducedMotion } from "./motion";
+import { Reading } from "./reading";
+import { useInView, useReducedMotion } from "./motion";
 
 /*
  * Before / with SPS-CARBON. Drag (or use the arrow keys) to wipe from the
@@ -27,44 +27,32 @@ export function BeforeAfter() {
   const reduced = useReducedMotion();
 
   // Reveal once in view, then sweep the divider to show it can move.
+  const seen = useInView(stage, "0px 0px -28% 0px");
   useEffect(() => {
-    const element = stage.current;
-    if (!element) return;
-    let frame = 0;
+    if (!seen) return;
+    setLive(true);
+    if (reduced || touched.current) return;
     let sweep = 0;
-    const check = () => {
-      frame = 0;
-      const rect = element.getBoundingClientRect();
-      if (rect.top < window.innerHeight * 0.72) {
-        setLive(true);
-        window.removeEventListener("scroll", schedule);
-        if (reduced || touched.current) return;
-        const keys = [50, 80, 22, 50];
-        const start = performance.now() + 500;
-        const step = 900;
-        const tick = (now: number) => {
-          if (touched.current) return;
-          const t = Math.max(0, now - start) / step;
-          const i = Math.min(Math.floor(t), keys.length - 2);
-          const f = Math.min(t - i, 1);
-          const e = f < 0.5 ? 4 * f * f * f : 1 - Math.pow(-2 * f + 2, 3) / 2;
-          setX(keys[i] + (keys[i + 1] - keys[i]) * e);
-          if (t < keys.length - 1) sweep = requestAnimationFrame(tick);
-        };
-        sweep = requestAnimationFrame(tick);
-      }
+    const keys = [50, 80, 22, 50];
+    const start = performance.now() + 500;
+    const step = 900;
+    // The sweep writes the divider position straight to the figure (no re-render
+    // per frame); React takes over again when it ends or when the visitor drags.
+    const figure = stage.current?.parentElement;
+    const tick = (now: number) => {
+      if (touched.current) return;
+      const t = Math.max(0, now - start) / step;
+      const i = Math.min(Math.floor(t), keys.length - 2);
+      const f = Math.min(t - i, 1);
+      const e = f < 0.5 ? 4 * f * f * f : 1 - Math.pow(-2 * f + 2, 3) / 2;
+      const value = keys[i] + (keys[i + 1] - keys[i]) * e;
+      figure?.style.setProperty("--x", `${value}%`);
+      if (t < keys.length - 1) sweep = requestAnimationFrame(tick);
+      else setX(value);
     };
-    const schedule = () => {
-      if (!frame) frame = requestAnimationFrame(check);
-    };
-    schedule();
-    window.addEventListener("scroll", schedule, { passive: true });
-    return () => {
-      cancelAnimationFrame(frame);
-      cancelAnimationFrame(sweep);
-      window.removeEventListener("scroll", schedule);
-    };
-  }, [reduced]);
+    sweep = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(sweep);
+  }, [seen, reduced]);
 
   function moveTo(clientX: number) {
     const rect = stage.current?.getBoundingClientRect();
@@ -81,6 +69,7 @@ export function BeforeAfter() {
     if (next === null) return;
     event.preventDefault();
     touched.current = true;
+    stage.current?.parentElement?.style.removeProperty("--x");
     setX(Math.min(97, Math.max(3, next)));
   }
 
@@ -94,6 +83,7 @@ export function BeforeAfter() {
         onPointerDown={(event) => {
           if (event.button !== 0) return;
           touched.current = true;
+          event.currentTarget.parentElement?.style.removeProperty("--x");
           dragging.current = true;
           event.currentTarget.setPointerCapture(event.pointerId);
           moveTo(event.clientX);
@@ -154,7 +144,7 @@ export function BeforeAfter() {
             <p className="ba-app-bar">
               <span className="ba-app-dot" />
               Atelier Atlas, bilan 2025
-              <em>Données fictives</em>
+              <em className="demo-chip">Données d’exemple</em>
             </p>
             <div className="ba-app-body">
               <ul className="ba-rows">
@@ -171,7 +161,7 @@ export function BeforeAfter() {
               <div className="ba-total">
                 <small>Émissions totales</small>
                 <p>
-                  <Odometer value={2910} delay={600} />
+                  <Reading value={2910} className="readout" />
                   <span>tCO₂e</span>
                 </p>
                 <div className="ba-bar">
@@ -226,7 +216,7 @@ export function BeforeAfter() {
       </div>
       <figcaption className="ba-caption">
         <span>Glissez pour comparer.</span> Les mêmes données : à gauche, dispersées dans des fichiers et des courriels ; à
-        droite, collectées, contrôlées et reliées à leurs sources dans SPS-CARBON. Illustration, données fictives.
+        droite, collectées, contrôlées et reliées à leurs sources dans SPS-CARBON. Illustration avec des données d’exemple.
       </figcaption>
     </figure>
   );

@@ -175,7 +175,7 @@ export function ContactForm() {
               );
             })}
           </fieldset>
-          <button className="btn btn-dark" type="submit">
+          <button className="btn" type="submit">
             Continuer
           </button>
         </form>
@@ -287,7 +287,7 @@ export function ContactForm() {
             d’envoyer le message. Consultez notre{" "}
             <Link href="/confidentialite">politique de confidentialité</Link>.
           </p>
-          <button className="btn btn-dark" type="submit">
+          <button className="btn" type="submit">
             Préparer mon message
           </button>
         </form>
@@ -315,7 +315,7 @@ export function ContactForm() {
             {body}
           </pre>
           <div className="draft-actions">
-            <a className="btn btn-dark" href={mailto}>
+            <a className="btn" href={mailto}>
               Ouvrir ma messagerie
             </a>
             <button className="link" type="button" onClick={copyMessage}>

@@ -175,7 +175,7 @@ export function FeatureTour() {
   }, []);
 
   return (
-    <div className="tour grid">
+    <div className="tour">
       <ol className="tour-steps">
         {modules.map((module, index) => (
           <li

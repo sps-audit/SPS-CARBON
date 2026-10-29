@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Focus } from "@/components/focus";
 import { OfferBuilder } from "@/components/offer-builder";
+import { PageHead } from "@/components/page-head";
 import { comparisonGroups, options, plans, priceDrivers, type Cell } from "@/lib/offers";
 import { shareMetadata } from "@/lib/share";
 
@@ -57,75 +59,65 @@ function Mark({ cell }: { cell: Cell }) {
   return <span className="pt-note">{cell}</span>;
 }
 
+function Head({ id, title, lead }: { id: string; title: string; lead: string }) {
+  return (
+    <div className="head is-split">
+      <Focus className="t-h2" id={id}>
+        {title}
+      </Focus>
+      <p className="t-lead" data-reveal="rise">
+        {lead}
+      </p>
+    </div>
+  );
+}
+
 export default function OffresPage() {
   return (
     <main id="main" className="page">
-      <header className="page-hero t-deep">
-        <div className="wrap page-hero-grid">
-          <div className="page-hero-copy">
-            <nav className="crumbs" aria-label="Fil d’Ariane">
-              <Link href="/">Accueil</Link>
-              <span aria-hidden="true">/</span>
-              <span aria-current="page">Offres</span>
-            </nav>
-            <h1 className="d-l page-title" data-reveal="mask">
-              Trouvez la formule qui vous convient.
-            </h1>
-            <p className="lead">
-              Trois formules, des options selon votre besoin, et une proposition chiffrée après un cadrage clair. Comparez, composez
-              votre périmètre, puis envoyez votre demande.
-            </p>
-          </div>
-          <div className="page-hero-visual" aria-hidden="true">
-            <div className="stack-motif">
-              {plans.map((plan, n) => (
-                <div key={plan.id} className={`stack-col s${n + 1}`} style={{ ["--i" as string]: n }}>
-                  {Array.from({ length: n + 2 }, (_, k) => (
-                    <i key={k} style={{ ["--k" as string]: k }} />
-                  ))}
-                  <span>{plan.scope}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+      <PageHead
+        crumb="Offres"
+        title="Trouvez la formule qui vous convient."
+        lead="Trois formules, des options selon votre besoin, et une proposition chiffrée après un cadrage clair. Comparez, composez votre périmètre, puis envoyez votre demande."
+        instrument="offres"
+      >
+        <div className="page-head-actions">
+          <Link className="btn" href="#composer">
+            Composer mon périmètre
+          </Link>
+          <Link className="link" href="#comparer">
+            Comparer les formules
+          </Link>
         </div>
-      </header>
+      </PageHead>
 
-      <section className="chapter t-dark" id="formules" aria-labelledby="plans-title">
+      <section className="chapter s-tint" id="formules" aria-labelledby="plans-title">
         <div className="wrap">
-          <div className="chapter-head">
-            <h2 id="plans-title" className="d-l" data-reveal="mask">
-              Trois formules.
-            </h2>
-            <p className="lead" data-reveal>
-              Chaque mission démarre par un cadrage. Le prix dépend de vos sites, de vos données et des livrables attendus.
-            </p>
-          </div>
-          <div className="offer-cards">
-            {plans.map((plan, n) => (
-              <article
-                key={plan.id}
-                className={`offer-card spot ${plan.featured ? "is-featured" : ""}`}
-                data-reveal="panel"
-                style={{ ["--i" as string]: n }}
-              >
+          <Head
+            id="plans-title"
+            title="Trois formules."
+            lead="Chaque mission démarre par un cadrage. Le prix dépend de vos sites, de vos données et des livrables attendus."
+          />
+          <div className="offer-cards" data-reveal="stagger">
+            {plans.map((plan) => (
+              <article key={plan.id} className={`offer-card spot ${plan.featured ? "is-featured" : ""}`}>
                 <div className="offer-top">
                   <span className="offer-scope">{plan.scope}</span>
                   {plan.badge && <span className="offer-badge">{plan.badge}</span>}
                 </div>
-                <h3>{plan.name}</h3>
+                <h3 className="t-h3">{plan.name}</h3>
                 <p className="offer-for">{plan.forWho}</p>
                 <p>{plan.text}</p>
-                <ul className="hex-list">
+                <ul className="check-list">
                   {plan.items.map((item) => (
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
                 <div className="offer-actions">
-                  <Link href={`/contact?sujet=${plan.subject}`} className={`btn btn-small ${plan.featured ? "btn-mint" : "btn-ghost"}`}>
+                  <Link href={`/contact?sujet=${plan.subject}`} className={`btn btn-small ${plan.featured ? "" : "btn-quiet"}`}>
                     Choisir cette formule
                   </Link>
-                  <Link href={plan.href} className="link link-light" aria-label={`En savoir plus : ${plan.name}`}>
+                  <Link href={plan.href} className="link" aria-label={`En savoir plus : ${plan.name}`}>
                     En savoir plus
                   </Link>
                 </div>
@@ -135,16 +127,13 @@ export default function OffresPage() {
         </div>
       </section>
 
-      <section className="chapter t-ice" id="comparer" aria-labelledby="compare-plans-title">
+      <section className="chapter" id="comparer" aria-labelledby="compare-plans-title">
         <div className="wrap">
-          <div className="chapter-head">
-            <h2 id="compare-plans-title" className="d-l" data-reveal="mask">
-              Comparer les formules.
-            </h2>
-            <p className="lead" data-reveal>
-              Ce que chaque formule mesure, la méthode appliquée, les documents que vous recevez et l’accompagnement prévu.
-            </p>
-          </div>
+          <Head
+            id="compare-plans-title"
+            title="Comparer les formules."
+            lead="Ce que chaque formule mesure, la méthode appliquée, les documents que vous recevez et l’accompagnement prévu."
+          />
           <div className="plan-table-wrap" data-reveal="rise">
             <table className="plan-table">
               <caption className="sr-only">Comparaison des trois formules SPS-CARBON</caption>
@@ -196,19 +185,12 @@ export default function OffresPage() {
         </div>
       </section>
 
-      <section className="chapter t-deep" id="options" aria-labelledby="options-title">
+      <section className="chapter s-tint" id="options" aria-labelledby="options-title">
         <div className="wrap">
-          <div className="chapter-head">
-            <h2 id="options-title" className="d-l" data-reveal="mask">
-              Des options selon votre besoin.
-            </h2>
-            <p className="lead" data-reveal>
-              À ajouter à n’importe quelle formule, au moment du cadrage ou plus tard.
-            </p>
-          </div>
-          <ul className="option-grid">
-            {options.map((option, n) => (
-              <li key={option.id} data-reveal="rule" style={{ ["--i" as string]: n }}>
+          <Head id="options-title" title="Des options selon votre besoin." lead="À ajouter à n’importe quelle formule, au moment du cadrage ou plus tard." />
+          <ul className="option-grid" data-reveal="stagger">
+            {options.map((option) => (
+              <li key={option.id}>
                 <h3>{option.name}</h3>
                 <p>{option.text}</p>
               </li>
@@ -217,62 +199,56 @@ export default function OffresPage() {
         </div>
       </section>
 
-      <section className="chapter t-dark" id="composer" aria-labelledby="builder-title">
+      <section className="chapter" id="composer" aria-labelledby="builder-title">
         <div className="wrap">
-          <div className="chapter-head">
-            <h2 id="builder-title" className="d-l" data-reveal="mask">
-              Composez votre périmètre.
-            </h2>
-            <p className="lead" data-reveal>
-              Trois questions, quelques options : la formule adaptée s’affiche, avec une demande déjà rédigée pour notre équipe.
-            </p>
-          </div>
+          <Head
+            id="builder-title"
+            title="Composez votre périmètre."
+            lead="Trois questions, quelques options : la formule adaptée s’affiche, avec une demande déjà rédigée pour notre équipe."
+          />
           <div data-reveal="rise">
             <OfferBuilder />
           </div>
         </div>
       </section>
 
-      <section className="chapter t-ice" id="prix" aria-labelledby="price-title">
-        <div className="wrap grid price-layout">
-          <div className="price-head">
-            <h2 id="price-title" className="d-l" data-reveal="mask">
+      <section className="chapter s-tint" id="prix" aria-labelledby="price-title">
+        <div className="wrap trust-grid">
+          <div className="head">
+            <Focus className="t-h2" id="price-title">
               Comment est fixé le prix.
-            </h2>
-            <p className="lead" data-reveal>
+            </Focus>
+            <p className="t-lead" data-reveal="rise">
               Quatre éléments déterminent la proposition. Vous la recevez après le cadrage, détaillée ligne par ligne. Aucun
               abonnement n’est vendu sur ce site.
             </p>
           </div>
-          <ol className="price-drivers">
-            {priceDrivers.map((driver, n) => (
-              <li key={driver.title} data-reveal="rule" style={{ ["--i" as string]: n }}>
-                <span className="price-n" aria-hidden="true">
-                  {n + 1}
-                </span>
-                <h3>{driver.title}</h3>
-                <p>{driver.text}</p>
-              </li>
+          <dl className="spec" data-reveal="stagger">
+            {priceDrivers.map((driver) => (
+              <div key={driver.title}>
+                <dt>{driver.title}</dt>
+                <dd>{driver.text}</dd>
+              </div>
             ))}
-          </ol>
+          </dl>
         </div>
       </section>
 
-      <section className="chapter t-ice faq-chapter" aria-labelledby="offres-faq-title">
-        <div className="wrap grid">
+      <section className="chapter faq-chapter" aria-labelledby="offres-faq-title">
+        <div className="wrap faq-grid">
           <div className="faq-side">
-            <h2 id="offres-faq-title" className="d-l faq-title" data-reveal="mask">
+            <Focus className="t-h2" id="offres-faq-title">
               Questions sur les offres.
-            </h2>
-            <div className="faq-ask" data-reveal="panel">
+            </Focus>
+            <div className="faq-ask" data-reveal="rise">
               <p className="faq-ask-title">Un besoin particulier ?</p>
               <p>Plusieurs filiales, un appel d’offres, une échéance proche : décrivez-le, nous adaptons le cadrage.</p>
-              <Link href="/contact" className="btn btn-dark btn-small">
+              <Link href="/contact" className="btn btn-small">
                 Décrire mon besoin
               </Link>
             </div>
           </div>
-          <div className="faq" data-reveal>
+          <div className="faq" data-reveal="rise">
             {faq.map((item) => (
               <details key={item.q}>
                 <summary>{item.q}</summary>

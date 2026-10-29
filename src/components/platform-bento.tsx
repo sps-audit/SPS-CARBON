@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { Reading } from "./reading";
 
 /*
  * Home: the platform as one screen of live modules. Each module answers a
@@ -21,8 +22,6 @@ const ALERTS = [
   { title: "Hausse inhabituelle", text: "Électricité de juillet +38 %" },
 ];
 
-const nf = new Intl.NumberFormat("fr-FR");
-
 export function PlatformBento() {
   const [scenario, setScenario] = useState(1);
   const [fixed, setFixed] = useState([false, false, true]);
@@ -35,8 +34,8 @@ export function PlatformBento() {
   const open = fixed.filter((f) => !f).length;
 
   return (
-    <div className="bento" data-reveal="rise">
-      <article className="bento-tile spot bt-trajectory glass">
+    <div className="bento" data-reveal="stagger">
+      <article className="bento-tile spot bt-trajectory">
         <div className="bt-head">
           <h3>Où allons-nous d’ici 2030 ?</h3>
           <div className="seg" role="group" aria-label="Scénario">
@@ -59,9 +58,9 @@ export function PlatformBento() {
           <path className="bt-line" d={d} />
         </svg>
         <div className="bt-foot">
-          <p className="bt-figure" aria-live="polite">
-            <strong>{nf.format(Math.round(value(5)))}</strong>
-            <span>tCO₂e en 2030</span>
+          <p className="bt-figure readout" aria-live="polite">
+            <Reading value={Math.round(value(5))} from={BASE} />
+            <small>tCO₂e en 2030</small>
           </p>
           <p className="bt-note">{s.note}</p>
         </div>
@@ -70,14 +69,17 @@ export function PlatformBento() {
         </Link>
       </article>
 
-      <article className="bento-tile spot bt-collect glass">
+      <article className="bento-tile spot bt-collect">
         <div className="bt-ring" aria-hidden="true">
           <svg viewBox="0 0 170 170">
             <circle cx="85" cy="85" r="70" className="ring-track" />
             <circle cx="85" cy="85" r="70" className="ring-fill" transform="rotate(-90 85 85)" />
           </svg>
           <p>
-            <strong>62 %</strong>
+            <strong className="readout">
+              <Reading value={62} />
+              <small>%</small>
+            </strong>
             <span>des données reçues</span>
           </p>
         </div>
@@ -101,7 +103,7 @@ export function PlatformBento() {
         </div>
       </article>
 
-      <article className="bento-tile spot bt-quality glass">
+      <article className="bento-tile spot bt-quality">
         <h3>Peut-on se fier aux chiffres ?</h3>
         <p className="bt-sub" aria-live="polite">
           {open === 0
@@ -131,7 +133,7 @@ export function PlatformBento() {
         </Link>
       </article>
 
-      <article className="bento-tile spot bt-scopes glass">
+      <article className="bento-tile spot bt-scopes">
         <h3>D’où viennent nos émissions ?</h3>
         <ul className="bt-bars">
           {[
@@ -157,9 +159,9 @@ export function PlatformBento() {
       <article className="bento-tile spot bt-macf">
         <h3>Que transmettre au client européen ?</h3>
         <p className="bt-macf-name">Fiche produit MACF, acier laminé</p>
-        <p className="bt-figure">
-          <strong>1,62</strong>
-          <span>tCO₂e par tonne, exemple</span>
+        <p className="bt-figure readout">
+          <Reading value={1.62} decimals={2} />
+          <small>tCO₂e par tonne, exemple</small>
         </p>
         <p className="bt-chips">
           <span>PDF</span>
@@ -171,7 +173,7 @@ export function PlatformBento() {
         </Link>
       </article>
 
-      <article className="bento-tile spot bt-trace glass">
+      <article className="bento-tile spot bt-trace">
         <h3>Chaque tonne remonte à sa facture.</h3>
         <ol className="bt-chain" aria-label="Exemple de calcul tracé">
           <li>

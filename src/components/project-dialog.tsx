@@ -121,12 +121,8 @@ export function ProjectDialog({
       }}
     >
       <div className="dialog-top">
-        <img
-          src="/brand/logo-dark.svg"
-          width="170"
-          height="27"
-          alt="SPS CARBON"
-        />
+        <img className="logo-on-light" src="/brand/logo-dark.svg" width="170" height="27" alt="SPS CARBON" />
+        <img className="logo-on-dark" src="/brand/logo-light.svg" width="170" height="27" alt="" aria-hidden="true" />
         <button className="icon-button" onClick={onClose} aria-label="Fermer">
           <Icon name="close" />
         </button>
@@ -174,10 +170,10 @@ export function ProjectDialog({
               ))}
             </fieldset>
             <button
-              className="button button-dark dialog-next"
+              className="btn dialog-next"
               onClick={() => setStep(2)}
             >
-              Voir ma checklist <Icon name="arrow" />
+              Voir ma checklist
             </button>
             <small className="dialog-privacy">
               Ces informations restent dans cette page. Aucun envoi, aucune
@@ -210,7 +206,7 @@ export function ProjectDialog({
               entreprise. Elle ne constitue pas un inventaire complet.
             </p>
             <button
-              className="button button-dark dialog-next"
+              className="btn dialog-next"
               onClick={download}
             >
               <Icon name="download" /> Télécharger ma checklist
@@ -218,10 +214,10 @@ export function ProjectDialog({
             <p className="download-status" role="status">
               {downloaded
                 ? "Votre checklist a été préparée pour téléchargement."
-                : "Format texte · facile à partager avec votre équipe"}
+                : "Un fichier texte, facile à partager avec votre équipe"}
             </p>
             <button
-              className="text-button"
+              className="link link-quiet"
               onClick={() => {
                 setStep(1);
                 setDownloaded(false);

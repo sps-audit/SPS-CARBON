@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { PageMotif } from "@/components/motifs";
+import { Focus } from "@/components/focus";
+import { PageHead } from "@/components/page-head";
 import { NormsExplorer } from "@/components/norms-explorer";
 import { RegTimeline } from "@/components/reg-timeline";
 import { shareMetadata } from "@/lib/share";
@@ -26,88 +27,80 @@ const commitments = [
   },
 ];
 
+function Head({ id, title, lead }: { id: string; title: string; lead: string }) {
+  return (
+    <div className="head is-split">
+      <Focus className="t-h2" id={id}>
+        {title}
+      </Focus>
+      <p className="t-lead" data-reveal="rise">
+        {lead}
+      </p>
+    </div>
+  );
+}
+
 export default function NormesPage() {
   return (
     <main id="main" className="page">
-      <header className="page-hero t-deep">
-        <div className="wrap page-hero-grid">
-          <div className="page-hero-copy">
-            <nav className="crumbs" aria-label="Fil d’Ariane">
-              <Link href="/">Accueil</Link>
-              <span aria-hidden="true">/</span>
-              <span aria-current="page">Normes carbone</span>
-            </nav>
-            <h1 className="d-l page-title" data-reveal="mask">
-              Les normes carbone, expliquées simplement.
-            </h1>
-            <p className="lead">
-              GHG Protocol, ISO 14064, ISO 14067, MACF, CSRD… Quelle norme sert à quoi, laquelle vous concerne, et ce que
-              SPS-CARBON fait avec chacune.
-            </p>
-          </div>
-          <div className="page-hero-visual" aria-hidden="true">
-            <PageMotif name="perimetres" />
-          </div>
-        </div>
-      </header>
+      <PageHead
+        crumb="Normes carbone"
+        title="Les normes carbone, expliquées simplement."
+        lead="GHG Protocol, ISO 14064, ISO 14067, MACF, CSRD… Quelle norme sert à quoi, laquelle vous concerne, et ce que SPS-CARBON fait avec chacune."
+        instrument="normes"
+      />
 
-      <section className="chapter t-dark" id="carte" aria-labelledby="norms-title">
+      <section className="chapter s-tint" id="carte" aria-labelledby="norms-title">
         <div className="wrap">
-          <div className="chapter-head">
-            <h2 id="norms-title" className="d-l" data-reveal="mask">
-              Quelle norme pour quelle question ?
-            </h2>
-            <p className="lead" data-reveal>
-              Choisissez votre situation : les normes qui vous concernent ressortent. Sélectionnez une norme pour l’essentiel en
-              trois points.
-            </p>
+          <Head
+            id="norms-title"
+            title="Quelle norme pour quelle question ?"
+            lead="Choisissez votre situation : les normes qui vous concernent ressortent. Sélectionnez une norme pour l’essentiel en trois points."
+          />
+          <div data-reveal="rise">
+            <NormsExplorer />
           </div>
-          <NormsExplorer />
         </div>
       </section>
 
-      <section className="chapter t-deep" id="echeances" aria-labelledby="timeline-title">
+      <section className="chapter" id="echeances" aria-labelledby="timeline-title">
         <div className="wrap">
-          <div className="chapter-head">
-            <h2 id="timeline-title" className="d-l" data-reveal="mask">
-              Les échéances à retenir.
-            </h2>
-            <p className="lead" data-reveal>
-              Le reporting ESG au Maroc et le MACF en Europe avancent en parallèle. Voici où nous en sommes, et ce qui arrive.
-            </p>
-          </div>
+          <Head
+            id="timeline-title"
+            title="Les échéances à retenir."
+            lead="Le reporting ESG au Maroc et le MACF en Europe avancent en parallèle. Voici où nous en sommes, et ce qui arrive."
+          />
           <RegTimeline />
         </div>
       </section>
 
-      <section className="chapter t-ice" id="engagement" aria-labelledby="commit-title">
-        <div className="wrap">
-          <div className="chapter-head">
-            <h2 id="commit-title" className="d-l" data-reveal="mask">
+      <section className="chapter s-tint" id="engagement" aria-labelledby="commit-title">
+        <div className="wrap trust-grid">
+          <div className="head">
+            <Focus className="t-h2" id="commit-title">
               Des chiffres conformes, et honnêtes.
-            </h2>
-            <p className="lead" data-reveal>
+            </Focus>
+            <p className="t-lead" data-reveal="rise">
               Une norme n’a de valeur que si son application est rigoureuse et expliquée. Voici ce que nous nous imposons.
             </p>
           </div>
-          <ol className="norm-commit">
-            {commitments.map((item, n) => (
-              <li key={item.title} data-reveal="rule" style={{ ["--i" as string]: n }}>
-                <span className="norm-commit-n" aria-hidden="true">
-                  {n + 1}
-                </span>
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
-              </li>
+          <dl className="spec" data-reveal="stagger">
+            {commitments.map((item) => (
+              <div key={item.title}>
+                <dt>{item.title}</dt>
+                <dd>{item.text}</dd>
+              </div>
             ))}
-          </ol>
-          <div className="norm-cta" data-reveal>
+          </dl>
+        </div>
+        <div className="wrap">
+          <div className="norm-cta" data-reveal="rise">
             <div>
               <p className="norm-cta-title">Une norme vous est demandée ?</p>
               <p>Dites-nous laquelle et par qui : nous vous aidons à définir le bon périmètre.</p>
             </div>
             <div className="norm-cta-actions">
-              <Link className="btn btn-dark" href="/contact">
+              <Link className="btn" href="/contact">
                 Parlons de votre projet
               </Link>
               <Link className="link" href="/outils#diagnostic">

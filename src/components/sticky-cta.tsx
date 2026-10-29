@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { onScrollFrame, requestScrollFrame } from "./scroll-store";
 
 /*
  * Phones only (see CSS): once the visitor is past the first screen, the two
@@ -12,23 +13,26 @@ export function StickyCta({ pathname, hidden }: { pathname: string; hidden: bool
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    let frame = 0;
-    const check = () => {
-      frame = 0;
+    let footerTop = Infinity;
+    let last: boolean | null = null;
+    const geometry = () => {
       const footer = document.querySelector(".site-footer");
-      const footerIn = footer ? footer.getBoundingClientRect().top < window.innerHeight : false;
-      setShow(window.scrollY > window.innerHeight * 0.8 && !footerIn);
+      footerTop = footer ? footer.getBoundingClientRect().top + window.scrollY : Infinity;
+      requestScrollFrame();
     };
-    const schedule = () => {
-      if (!frame) frame = requestAnimationFrame(check);
-    };
-    check();
-    window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule);
+    const stop = onScrollFrame((y, vh) => {
+      const next = y > vh * 0.8 && y + vh < footerTop;
+      if (next !== last) {
+        last = next;
+        setShow(next);
+      }
+    });
+    geometry();
+    const sizes = new ResizeObserver(geometry);
+    sizes.observe(document.body);
     return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", schedule);
+      stop();
+      sizes.disconnect();
     };
   }, [pathname]);
 
@@ -40,7 +44,7 @@ export function StickyCta({ pathname, hidden }: { pathname: string; hidden: bool
       <Link href="/outils" className="sticky-cta-alt">
         Outils gratuits
       </Link>
-      <Link href="/contact" className="btn btn-mint btn-small">
+      <Link href="/contact" className="btn btn-signal btn-small">
         Parlons de votre projet
       </Link>
     </div>

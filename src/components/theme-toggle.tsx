@@ -4,9 +4,10 @@ import { useEffect, useSyncExternalStore, type MouseEvent } from "react";
 import { DEFAULT_THEME, THEME_COLORS, THEME_KEY, type Theme } from "@/lib/theme";
 
 /*
- * Switch between the light version (default) and the dark one. The new version spreads from
- * the button as a hexagon (the shape of the SPS-CARBON ring) where the browser
- * supports view transitions; otherwise, or with reduced motion, it switches at once.
+ * Switch between the light version (default) and the dark one. Where the
+ * browser supports view transitions, the new version sweeps across the page
+ * along the diagonal of the SPS-CARBON symbol, starting at the switch;
+ * otherwise, or with reduced motion, it changes at once.
  */
 
 function current(): Theme {
@@ -32,9 +33,16 @@ function subscribe(onChange: () => void) {
   };
 }
 
-function hexagon(x: number, y: number, r: number) {
-  const w = r * 0.866;
-  return `polygon(${x}px ${y - r}px, ${x + w}px ${y - r / 2}px, ${x + w}px ${y + r / 2}px, ${x}px ${y + r}px, ${x - w}px ${y + r / 2}px, ${x - w}px ${y - r / 2}px)`;
+// The new version is revealed behind a line on the brand diagonal (the 30° of the
+// symbol's cuts) that sweeps from the switch across the whole page.
+const U = [0.866, 0.5]; // along the diagonal
+const N = [-0.5, 0.866]; // perpendicular, towards the far side of the page
+function halfPlane(px: number, py: number, offset: number) {
+  const big = 6000;
+  const lx = px + N[0] * offset;
+  const ly = py + N[1] * offset;
+  const pt = (a: number, b: number) => `${(lx + U[0] * a - N[0] * b).toFixed(1)}px ${(ly + U[1] * a - N[1] * b).toFixed(1)}px`;
+  return `polygon(${pt(big, 0)}, ${pt(-big, 0)}, ${pt(-big, big)}, ${pt(big, big)})`;
 }
 
 type TransitionDocument = Document & { startViewTransition?: (update: () => void) => { ready: Promise<void> } };
@@ -64,14 +72,20 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
     const box = event.currentTarget.getBoundingClientRect();
     const x = box.left + box.width / 2;
     const y = box.top + box.height / 2;
-    // Large enough for the hexagon's inner circle to reach the farthest corner.
-    const reach = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y)) / 0.866 + 8;
+    const corners = [
+      [0, 0],
+      [window.innerWidth, 0],
+      [0, window.innerHeight],
+      [window.innerWidth, window.innerHeight],
+    ].map(([cx, cy]) => N[0] * (cx - x) + N[1] * (cy - y));
+    const from = Math.min(...corners) - 8;
+    const to = Math.max(...corners) + 8;
     const transition = doc.startViewTransition(() => apply(next));
     transition.ready
       .then(() => {
         document.documentElement.animate(
-          { clipPath: [hexagon(x, y, 0), hexagon(x, y, reach)] },
-          { duration: 760, easing: "cubic-bezier(0.77, 0, 0.18, 1)", pseudoElement: "::view-transition-new(root)" },
+          { clipPath: [halfPlane(x, y, from), halfPlane(x, y, to)] },
+          { duration: 820, easing: "cubic-bezier(0.7, 0, 0.2, 1)", pseudoElement: "::view-transition-new(root)" },
         );
       })
       .catch(() => {});

@@ -2,7 +2,6 @@
 
 import { useState, type KeyboardEvent } from "react";
 import Link from "next/link";
-import { hexPoints } from "@/lib/geometry";
 
 type Source = { label: string; scope: 1 | 2 | 3 };
 
@@ -84,25 +83,20 @@ const sectors: {
   },
 ];
 
-const radii = { 1: 58, 2: 116, 3: 176 } as const;
-const slots: Record<1 | 2 | 3, number[]> = {
-  1: [-150, 30, 150],
-  2: [-30, 150],
-  3: [-90, 30, 90, -150, 150, -30],
-};
+const lanes = [
+  { scope: 1 as const, name: "Scope 1", note: "Vos opérations : ce que vous brûlez, fuyez ou transformez" },
+  { scope: 2 as const, name: "Scope 2", note: "Votre énergie : ce que vous achetez pour fonctionner" },
+  { scope: 3 as const, name: "Scope 3", note: "Votre chaîne de valeur : fournisseurs, transport, produits" },
+];
 
-function position(scope: 1 | 2 | 3, index: number) {
-  const angle = (slots[scope][index % slots[scope].length] * Math.PI) / 180;
-  const r = radii[scope];
-  return { x: 200 + r * Math.cos(angle), y: 200 + r * Math.sin(angle) };
-}
-
+/*
+ * Sectors: choose an activity, read where its emissions usually come from.
+ * The sources are laid out on three scope lanes (operations, energy, value
+ * chain) so the picture is also the list. Tabs follow the ARIA tabs pattern.
+ */
 export function SectorExplorer() {
   const [active, setActive] = useState(0);
-  const [hover, setHover] = useState<string | null>(null);
   const sector = sectors[active];
-  const count = { 1: 0, 2: 0, 3: 0 };
-  const placed = sector.sources.map((source) => ({ ...source, ...position(source.scope, count[source.scope]++) }));
 
   function onKey(event: KeyboardEvent<HTMLButtonElement>) {
     if (!["ArrowRight", "ArrowLeft", "Home", "End"].includes(event.key)) return;
@@ -116,11 +110,12 @@ export function SectorExplorer() {
 
   return (
     <div className="sectors">
-      <div className="sector-tabs" role="tablist" aria-label="Secteurs d’activité">
+      <div className="seg sector-tabs" role="tablist" aria-label="Secteurs d’activité">
         {sectors.map((item, index) => (
           <button
             key={item.name}
             id={`sector-tab-${index}`}
+            type="button"
             role="tab"
             aria-selected={active === index}
             aria-controls="sector-panel"
@@ -132,60 +127,10 @@ export function SectorExplorer() {
           </button>
         ))}
       </div>
-      <div className="sector-panel grid" id="sector-panel" role="tabpanel" aria-labelledby={`sector-tab-${active}`}>
-        <div className="sector-map" aria-hidden="true">
-          <svg viewBox="0 0 400 400">
-            {[3, 2, 1].map((scope) => (
-              <polygon key={scope} className="sector-ring" points={hexPoints(200, 200, radii[scope as 1 | 2 | 3])} />
-            ))}
-            <circle cx="200" cy="200" r="7" className="sector-core" />
-            <g key={active}>
-              {placed.map((source, index) => (
-                <g
-                  key={source.label}
-                  className={`sector-node scope-${source.scope} ${hover === source.label ? "is-hover" : ""}`}
-                  style={{ animationDelay: `${index * 70}ms` }}
-                >
-                  <circle cx={source.x} cy={source.y} r="19" className="node-halo" />
-                  <circle cx={source.x} cy={source.y} r="12" />
-                  <text x={source.x} y={source.y + 4.5} className="node-n">
-                    {index + 1}
-                  </text>
-                </g>
-              ))}
-            </g>
-          </svg>
-          <span className="map-key k1">Scope 1</span>
-          <span className="map-key k2">Scope 2</span>
-          <span className="map-key k3">Scope 3</span>
-        </div>
-        <div className="sector-copy" key={active}>
-          <h3>{sector.heading}</h3>
+      <div className="sector-panel" id="sector-panel" role="tabpanel" aria-labelledby={`sector-tab-${active}`}>
+        <div className="sector-copy" key={`copy-${active}`}>
+          <h3 className="t-h3">{sector.heading}</h3>
           <p>{sector.text}</p>
-          <div className="sector-groups">
-            {([1, 2, 3] as const).map((scope) => (
-              <div key={scope}>
-                <h4>Scope {scope}</h4>
-                <ul>
-                  {sector.sources
-                    .map((source, index) => ({ ...source, n: index + 1 }))
-                    .filter((source) => source.scope === scope)
-                    .map((source) => (
-                      <li
-                        key={source.label}
-                        onMouseEnter={() => setHover(source.label)}
-                        onMouseLeave={() => setHover(null)}
-                      >
-                        <span className="node-badge" aria-hidden="true">
-                          {source.n}
-                        </span>
-                        {source.label}
-                      </li>
-                    ))}
-                </ul>
-              </div>
-            ))}
-          </div>
           <p className="sector-question">
             <span>Première question à se poser</span>
             {sector.question}
@@ -193,6 +138,26 @@ export function SectorExplorer() {
           <Link href="/contact" className="link">
             Définir mon périmètre avec vous
           </Link>
+        </div>
+        <div className="sector-lanes spot" key={`lanes-${active}`}>
+          {lanes.map((lane) => {
+            const items = sector.sources.filter((source) => source.scope === lane.scope);
+            return (
+              <div className={`sector-lane is-s${lane.scope}`} key={lane.scope}>
+                <p className="sector-lane-head">
+                  <strong>{lane.name}</strong>
+                  <span>{lane.note}</span>
+                </p>
+                <ul>
+                  {items.map((source, index) => (
+                    <li key={source.label} style={{ ["--i" as string]: index }}>
+                      {source.label}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

@@ -1,17 +1,29 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo } from "next/font/google";
-import "./sps.css";
+import localFont from "next/font/local";
+import "./styles/tokens.css";
+import "./styles/base.css";
+import "./styles/controls.css";
+import "./styles/chrome.css";
+import "./styles/sections.css";
+import "./styles/home.css";
+import "./styles/pages.css";
+import "./styles/product.css";
+import "./styles/tools.css";
+import "./styles/contact.css";
+import "./styles/motion.css";
 import { SiteFrame } from "@/components/site-frame";
 import { publicOrigin, shareMetadata } from "@/lib/share";
 import { THEME_BOOT, THEME_COLORS } from "@/lib/theme";
 
-// Archivo: an industrial grotesque with a width axis. Wide cuts for headlines,
-// normal width for reading. Downloaded at build time and self-hosted by Next.js.
-const archivo = Archivo({
-  subsets: ["latin", "latin-ext"],
-  axes: ["wdth"],
-  variable: "--font-archivo",
+// Mona Sans (SIL Open Font License 1.1, github.com/github/mona-sans), one
+// variable file with optical size, width and weight axes, subset to Latin and
+// French. Self-hosted: no request to a third party, no build-time download.
+const mona = localFont({
+  src: [{ path: "./fonts/MonaSans-VF.woff2", weight: "200 900", style: "normal" }],
+  variable: "--font-mona",
   display: "swap",
+  preload: true,
+  declarations: [{ prop: "font-stretch", value: "75% 125%" }],
 });
 
 export const metadata: Metadata = {
@@ -35,7 +47,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="fr" className={archivo.variable} data-theme="light" suppressHydrationWarning>
+    <html lang="fr" className={mona.variable} data-theme="light" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_BOOT }} />
       </head>

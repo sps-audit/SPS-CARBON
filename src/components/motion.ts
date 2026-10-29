@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, type RefObject } from "react";
+import { onScrollFrame, requestScrollFrame } from "./scroll-store";
 
 /** matchMedia change listener with a fallback for older Safari (addListener). */
 export function onMediaChange(media: MediaQueryList, handler: () => void) {
@@ -66,32 +67,27 @@ export function useScrollProgress<T extends HTMLElement>(
     const element = ref.current;
     if (!element) return;
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let frame = 0;
-    const measure = () => {
-      frame = 0;
+    let top = 0;
+    // Cached document position: scrolling compares it with scrollY, no layout read.
+    const geometry = () => {
+      top = element.getBoundingClientRect().top + window.scrollY;
+      requestScrollFrame();
+    };
+    const stop = onScrollFrame((y, vh) => {
       if (media.matches) {
         element.style.setProperty("--p", "1");
         return;
       }
-      const rect = element.getBoundingClientRect();
-      const vh = window.innerHeight || 1;
-      const value = (vh * start - rect.top) / (vh * (start - end));
-      element.style.setProperty(
-        "--p",
-        Math.min(1, Math.max(0, value)).toFixed(4),
-      );
-    };
-    const schedule = () => {
-      if (!frame) frame = requestAnimationFrame(measure);
-    };
-    measure();
-    window.addEventListener("scroll", schedule, { passive: true });
-    window.addEventListener("resize", schedule);
-    const stopMedia = onMediaChange(media, schedule);
+      const value = (vh * start - (top - y)) / (vh * (start - end));
+      element.style.setProperty("--p", Math.min(1, Math.max(0, value)).toFixed(4));
+    });
+    geometry();
+    const sizes = new ResizeObserver(geometry);
+    sizes.observe(document.body);
+    const stopMedia = onMediaChange(media, requestScrollFrame);
     return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", schedule);
-      window.removeEventListener("resize", schedule);
+      stop();
+      sizes.disconnect();
       stopMedia();
     };
   }, [ref, start, end]);

@@ -1,0 +1,166 @@
+/*
+ * SPS-CARBON v7 "Instrument de précision" — design tokens.
+ * Brand palette (public/brand/brand-guidelines.md): Petrol #071F27,
+ * Viridian #29C792, Ice #F3F8F7, Amber #DFB77A. Light is the default
+ * version; html[data-theme="dark"] swaps the semantic tokens.
+ */
+
+@layer tokens, base, layout, controls, chrome, sections, components, motion, utilities;
+
+@layer tokens {
+  :root {
+    /* Brand inks: fixed, never themed */
+    --petrol: #071f27;
+    --petrol-2: #0b2a33;
+    --petrol-3: #11353f;
+    --viridian: #29c792;
+    --viridian-deep: #0a7a57;
+    --ice: #f3f8f7;
+    --amber: #dfb77a;
+    --amber-deep: #8a5a14;
+
+    /* Semantic: light version */
+    --paper: #f3f8f7;
+    --paper-2: #e8f0ee;
+    --surface: #ffffff;
+    --surface-2: #f7fbfa;
+    --ink: #071f27;
+    --ink-2: #344c54;
+    --ink-3: #5a7178;
+    --line: rgba(7, 31, 39, 0.11);
+    --line-2: rgba(7, 31, 39, 0.2);
+    --line-3: rgba(7, 31, 39, 0.34);
+    --signal: #0a7a57; /* viridian for text and strokes on light */
+    --signal-fill: #29c792; /* viridian for fills */
+    --signal-soft: rgba(41, 199, 146, 0.14);
+    --signal-ink: #071f27; /* text placed on a viridian fill */
+    --check: #8a5a14; /* amber text on light */
+    --check-fill: #dfb77a;
+    --check-soft: rgba(223, 183, 122, 0.24);
+    --estimate: #557886;
+    --danger: #a3352b;
+    --focus: #0a7a57;
+
+    /* Instrument glass */
+    --glass: rgba(255, 255, 255, 0.72);
+    --glass-strong: rgba(255, 255, 255, 0.9);
+    --glass-rim: rgba(255, 255, 255, 0.85);
+    --glass-edge: rgba(7, 31, 39, 0.09);
+    --glass-lit: inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    --shadow-1: 0 1px 2px rgba(7, 31, 39, 0.05), 0 2px 8px -4px rgba(7, 31, 39, 0.08);
+    --shadow-2: 0 1px 2px rgba(7, 31, 39, 0.04), 0 16px 32px -18px rgba(7, 31, 39, 0.22);
+    --shadow-3: 0 2px 4px rgba(7, 31, 39, 0.04), 0 28px 60px -30px rgba(7, 31, 39, 0.32), 0 60px 120px -60px rgba(7, 31, 39, 0.28);
+    --blur: blur(18px) saturate(1.5);
+
+    /* Night chapters (petrol, in both versions) */
+    --night: #071f27;
+    --night-2: #0b2a33;
+    --night-ink: #edf5f3;
+    --night-ink-2: #a6bcb8;
+    --night-ink-3: #7d9793;
+    --night-line: rgba(237, 245, 243, 0.12);
+    --night-line-2: rgba(237, 245, 243, 0.22);
+    --night-glass: rgba(20, 52, 61, 0.62);
+
+    /* Type */
+    --font: var(--font-mona), "Mona Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+    --t-display: clamp(2.75rem, 1.5rem + 4.4vw, 5.35rem);
+    --t-h1: clamp(2.5rem, 1.5rem + 3.6vw, 4.75rem);
+    --t-h2: clamp(2.1rem, 1.35rem + 2.7vw, 3.9rem);
+    --t-h3: clamp(1.25rem, 1.08rem + 0.55vw, 1.6rem);
+    --t-lead: clamp(1.12rem, 1.03rem + 0.32vw, 1.33rem);
+    --t-body: 1.0625rem;
+    --t-small: 0.9375rem;
+    --t-meta: 0.8125rem;
+
+    /* Space and shape */
+    --gutter: clamp(1.25rem, 4.2vw, 4.5rem);
+    --max: 1320px;
+    --col-gap: clamp(1rem, 2.2vw, 2rem);
+    --section: clamp(5rem, 3rem + 7vw, 10rem);
+    --section-s: clamp(3.5rem, 2.4rem + 4vw, 6.5rem);
+    --r-xs: 6px;
+    --r-s: 10px;
+    --r-m: 14px;
+    --r-l: 20px;
+    --r-xl: 28px;
+    --header: 84px;
+
+    /* Motion */
+    --ease: cubic-bezier(0.2, 0.75, 0.25, 1);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-io: cubic-bezier(0.7, 0, 0.2, 1);
+    --d-1: 140ms;
+    --d-2: 260ms;
+    --d-3: 520ms;
+    --d-4: 900ms;
+
+    color-scheme: light;
+  }
+
+  html[data-theme="dark"] {
+    --paper: #061a20;
+    --paper-2: #08222a;
+    --surface: #0c2a32;
+    --surface-2: #0a252c;
+    --ink: #edf5f3;
+    --ink-2: #b2c6c2;
+    --ink-3: #85a09b;
+    --line: rgba(237, 245, 243, 0.11);
+    --line-2: rgba(237, 245, 243, 0.2);
+    --line-3: rgba(237, 245, 243, 0.34);
+    --signal: #3cd6a1;
+    --signal-fill: #29c792;
+    --signal-soft: rgba(41, 199, 146, 0.16);
+    --signal-ink: #071f27;
+    --check: #e8c58f;
+    --check-fill: #dfb77a;
+    --check-soft: rgba(223, 183, 122, 0.18);
+    --estimate: #8fb0bb;
+    --danger: #f08a7e;
+    --focus: #3cd6a1;
+
+    --glass: rgba(16, 46, 54, 0.66);
+    --glass-strong: rgba(18, 50, 59, 0.92);
+    --glass-rim: rgba(237, 245, 243, 0.14);
+    --glass-edge: rgba(0, 0, 0, 0.35);
+    --glass-lit: inset 0 1px 0 rgba(237, 245, 243, 0.12);
+    --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-2: 0 1px 2px rgba(0, 0, 0, 0.3), 0 18px 36px -18px rgba(0, 0, 0, 0.6);
+    --shadow-3: 0 2px 4px rgba(0, 0, 0, 0.3), 0 30px 64px -30px rgba(0, 0, 0, 0.7), 0 60px 120px -60px rgba(0, 0, 0, 0.6);
+
+    --night: #04141a;
+    --night-2: #082129;
+
+    color-scheme: dark;
+  }
+
+  /* Big screens: the whole system scales in rem, so it stays proportional on 2K, 4K and beyond. */
+  @media (min-width: 1800px) {
+    :root {
+      --max: 1500px;
+    }
+  }
+  @media (min-width: 2300px) {
+    html {
+      font-size: 112.5%;
+    }
+    :root {
+      --max: 1700px;
+    }
+  }
+  @media (min-width: 3000px) {
+    html {
+      font-size: 131.25%;
+    }
+    :root {
+      --max: 2080px;
+    }
+  }
+  @media (max-width: 760px) {
+    :root {
+      --header: 72px;
+      --t-body: 1rem;
+    }
+  }
+}

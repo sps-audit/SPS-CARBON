@@ -17,14 +17,14 @@ export const editorialPages: EditorialPage[] = [
     kicker: "La plateforme SPS-CARBON",
     title: "De la donnée de terrain à une décision éclairée.",
     description:
-      "Un projet de plateforme porté par SAFEPERFORM SOLUTIONS pour relier collecte, méthode et pilotage carbone. Une même ambition : rendre chaque résultat compréhensible, traçable et utile à l’entreprise.",
+      "SPS-CARBON relie la collecte, la méthode et le pilotage carbone dans un même espace, avec l’appui de SAFEPERFORM SOLUTIONS. Chaque résultat reste compréhensible, traçable et utile à l’entreprise.",
     sections: [
       {
         id: "vision",
         title: "Un fil conducteur pour votre démarche carbone",
         body: [
           "Les informations nécessaires à un inventaire existent souvent déjà : factures, relevés de compteurs, achats de carburant, registres de production ou données de transport. Leur dispersion, leurs unités et leurs périodes rendent leur exploitation difficile. SPS-CARBON est conçu pour organiser ce travail autour d’un périmètre explicite et d’une méthode partagée.",
-          "La plateforme est en développement. La démonstration présente aujourd’hui un parcours illustratif consacré à l’électricité et au carburant, avec des données et des facteurs fictifs. Les fonctionnalités décrites ci-dessous constituent la trajectoire produit ; leur disponibilité sera précisée à chaque étape.",
+          "La démonstration de cette page suit un parcours consacré à l’électricité et au carburant, avec des données et des facteurs d’exemple. Les missions menées avec nos consultants appliquent dès aujourd’hui la même méthode ; les espaces clients de la plateforme ouvrent progressivement.",
         ],
         bullets: [
           "Une lecture simple pour la direction, avec le détail nécessaire à la revue technique.",
@@ -36,8 +36,8 @@ export const editorialPages: EditorialPage[] = [
         id: "collecte",
         title: "Rassembler les données sans perdre leur contexte",
         body: [
-          "Le parcours cible commence par l’entreprise, ses sites et la période étudiée. Une liste de collecte doit ensuite guider chaque contributeur : quelle information transmettre, dans quelle unité, pour quel équipement ou site et avec quel justificatif. La donnée garde ainsi son sens jusqu’au rapport.",
-          "L’objectif est de rapprocher la saisie et les tableaux importés des documents d’origine. Une facture d’électricité apporte une consommation et une période ; un relevé de carburant doit préciser le combustible, la quantité et l’usage. Un montant comptable seul ne remplace pas ces informations physiques.",
+          "Tout commence par l’entreprise, ses sites et la période étudiée. La liste de collecte guide ensuite chaque contributeur : quelle information transmettre, dans quelle unité, pour quel équipement ou site et avec quel justificatif. La donnée garde ainsi son sens jusqu’au rapport.",
+          "La saisie et les tableaux importés restent rattachés aux documents d’origine. Une facture d’électricité apporte une consommation et une période ; un relevé de carburant précise le combustible, la quantité et l’usage. Un montant comptable seul ne remplace pas ces informations physiques.",
         ],
         bullets: [
           "Identifier les sources applicables avant de demander des documents.",
@@ -49,8 +49,8 @@ export const editorialPages: EditorialPage[] = [
         id: "revue",
         title: "Faire de la qualité des données une étape visible",
         body: [
-          "Un résultat fiable commence avant le calcul. Le dispositif de revue prévu doit aider à repérer les unités incompatibles, les périodes qui se chevauchent, les doublons et les consommations inhabituelles. Une alerte doit conduire à une vérification et à une décision expliquée.",
-          "Les statuts envisagés distinguent les données renseignées, estimées, manquantes ou exclues avec justification. Un mois absent ne devient pas une consommation nulle. De même, une hausse liée à une nouvelle ligne de production peut être légitime : le contexte opérationnel reste indispensable.",
+          "Un résultat fiable commence avant le calcul. La revue repère les unités incompatibles, les périodes qui se chevauchent, les doublons et les consommations inhabituelles. Chaque alerte conduit à une vérification et à une décision expliquée.",
+          "Chaque donnée porte un statut : renseignée, estimée, manquante ou exclue avec justification. Un mois absent ne devient pas une consommation nulle. De même, une hausse liée à une nouvelle ligne de production peut être légitime : le contexte opérationnel reste indispensable.",
         ],
         bullets: [
           "Documenter les corrections et conserver la raison de chaque choix.",
@@ -62,8 +62,8 @@ export const editorialPages: EditorialPage[] = [
         id: "tracabilite",
         title: "Pouvoir expliquer le chemin de chaque chiffre",
         body: [
-          "La traçabilité recherchée relie quantité d’activité, conversion d’unité, facteur d’émission, référence et résultat. Le facteur doit être adapté à l’activité, au territoire, à la période et aux émissions couvertes. Son nom seul ne suffit pas : sa source, sa version et ses limites doivent rester accessibles.",
-          "La conception prévoit des rapports versionnés. Une correction doit produire une nouvelle version et expliquer l’écart, tout en préservant les hypothèses du document antérieur. Cette continuité est essentielle pour comprendre une évolution et préparer une revue ultérieure.",
+          "Chaque chiffre relie une quantité d’activité, une conversion d’unité, un facteur d’émission, sa référence et le résultat. Le facteur est adapté à l’activité, au territoire, à la période et aux émissions couvertes. Son nom seul ne suffit pas : sa source, sa version et ses limites restent accessibles.",
+          "Les rapports sont versionnés. Une correction produit une nouvelle version et explique l’écart, tout en préservant les hypothèses du document antérieur. Cette continuité permet de comprendre une évolution et de préparer une revue ultérieure.",
         ],
         bullets: [
           "Conserver les hypothèses, exclusions et règles de conversion.",
@@ -75,8 +75,8 @@ export const editorialPages: EditorialPage[] = [
         id: "pilotage",
         title: "Passer du tableau de résultats au plan d’action",
         body: [
-          "Le tableau de bord visé doit faire apparaître les principaux postes, leur répartition par site et les éléments qui expliquent leur évolution. L’objectif est de donner à la direction et aux équipes opérationnelles une base commune pour choisir les investigations et les actions prioritaires.",
-          "Le suivi des actions constitue une extension envisagée : responsable, échéance, hypothèse de réduction et indicateur de réalisation. Les scénarios resteraient séparés des émissions constatées. Une économie simulée n’est acquise qu’une fois l’action mise en œuvre et son effet évalué.",
+          "Le tableau de bord fait apparaître les principaux postes, leur répartition par site et les éléments qui expliquent leur évolution. La direction et les équipes opérationnelles disposent d’une base commune pour choisir les investigations et les actions prioritaires.",
+          "Chaque action a un responsable, une échéance, une hypothèse de réduction et un indicateur de réalisation. Les scénarios restent séparés des émissions constatées : une économie simulée n’est acquise qu’une fois l’action mise en œuvre et son effet évalué.",
         ],
         bullets: [
           "Lire ensemble émissions absolues, niveau d’activité et indicateurs d’intensité pertinents.",
@@ -86,15 +86,15 @@ export const editorialPages: EditorialPage[] = [
       },
       {
         id: "trajectoire",
-        title: "Un socle ciblé, des extensions structurées",
+        title: "Un socle solide, puis des extensions",
         body: [
-          "Le premier terrain d’exploration porte sur les consommations d’électricité et de carburant. Ce périmètre permet de travailler la lisibilité des données et des résultats. Il ne représente pas automatiquement la totalité des Scope 1 et 2 d’une entreprise, qui peut aussi émettre par ses procédés ou ses fluides frigorigènes.",
-          "L’élargissement doit se construire à partir de cas métiers et de règles validées. Les catégories de Scope 3, la préparation de données CBAM et les empreintes de produits répondent à des besoins distincts ; chacun nécessite son propre cadrage avant intégration.",
+          "La démonstration porte sur les consommations d’électricité et de carburant. Ce périmètre ne représente pas à lui seul la totalité des Scopes 1 et 2 d’une entreprise, qui peut aussi émettre par ses procédés ou ses fluides frigorigènes : la méthode les examine dès le cadrage.",
+          "Chaque extension se construit à partir de cas métiers et de règles validées. Les catégories du Scope 3, la préparation des données MACF et les empreintes de produits répondent à des besoins distincts ; chacun a son propre cadrage.",
         ],
         bullets: [
-          "Démonstration actuelle : données synthétiques d’électricité et de carburant.",
-          "Socle prévu : collecte, pièces justificatives, revue, calculs documentés et rapports versionnés.",
-          "Extensions envisagées : catégories prioritaires du Scope 3, suivi des actions et parcours spécialisés CBAM.",
+          "Démonstration : données d’exemple d’électricité et de carburant.",
+          "Socle : collecte, pièces justificatives, revue, calculs documentés et rapports versionnés.",
+          "Extensions : catégories prioritaires du Scope 3, suivi des actions et parcours MACF.",
         ],
       },
     ],
@@ -131,7 +131,7 @@ export const editorialPages: EditorialPage[] = [
           "Objectif : identifier les postes significatifs et les possibilités de dialogue avec les fournisseurs.",
           "Données possibles : quantités achetées, caractéristiques des matériaux, trajets, tonnages et traitements des déchets.",
           "Livrables à convenir : cartographie des catégories, résultats détaillés et plan d’amélioration des données.",
-          "Parcours d’extension envisagé pour la plateforme ; périmètre de mission à confirmer lors du cadrage.",
+          "Périmètre de mission confirmé lors du cadrage, catégorie par catégorie.",
         ],
       },
       {
@@ -139,13 +139,13 @@ export const editorialPages: EditorialPage[] = [
         title: "MACF / CBAM · préparer les données industrielles pertinentes",
         body: [
           "Une demande CBAM exige un examen spécifique des marchandises, de leur classification, des installations et des procédés concernés. L’analyse commence par la demande du client européen et les règles applicables au produit et à la période. Le fait d’exporter vers l’Union européenne ne suffit pas à déterminer le périmètre.",
-          "L’accompagnement envisagé porte sur la préparation et l’organisation des informations industrielles nécessaires : quantités produites, consommations, intrants, limites des procédés et règles d’allocation. Un inventaire général d’entreprise ne remplace pas ce travail. La déclaration réglementaire et les éventuelles exigences de vérification doivent être traitées avec les parties compétentes.",
+          "L’accompagnement porte sur la préparation et l’organisation des informations industrielles nécessaires : quantités produites, consommations, intrants, limites des procédés et règles d’allocation. Un inventaire général d’entreprise ne remplace pas ce travail. La déclaration réglementaire et les éventuelles exigences de vérification doivent être traitées avec les parties compétentes.",
         ],
         bullets: [
           "Étape préalable : examiner la marchandise, la demande reçue et les responsabilités de chaque intervenant.",
           "Objectif : préparer un dossier technique cohérent pour le dialogue avec le client européen.",
           "Livrables et limites : à fixer après étude du cas, des données et des exigences applicables.",
-          "Parcours spécialisé prévu, distinct du calcul démonstratif et de l’inventaire de l’organisation.",
+          "Un parcours spécialisé, distinct de l’inventaire de l’organisation.",
         ],
       },
       {
@@ -284,7 +284,7 @@ export const editorialPages: EditorialPage[] = [
     kicker: "Le cabinet",
     title: "La démarche carbone, ancrée dans le management de l’entreprise.",
     description:
-      "SPS-CARBON est un projet porté par SAFEPERFORM SOLUTIONS SARL AU, cabinet d’audit, de conseil et de formation en management QHSE et RSE, basé à El Jadida.",
+      "SPS-CARBON est porté par SAFEPERFORM SOLUTIONS SARL AU, cabinet d’audit, de conseil et de formation en management QHSE et RSE, basé à El Jadida.",
     sections: [
       {
         id: "identite",
@@ -329,7 +329,7 @@ export const editorialPages: EditorialPage[] = [
         id: "collaboration",
         title: "Un travail organisé avec vos équipes",
         body: [
-          "Le fonctionnement proposé repose sur une répartition explicite des rôles. L’entreprise apporte la connaissance de son activité et les données disponibles. Le cadrage méthodologique, la revue des informations et la restitution doivent être attribués à des intervenants identifiés dans chaque mission.",
+          "Notre fonctionnement repose sur une répartition explicite des rôles. L’entreprise apporte la connaissance de son activité et les données disponibles. Le cadrage méthodologique, la revue des informations et la restitution sont attribués à des intervenants identifiés dans chaque mission.",
           "La formation et l’explication occupent une place importante dans cette approche. Comprendre pourquoi une unité, une période ou un justificatif est nécessaire permet d’améliorer la collecte et de rendre les prochains exercices plus efficaces.",
         ],
         bullets: [
