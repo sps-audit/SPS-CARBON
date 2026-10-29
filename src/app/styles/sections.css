@@ -85,15 +85,17 @@
     border: 0;
     background: none;
     color: var(--ink-3);
-    font-size: 1.0625rem;
+    font-size: var(--t-body);
     font-weight: 560;
     letter-spacing: -0.01em;
     text-align: left;
-    transition: color var(--d-2) var(--ease);
+    transition: color var(--d-2) var(--ease), scale 160ms var(--ease-out);
   }
 
-  .audience-tabs button:hover {
-    color: var(--ink);
+  @media (hover: hover) and (pointer: fine) {
+    .audience-tabs button:hover {
+      color: var(--ink);
+    }
   }
 
   .audience-tabs button[aria-selected="true"] {
@@ -179,7 +181,7 @@
       flex: none;
       min-height: 3rem;
       padding: 0.6rem 0.9rem;
-      font-size: 0.95rem;
+      font-size: var(--t-small);
     }
 
     .audience-tabs button[aria-selected="true"] {
@@ -273,7 +275,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.55rem;
-    font-size: 1rem;
+    font-size: var(--t-body);
     font-weight: 620;
   }
 
@@ -287,7 +289,7 @@
 
   .sector-lane-head span {
     color: var(--ink-3);
-    font-size: 0.85rem;
+    font-size: var(--t-meta);
     line-height: 1.4;
   }
 
@@ -320,7 +322,7 @@
     border-radius: var(--r-s);
     background: color-mix(in srgb, var(--lane) 10%, var(--surface));
     box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--lane) 28%, transparent);
-    font-size: 0.9375rem;
+    font-size: var(--t-small);
     font-weight: 520;
     line-height: 1.3;
     animation: chip-in 700ms var(--ease-out) both;
@@ -431,9 +433,11 @@
     z-index: 1;
   }
 
-  .offer-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 0 0 1px var(--line-2), var(--shadow-2);
+  @media (hover: hover) and (pointer: fine) {
+    .offer-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 0 1px var(--line-2), var(--shadow-2);
+    }
   }
 
   .offer-card.is-featured {
@@ -516,16 +520,18 @@
     padding: 1.25rem 0.5rem;
     border-bottom: 1px solid var(--line-2);
     text-decoration: none;
-    transition: background-color var(--d-2) var(--ease), padding var(--d-3) var(--ease-out);
+    transition: background-color var(--d-2) var(--ease), padding var(--d-3) var(--ease-out), scale 160ms var(--ease-out);
   }
 
-  .tool-row:hover {
-    background: color-mix(in srgb, var(--surface) 80%, transparent);
-    padding-left: 1rem;
+  @media (hover: hover) and (pointer: fine) {
+    .tool-row:hover {
+      background: color-mix(in srgb, var(--surface) 80%, transparent);
+      padding-left: 1rem;
+    }
   }
 
   .tool-row strong {
-    font-size: 1.125rem;
+    font-size: var(--t-large);
     font-weight: 600;
     letter-spacing: -0.015em;
   }
@@ -539,7 +545,7 @@
     flex-wrap: wrap;
     align-items: center;
     gap: 0.4rem;
-    font-size: 0.875rem;
+    font-size: var(--t-ui);
     font-weight: 560;
     font-variant-numeric: lining-nums proportional-nums;
   }
@@ -641,7 +647,7 @@
     background: var(--paper);
     box-shadow: inset 0 0 0 1.5px var(--signal), 0 0 0 6px var(--paper);
     color: var(--signal);
-    font-size: 0.9rem;
+    font-size: var(--t-ui);
     font-weight: 640;
   }
 
@@ -652,7 +658,7 @@
   }
 
   .path h3 {
-    font-size: 1.125rem;
+    font-size: var(--t-large);
     font-weight: 600;
     letter-spacing: -0.015em;
   }
@@ -702,7 +708,7 @@
   }
 
   .spec dt {
-    font-size: 1.125rem;
+    font-size: var(--t-large);
     font-weight: 600;
     letter-spacing: -0.015em;
   }
@@ -749,7 +755,7 @@
 
   .faq-ask-title {
     font-weight: 620;
-    font-size: 1.0625rem;
+    font-size: var(--t-body);
   }
 
   @media (max-width: 1000px) {
@@ -759,6 +765,149 @@
 
     .faq-side {
       position: static;
+    }
+  }
+}
+
+/* ---------- Home offers: the recommended formula carries the field, not a badge ---------- */
+@layer sections {
+  .offer-deck {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    grid-auto-flow: dense;
+    gap: 1rem;
+  }
+
+  .offer {
+    display: grid;
+    align-content: start;
+    gap: 0.85rem;
+    padding: clamp(1.5rem, 1rem + 1.4vw, 2.2rem);
+    border-radius: var(--r-xl);
+    background: var(--surface);
+    box-shadow: 0 0 0 1px var(--line);
+  }
+
+  .offer > * {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+  }
+
+  .offer.is-featured {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    grid-template-rows: auto auto auto 1fr auto;
+    gap: 1.1rem;
+    padding: clamp(1.75rem, 1rem + 2.6vw, 3.25rem);
+    background: var(--night-lamp), var(--night);
+    box-shadow: 0 0 0 1px var(--glass-rim), var(--shadow-2);
+  }
+
+  .offer .offer-scope {
+    padding: 0;
+    border-radius: 0;
+    background: none;
+    color: var(--signal);
+    font-size: var(--t-small);
+    font-weight: 620;
+  }
+
+  .offer.is-featured .check-list {
+    align-content: start;
+  }
+
+  .offer-name {
+    font-size: var(--t-h3);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .offer.is-featured .offer-name {
+    font-size: clamp(2.1rem, 1.3rem + 2.4vw, 3.5rem);
+    line-height: 1;
+    letter-spacing: -0.038em;
+  }
+
+  .offer-for {
+    max-width: 30em;
+    color: var(--ink-2);
+    font-size: var(--t-body);
+    line-height: 1.5;
+  }
+
+  .offer.is-featured .offer-for {
+    color: var(--ink);
+    font-size: var(--t-lead);
+  }
+
+  .offer .link,
+  .offer .btn {
+    justify-self: start;
+  }
+
+  .offer.is-featured .btn {
+    align-self: end;
+  }
+
+  @media (max-width: 1000px) {
+    .offer-deck {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .offer.is-featured {
+      grid-column: auto;
+      grid-row: auto;
+    }
+  }
+
+  /* Engagement path: order shown by the descending line, each step says what it asks and gives. */
+  .path-n {
+    top: -0.475rem;
+    left: 0.625rem;
+    width: 0.95rem;
+    height: 0.95rem;
+  }
+
+  /* The markers sit on the tinted field of the chapter. */
+  .path-chapter .path-n {
+    background: var(--paper-2);
+    box-shadow: inset 0 0 0 1.5px var(--signal), 0 0 0 5px var(--paper-2);
+  }
+
+  .path-chapter .path li:first-of-type .path-n {
+    background: var(--signal-fill);
+    box-shadow: 0 0 0 5px var(--paper-2);
+  }
+
+  .path-io {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0.15rem 0 0;
+  }
+
+  .path-io dt {
+    color: var(--ink);
+    font-size: var(--t-meta);
+    font-weight: 620;
+  }
+
+  .path-io div:last-child dt {
+    color: var(--signal);
+  }
+
+  .path-io dd {
+    margin: 0.15rem 0 0;
+    color: var(--ink-2);
+    font-size: var(--t-small);
+    line-height: 1.45;
+  }
+
+  @media (max-width: 1000px) {
+    .path-n {
+      top: 0.275rem;
+      left: -2.025rem;
     }
   }
 }

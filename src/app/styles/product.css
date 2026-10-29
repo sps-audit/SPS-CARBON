@@ -58,13 +58,13 @@
   .ba-file {
     margin-bottom: 0.6rem;
     color: var(--ink-3);
-    font-size: 0.8rem;
+    font-size: var(--t-micro);
   }
 
   .ba-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    font-size: 0.8rem;
+    font-size: var(--t-micro);
   }
 
   .ba-grid span {
@@ -98,7 +98,7 @@
     border-radius: 10px;
     background: var(--surface);
     box-shadow: var(--shadow-2), 0 0 0 1px var(--line);
-    font-size: 0.82rem;
+    font-size: var(--t-meta);
     transform: rotate(2.5deg);
   }
 
@@ -113,7 +113,7 @@
     bottom: 10%;
     display: grid;
     gap: 0.35rem;
-    font-size: 0.8rem;
+    font-size: var(--t-micro);
   }
 
   .ba-files li {
@@ -135,7 +135,7 @@
     border-radius: 2px;
     background: #f6e3b8;
     color: #4a3a12;
-    font-size: 0.85rem;
+    font-size: var(--t-meta);
     font-weight: 560;
     box-shadow: 0 10px 20px -12px rgba(6, 33, 41, 0.4);
     transform: rotate(-4deg);
@@ -155,7 +155,7 @@
     gap: 0.6rem;
     padding-bottom: 0.9rem;
     border-bottom: 1px solid var(--line);
-    font-size: 0.875rem;
+    font-size: var(--t-ui);
     font-weight: 600;
   }
 
@@ -200,12 +200,12 @@
   }
 
   .ba-rows strong {
-    font-size: 0.875rem;
+    font-size: var(--t-ui);
   }
 
   .ba-rows small {
     color: var(--ink-3);
-    font-size: 0.75rem;
+    font-size: var(--t-micro);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -215,7 +215,7 @@
     flex: none;
     padding: 0.2rem 0.55rem;
     border-radius: 6px;
-    font-size: 0.72rem;
+    font-size: var(--t-micro);
     font-weight: 620;
   }
 
@@ -256,7 +256,7 @@
 
   .ba-total > p:first-of-type > span:last-child {
     color: var(--ink-3);
-    font-size: 0.9rem;
+    font-size: var(--t-ui);
   }
 
   .ba-bar {
@@ -283,14 +283,14 @@
     display: flex;
     justify-content: space-between;
     color: var(--ink-3);
-    font-size: 0.75rem;
+    font-size: var(--t-micro);
   }
 
   .ba-proof {
     padding: 0.6rem 0.75rem;
     border-radius: 9px;
     background: var(--signal-soft);
-    font-size: 0.8rem;
+    font-size: var(--t-micro);
     font-weight: 540;
   }
 
@@ -322,7 +322,7 @@
     z-index: 3;
     padding: 0.35rem 0.75rem;
     border-radius: 999px;
-    font-size: 0.8rem;
+    font-size: var(--t-micro);
     font-weight: 600;
     pointer-events: none;
   }
@@ -432,7 +432,7 @@
     padding: 0 1rem;
     border-bottom: 1px solid var(--line);
     background: color-mix(in srgb, var(--paper) 60%, var(--surface));
-    font-size: 0.8125rem;
+    font-size: var(--t-meta);
     color: var(--ink-3);
   }
 
@@ -476,7 +476,7 @@
     border-radius: 12px;
     box-shadow: inset 0 0 0 1px var(--line);
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: var(--t-ui);
   }
 
   .app-org > span {
@@ -487,21 +487,21 @@
     border-radius: 9px;
     background: var(--petrol);
     color: var(--viridian);
-    font-size: 0.75rem;
+    font-size: var(--t-micro);
     font-weight: 700;
   }
 
   .app-org small {
     display: block;
     color: var(--ink-3);
-    font-size: 0.75rem;
+    font-size: var(--t-micro);
     font-weight: 500;
   }
 
   .app-nav-label {
     margin: 0.6rem 0.6rem 0.25rem;
     color: var(--ink-3);
-    font-size: 0.75rem;
+    font-size: var(--t-micro);
     font-weight: 580;
   }
 
@@ -520,15 +520,17 @@
     border-radius: 10px;
     background: none;
     color: var(--ink-2);
-    font-size: 0.9rem;
+    font-size: var(--t-ui);
     font-weight: 540;
     text-align: left;
-    transition: background-color var(--d-2) var(--ease), color var(--d-2) var(--ease);
+    transition: background-color var(--d-2) var(--ease), color var(--d-2) var(--ease), scale 160ms var(--ease-out);
   }
 
-  .app-tabs button:hover {
-    background: color-mix(in srgb, var(--ink) 5%, transparent);
-    color: var(--ink);
+  @media (hover: hover) and (pointer: fine) {
+    .app-tabs button:hover {
+      background: color-mix(in srgb, var(--ink) 5%, transparent);
+      color: var(--ink);
+    }
   }
 
   .app-tabs button[aria-selected="true"] {
@@ -552,12 +554,12 @@
     justify-content: space-between;
     padding: 0.5rem 0.7rem;
     color: var(--ink-3);
-    font-size: 0.875rem;
+    font-size: var(--t-ui);
   }
 
   .app-nav-static em {
     font-style: normal;
-    font-size: 0.75rem;
+    font-size: var(--t-micro);
     font-weight: 600;
     color: var(--signal);
   }
@@ -591,7 +593,7 @@
 
   .app-head p {
     color: var(--ink-3);
-    font-size: 0.8125rem;
+    font-size: var(--t-meta);
   }
 
   .app-head h3 {
@@ -610,13 +612,15 @@
     border-radius: 999px;
     background: var(--signal-fill);
     color: var(--petrol);
-    font-size: 0.875rem;
+    font-size: var(--t-ui);
     font-weight: 600;
     transition: transform var(--d-2) var(--ease-out);
   }
 
-  .app-proof-btn:hover {
-    transform: translateY(-1px);
+  @media (hover: hover) and (pointer: fine) {
+    .app-proof-btn:hover {
+      transform: translateY(-1px);
+    }
   }
 
   .app-proof-btn svg {
@@ -643,7 +647,7 @@
 
   .app-kpi > span {
     color: var(--ink-3);
-    font-size: 0.8rem;
+    font-size: var(--t-micro);
   }
 
   .app-kpi .readout {
@@ -652,7 +656,7 @@
 
   .app-kpi em {
     color: var(--ink-3);
-    font-size: 0.78rem;
+    font-size: var(--t-micro);
     font-style: normal;
   }
 
@@ -668,7 +672,7 @@
   }
 
   .app-kpi-warn .app-kpi-mid {
-    font-size: 1.15rem;
+    font-size: var(--t-large);
     color: var(--check);
   }
 
@@ -717,11 +721,11 @@
     display: flex;
     justify-content: space-between;
     gap: 0.75rem;
-    font-size: 0.8125rem;
+    font-size: var(--t-meta);
   }
 
   .app-card-head h4 {
-    font-size: 0.9375rem;
+    font-size: var(--t-small);
     font-weight: 600;
   }
 
@@ -780,14 +784,21 @@
     animation-delay: calc(var(--i, 0) * 35ms);
   }
 
-  .app-col:hover .app-stack span,
   .app-col.is-active .app-stack span,
   .app-col:focus-visible .app-stack span {
     filter: brightness(0.9);
   }
 
-  .app-bars:hover .app-col:not(:hover) .app-stack span {
-    opacity: 0.5;
+  @media (hover: hover) and (pointer: fine) {
+    .app-col:hover .app-stack span {
+      filter: brightness(0.9);
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .app-bars:hover .app-col:not(:hover) .app-stack span {
+      opacity: 0.5;
+    }
   }
 
   @keyframes bar-grow {
@@ -805,7 +816,7 @@
     display: flex;
     gap: 1rem;
     color: var(--ink-2);
-    font-size: 0.8rem;
+    font-size: var(--t-micro);
   }
 
   .app-legend span {
@@ -881,7 +892,7 @@
   .app-shares {
     display: grid;
     gap: 0.35rem;
-    font-size: 0.85rem;
+    font-size: var(--t-meta);
   }
 
   .app-shares li {
@@ -942,7 +953,7 @@
     flex-wrap: wrap;
     align-items: center;
     gap: 0.4rem;
-    font-size: 0.85rem;
+    font-size: var(--t-meta);
     animation: panel-in 600ms var(--ease-out) both;
     animation-delay: calc(var(--i, 0) * 90ms + 120ms);
   }
@@ -974,7 +985,7 @@
 
   .app-proof p {
     color: var(--ink-3);
-    font-size: 0.8rem;
+    font-size: var(--t-micro);
   }
 
   @media (max-width: 1000px) {
@@ -1095,7 +1106,7 @@
     padding: 0.35rem 0.7rem;
     border-radius: 999px;
     color: var(--ink-3);
-    font-size: 0.8rem;
+    font-size: var(--t-micro);
     font-weight: 560;
     transition: background-color var(--d-3) var(--ease), color var(--d-3) var(--ease);
   }
@@ -1150,7 +1161,7 @@
   .ui {
     display: grid;
     gap: 0.6rem;
-    font-size: 0.875rem;
+    font-size: var(--t-ui);
   }
 
   .ui-head {
@@ -1158,13 +1169,13 @@
     justify-content: space-between;
     gap: 1rem;
     margin-bottom: 0.5rem;
-    font-size: 1.05rem;
+    font-size: var(--t-body);
     font-weight: 600;
   }
 
   .ui-head span {
     color: var(--ink-3);
-    font-size: 0.8125rem;
+    font-size: var(--t-meta);
     font-weight: 500;
   }
 
@@ -1214,7 +1225,7 @@
 
   .ui-foot {
     color: var(--ink-3);
-    font-size: 0.8rem;
+    font-size: var(--t-micro);
   }
 
   .ui-alert {
@@ -1236,7 +1247,7 @@
   .ui-alert span {
     grid-column: 1;
     color: var(--ink-2);
-    font-size: 0.8125rem;
+    font-size: var(--t-meta);
   }
 
   .ui-alert button {
@@ -1248,7 +1259,7 @@
     border-radius: 999px;
     background: var(--ink);
     color: var(--paper);
-    font-size: 0.78rem;
+    font-size: var(--t-micro);
     font-weight: 600;
   }
 
@@ -1287,7 +1298,7 @@
 
   .ui-equation small {
     color: var(--ink-3);
-    font-size: 0.75rem;
+    font-size: var(--t-micro);
   }
 
   .ui-equation b {
@@ -1417,7 +1428,7 @@
     margin-bottom: 0.6rem;
     padding-bottom: 0.75rem;
     border-bottom: 2px solid var(--ink);
-    font-size: 1.05rem;
+    font-size: var(--t-body);
     font-weight: 620;
   }
 
@@ -1449,7 +1460,7 @@
     padding: 0.5rem 0.85rem;
     border-radius: 10px;
     box-shadow: inset 0 0 0 1px var(--line-2);
-    font-size: 0.8125rem;
+    font-size: var(--t-meta);
     font-style: normal;
     font-weight: 580;
     white-space: nowrap;
@@ -1497,7 +1508,7 @@
     align-items: center;
     gap: 0.45rem;
     color: var(--ink-3);
-    font-size: 0.72rem;
+    font-size: var(--t-micro);
     font-weight: 600;
   }
 
@@ -1518,7 +1529,7 @@
     margin-block: 0.5rem 0.4rem;
     padding-bottom: 0.6rem;
     border-bottom: 2px solid var(--ink);
-    font-size: 1.05rem;
+    font-size: var(--t-body);
     line-height: 1.2;
   }
 
@@ -1526,7 +1537,7 @@
     padding: 0.4rem 0;
     border-bottom: 1px dashed var(--line-2);
     color: var(--ink-2);
-    font-size: 0.8rem;
+    font-size: var(--t-micro);
   }
 
   .deliv-bars {
@@ -1570,7 +1581,7 @@
   }
 
   .deliv-list h3 {
-    font-size: 1.125rem;
+    font-size: var(--t-large);
     font-weight: 600;
     letter-spacing: -0.015em;
   }
@@ -1693,17 +1704,19 @@
     border-radius: var(--r-m);
     background: color-mix(in srgb, var(--paper) 60%, var(--surface));
     box-shadow: inset 0 0 0 1px var(--line);
-    font-size: 1rem;
+    font-size: var(--t-body);
     font-weight: 540;
     text-align: left;
-    transition: box-shadow var(--d-2) var(--ease), background-color var(--d-2) var(--ease), transform var(--d-2) var(--ease-out);
+    transition: box-shadow var(--d-2) var(--ease), background-color var(--d-2) var(--ease), transform var(--d-2) var(--ease-out), scale 160ms var(--ease-out);
     animation: panel-in 500ms var(--ease-out) both;
     animation-delay: calc(var(--i, 0) * 50ms + 120ms);
   }
 
-  .diag-options button:hover {
-    box-shadow: inset 0 0 0 1px var(--line-3);
-    transform: translateX(3px);
+  @media (hover: hover) and (pointer: fine) {
+    .diag-options button:hover {
+      box-shadow: inset 0 0 0 1px var(--line-3);
+      transform: translateX(3px);
+    }
   }
 
   .diag-options button.is-picked {
@@ -1721,7 +1734,7 @@
     background: var(--surface);
     box-shadow: inset 0 0 0 1px var(--line-2);
     color: var(--ink-3);
-    font-size: 0.8rem;
+    font-size: var(--t-micro);
     font-weight: 620;
   }
 
@@ -1731,15 +1744,17 @@
     border: 0;
     background: none;
     color: var(--ink-3);
-    font-size: 0.9rem;
+    font-size: var(--t-ui);
     font-weight: 540;
     text-decoration: underline;
     text-decoration-color: var(--line-2);
     text-underline-offset: 0.25em;
   }
 
-  .diag-back:hover {
-    color: var(--ink);
+  @media (hover: hover) and (pointer: fine) {
+    .diag-back:hover {
+      color: var(--ink);
+    }
   }
 
   .diag-result {
@@ -1783,7 +1798,7 @@
     padding: 0.75rem 0.9rem;
     border-radius: 10px;
     background: var(--check-soft);
-    font-size: 0.9rem;
+    font-size: var(--t-ui);
   }
 
   .diag-result-side {

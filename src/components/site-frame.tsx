@@ -316,6 +316,9 @@ export function SiteFrame({ children }: { children: ReactNode }) {
             </ul>
           </div>
         </div>
+        <div className="wrap footer-mark" aria-hidden="true" data-reveal="rise">
+          <span />
+        </div>
         <div className="wrap footer-base">
           <span>© 2026 SAFEPERFORM SOLUTIONS SARL AU</span>
           <Link href="/inscription" className="footer-status">

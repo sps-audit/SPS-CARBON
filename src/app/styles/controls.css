@@ -19,7 +19,7 @@
     background: var(--btn-bg);
     color: var(--btn-fg);
     box-shadow: inset 0 0 0 1px var(--btn-rim);
-    font-size: 1rem;
+    font-size: var(--t-body);
     font-weight: 580;
     line-height: 1;
     letter-spacing: -0.005em;
@@ -49,8 +49,10 @@
     --btn-fg: var(--petrol);
   }
 
-  .btn-signal:hover {
-    --btn-bg: #3fd8a3;
+  @media (hover: hover) and (pointer: fine) {
+    .btn-signal:hover {
+      --btn-bg: #3fd8a3;
+    }
   }
 
   .btn-quiet {
@@ -59,15 +61,17 @@
     --btn-rim: var(--line-2);
   }
 
-  .btn-quiet:hover {
-    --btn-rim: var(--line-3);
-    --btn-bg: var(--surface);
+  @media (hover: hover) and (pointer: fine) {
+    .btn-quiet:hover {
+      --btn-rim: var(--line-3);
+      --btn-bg: var(--surface);
+    }
   }
 
   .btn-small {
     min-height: 2.6rem;
     padding: 0 1.15rem;
-    font-size: 0.9375rem;
+    font-size: var(--t-small);
   }
 
   .btn[disabled],
@@ -94,8 +98,10 @@
     cursor: pointer;
   }
 
-  .link:hover {
-    background-size: 100% 1px, 100% 1px;
+  @media (hover: hover) and (pointer: fine) {
+    .link:hover {
+      background-size: 100% 1px, 100% 1px;
+    }
   }
 
   .link-quiet {
@@ -110,7 +116,7 @@
     gap: 0.4em;
     padding: 0.2em 0.6em;
     border-radius: var(--r-xs);
-    font-size: 0.75rem;
+    font-size: var(--t-micro);
     font-weight: 600;
     font-style: normal;
     line-height: 1.4;
@@ -153,14 +159,16 @@
     border-radius: 999px;
     background: transparent;
     color: var(--ink-2);
-    font-size: 0.875rem;
+    font-size: var(--t-ui);
     font-weight: 560;
     white-space: nowrap;
-    transition: background-color var(--d-2) var(--ease), color var(--d-2) var(--ease), box-shadow var(--d-2) var(--ease);
+    transition: background-color var(--d-2) var(--ease), color var(--d-2) var(--ease), box-shadow var(--d-2) var(--ease), scale 160ms var(--ease-out);
   }
 
-  .seg button:hover {
-    color: var(--ink);
+  @media (hover: hover) and (pointer: fine) {
+    .seg button:hover {
+      color: var(--ink);
+    }
   }
 
   .seg button.is-on,
@@ -248,7 +256,7 @@
 
   .form-field label,
   .field-label {
-    font-size: 0.9375rem;
+    font-size: var(--t-small);
     font-weight: 580;
     color: var(--ink);
   }
@@ -264,7 +272,7 @@
     background: var(--surface);
     color: var(--ink);
     box-shadow: inset 0 0 0 1px var(--line-2);
-    font-size: 1rem;
+    font-size: var(--t-body);
     line-height: 1.4;
     transition: box-shadow var(--d-2) var(--ease), background-color var(--d-2) var(--ease);
   }
@@ -289,10 +297,12 @@
     opacity: 1;
   }
 
-  input:not([type="radio"]):not([type="checkbox"]):not([type="range"]):hover,
-  select:hover,
-  textarea:hover {
-    box-shadow: inset 0 0 0 1px var(--line-3);
+  @media (hover: hover) and (pointer: fine) {
+    input:not([type="radio"]):not([type="checkbox"]):not([type="range"]):hover,
+    select:hover,
+    textarea:hover {
+      box-shadow: inset 0 0 0 1px var(--line-3);
+    }
   }
 
   input:not([type="radio"]):not([type="checkbox"]):not([type="range"]):focus,
@@ -319,13 +329,15 @@
     background: var(--surface);
     box-shadow: inset 0 0 0 1px var(--line);
     cursor: pointer;
-    transition: box-shadow var(--d-2) var(--ease), background-color var(--d-2) var(--ease), transform var(--d-2) var(--ease-out);
+    transition: box-shadow var(--d-2) var(--ease), background-color var(--d-2) var(--ease), transform var(--d-2) var(--ease-out), scale 160ms var(--ease-out);
   }
 
-  .choice:hover,
-  .option:hover,
-  .reason:hover {
-    box-shadow: inset 0 0 0 1px var(--line-3);
+  @media (hover: hover) and (pointer: fine) {
+    .choice:hover,
+    .option:hover,
+    .reason:hover {
+      box-shadow: inset 0 0 0 1px var(--line-3);
+    }
   }
 
   .choice input,
@@ -350,7 +362,7 @@
   .option small,
   .reason small {
     color: var(--ink-3);
-    font-size: 0.875rem;
+    font-size: var(--t-ui);
     line-height: 1.4;
   }
 
@@ -384,7 +396,7 @@
     position: relative;
     display: block;
     padding: 1.35rem 3rem 1.35rem 0;
-    font-size: 1.125rem;
+    font-size: var(--t-large);
     font-weight: 580;
     line-height: 1.35;
     letter-spacing: -0.01em;
@@ -418,8 +430,10 @@
     opacity: 0;
   }
 
-  .faq summary:hover {
-    color: var(--signal);
+  @media (hover: hover) and (pointer: fine) {
+    .faq summary:hover {
+      color: var(--signal);
+    }
   }
 
   .faq details p {
@@ -450,10 +464,39 @@
     border-radius: 50%;
     background: transparent;
     color: var(--ink);
-    transition: background-color var(--d-2) var(--ease);
+    transition: background-color var(--d-2) var(--ease), scale 160ms var(--ease-out);
   }
 
-  .icon-button:hover {
-    background: color-mix(in srgb, var(--ink) 7%, transparent);
+  @media (hover: hover) and (pointer: fine) {
+    .icon-button:hover {
+      background: color-mix(in srgb, var(--ink) 7%, transparent);
+    }
+  }
+}
+
+@layer controls {
+  /* Press: everything a finger or a click can press answers it at once. */
+  :is(
+      .icon-button,
+      .seg button,
+      .choice,
+      .option,
+      .reason,
+      .tool-row,
+      .audience-tabs button,
+      .theme-toggle,
+      .site-login,
+      .calc-factor-btn,
+      .nx-situations button,
+      .diag-options button,
+      .app-tabs button,
+      .auth-choice,
+      .auth-chip
+    ):active {
+    scale: 0.97;
+  }
+
+  .tag {
+    border-radius: 999px;
   }
 }

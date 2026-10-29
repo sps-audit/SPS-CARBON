@@ -41,7 +41,7 @@
       flex: 1 1 0;
       min-width: 0;
       padding: 0.5rem;
-      font-size: 0.8125rem;
+      font-size: var(--t-meta);
       line-height: 1.2;
       white-space: normal;
       text-align: center;
@@ -152,7 +152,7 @@
       border-radius: 999px;
       box-shadow: inset 0 0 0 1px var(--line-2);
       color: var(--ink-2);
-      font-size: 0.9375rem;
+      font-size: var(--t-small);
     }
 
     .audience-tabs button[aria-selected="true"] {
@@ -203,7 +203,7 @@
 
     .compare tbody th {
       margin-bottom: 0.35rem;
-      font-size: 1rem;
+      font-size: var(--t-body);
     }
 
     .compare td::before {

@@ -147,8 +147,10 @@
     box-shadow: inset 0 0 0 1px rgba(245, 250, 248, 0.1);
   }
 
-  .auth-back:hover {
-    background: var(--surface);
+  @media (hover: hover) and (pointer: fine) {
+    .auth-back:hover {
+      background: var(--surface);
+    }
   }
 
   .auth-body {
@@ -213,7 +215,7 @@
     gap: 0.4rem 1.5rem;
     padding: 0 var(--auth-pad) clamp(0.9rem, 0.7rem + 1vw, 1.5rem);
     color: var(--ink-2);
-    font-size: 0.8125rem;
+    font-size: var(--t-meta);
   }
 
   .auth-foot nav {
@@ -228,8 +230,10 @@
     text-decoration: none;
   }
 
-  .auth-foot a:hover {
-    color: var(--ink);
+  @media (hover: hover) and (pointer: fine) {
+    .auth-foot a:hover {
+      color: var(--ink);
+    }
   }
 
   /* ---------- Panel ---------- */
@@ -256,14 +260,16 @@
     min-height: 2.5rem;
     border-radius: 10px;
     color: var(--ink-2);
-    font-size: 0.9rem;
+    font-size: var(--t-ui);
     font-weight: 580;
     text-decoration: none;
     transition: background-color var(--d-2) var(--ease), color var(--d-2) var(--ease);
   }
 
-  .auth-tabs a:hover {
-    color: var(--ink);
+  @media (hover: hover) and (pointer: fine) {
+    .auth-tabs a:hover {
+      color: var(--ink);
+    }
   }
 
   .auth-tabs a[aria-current="page"] {
@@ -293,7 +299,7 @@
   .auth-lead {
     margin-top: -0.6rem;
     color: var(--ink-2);
-    font-size: 0.975rem;
+    font-size: var(--t-small);
     line-height: 1.55;
   }
 
@@ -341,7 +347,7 @@
 
   .auth-note {
     color: var(--ink-3);
-    font-size: 0.85rem;
+    font-size: var(--t-meta);
     line-height: 1.5;
   }
 
@@ -360,14 +366,14 @@
     display: block;
     margin-top: 0.15rem;
     color: var(--ink-3);
-    font-size: 0.8125rem;
+    font-size: var(--t-meta);
     font-weight: 450;
   }
 
   .field-error {
     margin-top: 0.4rem;
     color: var(--danger);
-    font-size: 0.85rem;
+    font-size: var(--t-meta);
     font-weight: 540;
   }
 
@@ -386,7 +392,7 @@
     position: relative;
     padding-top: 0.75rem;
     color: var(--ink-3);
-    font-size: 0.8125rem;
+    font-size: var(--t-meta);
     font-weight: 580;
   }
 
@@ -434,7 +440,7 @@
 
   .auth-choices legend {
     margin-bottom: 0.6rem;
-    font-size: 0.9375rem;
+    font-size: var(--t-small);
     font-weight: 580;
   }
 
@@ -455,10 +461,10 @@
     border-radius: var(--r-m);
     background: var(--surface);
     box-shadow: inset 0 0 0 1px var(--line-2);
-    font-size: 0.9375rem;
+    font-size: var(--t-small);
     font-weight: 560;
     cursor: pointer;
-    transition: box-shadow var(--d-2) var(--ease), background-color var(--d-2) var(--ease);
+    transition: box-shadow var(--d-2) var(--ease), background-color var(--d-2) var(--ease), scale 160ms var(--ease-out);
   }
 
   .auth-choice strong {
@@ -467,7 +473,7 @@
 
   .auth-choice small {
     color: var(--ink-3);
-    font-size: 0.85rem;
+    font-size: var(--t-meta);
     font-weight: 450;
   }
 
@@ -478,9 +484,11 @@
     pointer-events: none;
   }
 
-  .auth-chip:hover,
-  .auth-choice:hover {
-    box-shadow: inset 0 0 0 1px var(--line-3);
+  @media (hover: hover) and (pointer: fine) {
+    .auth-chip:hover,
+    .auth-choice:hover {
+      box-shadow: inset 0 0 0 1px var(--line-3);
+    }
   }
 
   .auth-chip.is-on,
@@ -512,7 +520,7 @@
 
   .auth-review dt {
     color: var(--ink-3);
-    font-size: 0.85rem;
+    font-size: var(--t-meta);
     font-weight: 560;
   }
 
@@ -525,7 +533,7 @@
 
   .auth-review dd small {
     color: var(--ink-2);
-    font-size: 0.875rem;
+    font-size: var(--t-ui);
     font-weight: 450;
   }
 
@@ -534,7 +542,7 @@
   }
 
   .auth-review .link {
-    font-size: 0.875rem;
+    font-size: var(--t-ui);
   }
 
   /* Consents */
@@ -551,7 +559,7 @@
     border-radius: var(--r-m);
     background: var(--surface);
     box-shadow: inset 0 0 0 1px var(--line);
-    font-size: 0.9rem;
+    font-size: var(--t-ui);
     line-height: 1.5;
     cursor: pointer;
   }
@@ -591,8 +599,10 @@
     transition: box-shadow var(--d-2) var(--ease);
   }
 
-  .auth-path:hover {
-    box-shadow: 0 0 0 1.5px color-mix(in srgb, var(--signal-fill) 70%, transparent), var(--shadow-2);
+  @media (hover: hover) and (pointer: fine) {
+    .auth-path:hover {
+      box-shadow: 0 0 0 1.5px color-mix(in srgb, var(--signal-fill) 70%, transparent), var(--shadow-2);
+    }
   }
 
   .auth-path svg {
@@ -610,7 +620,7 @@
 
   .auth-path small {
     color: var(--ink-3);
-    font-size: 0.875rem;
+    font-size: var(--t-ui);
   }
 
   .auth-draft {
@@ -648,7 +658,7 @@
     border-radius: 50%;
     box-shadow: inset 0 0 0 1.5px var(--signal);
     color: var(--signal);
-    font-size: 0.875rem;
+    font-size: var(--t-ui);
     font-weight: 640;
   }
 
@@ -658,7 +668,7 @@
 
   .auth-next span {
     color: var(--ink-2);
-    font-size: 0.9375rem;
+    font-size: var(--t-small);
   }
 
   @media (max-width: 600px) {

@@ -31,13 +31,13 @@
 
   .contact-info h3 {
     margin-top: 0.75rem;
-    font-size: 1rem;
+    font-size: var(--t-body);
     font-weight: 620;
   }
 
   .contact-mail {
     justify-self: start;
-    font-size: 1.15rem;
+    font-size: var(--t-large);
     font-weight: 600;
     text-decoration-color: var(--signal-fill);
     text-decoration-thickness: 2px;
@@ -93,7 +93,7 @@
     gap: 0.55rem;
     padding-top: 0.85rem;
     color: var(--ink-3);
-    font-size: 0.85rem;
+    font-size: var(--t-meta);
     font-weight: 560;
   }
 
@@ -142,7 +142,7 @@
     height: 1.5rem;
     border-radius: 50%;
     box-shadow: inset 0 0 0 1.5px var(--line-3);
-    font-size: 0.75rem;
+    font-size: var(--t-micro);
     font-weight: 640;
   }
 
@@ -193,7 +193,7 @@
 
   .form-notice {
     color: var(--ink-3);
-    font-size: 0.85rem;
+    font-size: var(--t-meta);
     line-height: 1.5;
   }
 
@@ -261,7 +261,7 @@
     background: color-mix(in srgb, var(--paper) 60%, var(--surface));
     box-shadow: inset 0 0 0 1px var(--line);
     font: inherit;
-    font-size: 0.9rem;
+    font-size: var(--t-ui);
     line-height: 1.6;
     white-space: pre-wrap;
   }
@@ -295,7 +295,7 @@
     }
 
     .form-progress span {
-      font-size: 0.75rem;
+      font-size: var(--t-micro);
     }
   }
 
@@ -414,14 +414,16 @@
     padding: 0.8rem 0.9rem;
     border-radius: var(--r-m);
     box-shadow: inset 0 0 0 1px var(--line);
-    font-size: 0.95rem;
+    font-size: var(--t-small);
     font-weight: 540;
     cursor: pointer;
     transition: box-shadow var(--d-2) var(--ease), background-color var(--d-2) var(--ease);
   }
 
-  .sector-options label:hover {
-    box-shadow: inset 0 0 0 1px var(--line-3);
+  @media (hover: hover) and (pointer: fine) {
+    .sector-options label:hover {
+      box-shadow: inset 0 0 0 1px var(--line-3);
+    }
   }
 
   .sector-options label.selected {
@@ -452,7 +454,7 @@
   .download-status,
   .checklist-disclaimer {
     color: var(--ink-3);
-    font-size: 0.82rem;
+    font-size: var(--t-meta);
   }
 
   .checklist {
@@ -466,7 +468,7 @@
     padding: 0.6rem 0.75rem;
     border-radius: 10px;
     background: color-mix(in srgb, var(--paper) 60%, var(--surface));
-    font-size: 0.95rem;
+    font-size: var(--t-small);
     animation: panel-in 500ms var(--ease-out) both;
   }
 
@@ -491,7 +493,7 @@
 
   .checklist-note p {
     color: var(--ink-2);
-    font-size: 0.9rem;
+    font-size: var(--t-ui);
   }
 
   @media (max-width: 560px) {

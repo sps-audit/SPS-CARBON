@@ -103,16 +103,18 @@
     padding: 0 0.65rem;
     border-radius: 999px;
     color: var(--ink-2);
-    font-size: 0.9375rem;
+    font-size: var(--t-small);
     font-weight: 560;
     text-decoration: none;
     white-space: nowrap;
-    transition: background-color var(--d-2) var(--ease), color var(--d-2) var(--ease);
+    transition: background-color var(--d-2) var(--ease), color var(--d-2) var(--ease), scale 160ms var(--ease-out);
   }
 
-  .site-login:hover {
-    background: var(--line);
-    color: var(--ink);
+  @media (hover: hover) and (pointer: fine) {
+    .site-login:hover {
+      background: var(--line);
+      color: var(--ink);
+    }
   }
 
   .site-login[aria-current="page"] {
@@ -145,7 +147,7 @@
     border-radius: var(--r-m);
     box-shadow: inset 0 0 0 1px var(--line-2);
     color: var(--ink);
-    font-size: 0.875rem;
+    font-size: var(--t-ui);
     font-weight: 580;
     line-height: 1.25;
     text-decoration: none;
@@ -174,17 +176,22 @@
     padding: 0 0.85rem;
     border-radius: 999px;
     color: var(--ink-2);
-    font-size: 0.9375rem;
+    font-size: var(--t-small);
     font-weight: 540;
     text-decoration: none;
     white-space: nowrap;
     transition: color var(--d-2) var(--ease);
   }
 
-  .mega-item > a:hover,
   .mega-item > a.is-hot,
   .mega-item > a[aria-current="page"] {
     color: var(--ink);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .mega-item > a:hover {
+      color: var(--ink);
+    }
   }
 
   .mega-mark {
@@ -255,14 +262,14 @@
 
   .mega-lead {
     color: var(--ink-2);
-    font-size: 0.9375rem;
+    font-size: var(--t-small);
     line-height: 1.55;
   }
 
   .mega-intro .link {
     justify-self: start;
     margin-top: 0.25rem;
-    font-size: 0.9375rem;
+    font-size: var(--t-small);
   }
 
   .mega-list {
@@ -280,14 +287,19 @@
     transition: background-color var(--d-2) var(--ease);
   }
 
-  .mega-list a:hover,
   .mega-list a:focus-visible {
     background: color-mix(in srgb, var(--ink) 5%, transparent);
   }
 
+  @media (hover: hover) and (pointer: fine) {
+    .mega-list a:hover {
+      background: color-mix(in srgb, var(--ink) 5%, transparent);
+    }
+  }
+
   .mega-list strong {
     display: block;
-    font-size: 0.975rem;
+    font-size: var(--t-small);
     font-weight: 580;
     line-height: 1.3;
   }
@@ -296,7 +308,7 @@
     display: block;
     margin-top: 0.15rem;
     color: var(--ink-3);
-    font-size: 0.85rem;
+    font-size: var(--t-meta);
     line-height: 1.35;
   }
 
@@ -329,12 +341,12 @@
 
   .mega-feature-kicker {
     color: var(--night-ink-3);
-    font-size: 0.8125rem;
+    font-size: var(--t-meta);
     font-weight: 560;
   }
 
   .mega-feature strong {
-    font-size: 1.125rem;
+    font-size: var(--t-large);
     font-weight: 600;
     line-height: 1.25;
     letter-spacing: -0.015em;
@@ -345,14 +357,16 @@
     margin-top: 0.5rem;
     padding-bottom: 2px;
     color: var(--viridian);
-    font-size: 0.9375rem;
+    font-size: var(--t-small);
     font-weight: 580;
     background: linear-gradient(currentColor, currentColor) 0 100% / 0% 1px no-repeat;
     transition: background-size var(--d-3) var(--ease-out);
   }
 
-  .mega-feature:hover .mega-feature-cta {
-    background-size: 100% 1px;
+  @media (hover: hover) and (pointer: fine) {
+    .mega-feature:hover .mega-feature-cta {
+      background-size: 100% 1px;
+    }
   }
 
   /* Small instruments inside the featured entry */
@@ -444,7 +458,7 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    font-size: 0.875rem;
+    font-size: var(--t-ui);
     font-weight: 560;
   }
 
@@ -561,12 +575,14 @@
     border-radius: 50%;
     background: transparent;
     color: var(--ink-2);
-    transition: background-color var(--d-2) var(--ease), color var(--d-2) var(--ease);
+    transition: background-color var(--d-2) var(--ease), color var(--d-2) var(--ease), scale 160ms var(--ease-out);
   }
 
-  .theme-toggle:hover {
-    color: var(--ink);
-    background: color-mix(in srgb, var(--ink) 7%, transparent);
+  @media (hover: hover) and (pointer: fine) {
+    .theme-toggle:hover {
+      color: var(--ink);
+      background: color-mix(in srgb, var(--ink) 7%, transparent);
+    }
   }
 
   .theme-icon {
@@ -628,7 +644,7 @@
   @media (max-width: 1180px) {
     .mega-item > a {
       padding: 0 0.6rem;
-      font-size: 0.9rem;
+      font-size: var(--t-ui);
     }
   }
 
@@ -736,7 +752,7 @@
 
   .m-desc {
     color: var(--ink-3);
-    font-size: 0.9rem;
+    font-size: var(--t-ui);
     line-height: 1.4;
   }
 
@@ -868,7 +884,7 @@
   .site-footer h3 {
     margin-bottom: 1rem;
     color: var(--night-ink-3);
-    font-size: 0.875rem;
+    font-size: var(--t-ui);
     font-weight: 560;
     letter-spacing: 0;
   }
@@ -888,17 +904,19 @@
     border: 0;
     background: none;
     color: var(--night-ink);
-    font-size: 0.975rem;
+    font-size: var(--t-small);
     text-align: left;
     text-decoration: none;
     opacity: 0.86;
     transition: opacity var(--d-2) var(--ease), color var(--d-2) var(--ease);
   }
 
-  .footer-grid li a:hover,
-  .footer-grid li button:hover {
-    opacity: 1;
-    color: var(--viridian);
+  @media (hover: hover) and (pointer: fine) {
+    .footer-grid li a:hover,
+    .footer-grid li button:hover {
+      opacity: 1;
+      color: var(--viridian);
+    }
   }
 
   .footer-company {
@@ -916,7 +934,7 @@
   .footer-company p,
   .footer-company address {
     color: var(--night-ink-2);
-    font-size: 0.9375rem;
+    font-size: var(--t-small);
     line-height: 1.55;
   }
 
@@ -924,6 +942,19 @@
     justify-self: start;
     color: var(--night-ink);
     font-weight: 580;
+  }
+
+  /* The name returns at full width: the close of every page. */
+  .footer-mark {
+    padding-block: clamp(2.5rem, 1.5rem + 4vw, 5rem) clamp(1.5rem, 1rem + 2vw, 3rem);
+  }
+
+  .footer-mark span {
+    display: block;
+    aspect-ratio: 916 / 114;
+    background: color-mix(in srgb, var(--night-ink) 16%, transparent);
+    -webkit-mask: url("/brand/logo-light.svg") center / contain no-repeat;
+    mask: url("/brand/logo-light.svg") center / contain no-repeat;
   }
 
   .footer-base {
@@ -934,7 +965,7 @@
     padding-block: 1.5rem 2rem;
     border-top: 1px solid var(--night-line);
     color: var(--night-ink-3);
-    font-size: 0.875rem;
+    font-size: var(--t-ui);
   }
 
   .footer-base a {
@@ -942,8 +973,10 @@
     text-decoration: none;
   }
 
-  .footer-base a:hover {
-    color: var(--night-ink);
+  @media (hover: hover) and (pointer: fine) {
+    .footer-base a:hover {
+      color: var(--night-ink);
+    }
   }
 
   .footer-base > :last-child {
@@ -1067,7 +1100,7 @@
 
     .sticky-cta-alt {
       color: var(--ink);
-      font-size: 0.9375rem;
+      font-size: var(--t-small);
       font-weight: 580;
       text-decoration: none;
     }

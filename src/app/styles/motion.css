@@ -25,10 +25,10 @@
       mask-position: 100% 0;
       transform: translateY(0.06em);
       transition:
-        -webkit-mask-position 1100ms var(--ease-out),
-        mask-position 1100ms var(--ease-out),
-        transform 1100ms var(--ease-out);
-      transition-delay: calc(var(--fd, 0ms) + var(--w, 0) * 60ms);
+        -webkit-mask-position 720ms var(--ease-out),
+        mask-position 720ms var(--ease-out),
+        transform 720ms var(--ease-out);
+      transition-delay: calc(var(--fd, 0ms) + var(--w, 0) * 40ms);
     }
 
     html.js [data-reveal="focus"].is-in .fw {
@@ -43,9 +43,9 @@
       opacity: 0;
       transform: translateY(14px);
       transition:
-        opacity 800ms var(--ease),
-        transform 1000ms var(--ease-out);
-      transition-delay: calc(var(--i, 0) * 70ms);
+        opacity 480ms var(--ease),
+        transform 600ms var(--ease-out);
+      transition-delay: calc(var(--i, 0) * 50ms);
     }
 
     html.js [data-reveal="rise"].is-in,
@@ -59,8 +59,8 @@
       opacity: 0;
       transform: translateY(16px);
       transition:
-        opacity 700ms var(--ease),
-        transform 900ms var(--ease-out);
+        opacity 420ms var(--ease),
+        transform 560ms var(--ease-out);
     }
 
     html.js [data-reveal="stagger"].is-in > * {
@@ -68,13 +68,61 @@
       transform: none;
     }
 
-    html.js [data-reveal="stagger"].is-in > :nth-child(2) { transition-delay: 70ms; }
-    html.js [data-reveal="stagger"].is-in > :nth-child(3) { transition-delay: 140ms; }
-    html.js [data-reveal="stagger"].is-in > :nth-child(4) { transition-delay: 210ms; }
-    html.js [data-reveal="stagger"].is-in > :nth-child(5) { transition-delay: 280ms; }
-    html.js [data-reveal="stagger"].is-in > :nth-child(6) { transition-delay: 350ms; }
-    html.js [data-reveal="stagger"].is-in > :nth-child(7) { transition-delay: 420ms; }
-    html.js [data-reveal="stagger"].is-in > :nth-child(n + 8) { transition-delay: 490ms; }
+    html.js [data-reveal="stagger"].is-in > :nth-child(2) { transition-delay: 45ms; }
+    html.js [data-reveal="stagger"].is-in > :nth-child(3) { transition-delay: 90ms; }
+    html.js [data-reveal="stagger"].is-in > :nth-child(4) { transition-delay: 135ms; }
+    html.js [data-reveal="stagger"].is-in > :nth-child(5) { transition-delay: 180ms; }
+    html.js [data-reveal="stagger"].is-in > :nth-child(6) { transition-delay: 225ms; }
+    html.js [data-reveal="stagger"].is-in > :nth-child(7) { transition-delay: 270ms; }
+    html.js [data-reveal="stagger"].is-in > :nth-child(n + 8) { transition-delay: 315ms; }
+
+    /* First screen: the hero plays on first paint and never waits for the
+       scripts to load. Same reveals as below, driven by CSS animations. */
+    html.js .hero [data-reveal="focus"] .fw {
+      transition: none;
+      animation: trace-in 720ms var(--ease-out) both;
+      animation-delay: calc(var(--fd, 0ms) + var(--w, 0) * 40ms);
+    }
+
+    html.js .hero [data-reveal="rise"] {
+      transition: none;
+      animation: rise-in 520ms var(--ease-out) both;
+      animation-delay: calc(120ms + var(--i, 0) * 50ms);
+    }
+
+    html.js .hero [data-reveal="scan"] {
+      animation: scan-clip 900ms var(--ease-io) forwards;
+      animation-delay: var(--scan-delay, 0ms);
+    }
+
+    html.js .hero [data-reveal="scan"]::after {
+      animation: scan-line 900ms var(--ease-io) forwards;
+      animation-delay: var(--scan-delay, 0ms);
+    }
+
+    @keyframes trace-in {
+      from {
+        -webkit-mask-position: 100% 0;
+        mask-position: 100% 0;
+        transform: translateY(0.06em);
+      }
+      to {
+        -webkit-mask-position: 0 0;
+        mask-position: 0 0;
+        transform: none;
+      }
+    }
+
+    @keyframes rise-in {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
 
     /* Balayage: an instrument is read by a scan line, its content resolving behind it. */
     html.js [data-reveal="scan"] {
@@ -82,7 +130,7 @@
     }
 
     html.js [data-reveal="scan"].is-in {
-      animation: scan-clip 1150ms var(--ease-io) forwards;
+      animation: scan-clip 900ms var(--ease-io) forwards;
       animation-delay: var(--scan-delay, 0ms);
     }
 
@@ -104,7 +152,7 @@
     }
 
     html.js [data-reveal="scan"].is-in::after {
-      animation: scan-line 1150ms var(--ease-io) forwards;
+      animation: scan-line 900ms var(--ease-io) forwards;
       animation-delay: var(--scan-delay, 0ms);
     }
 
@@ -138,8 +186,8 @@
     html.js [data-reveal="rule"] {
       transform: scaleX(0);
       transform-origin: 0 50%;
-      transition: transform 1100ms var(--ease-io);
-      transition-delay: calc(var(--i, 0) * 80ms);
+      transition: transform 700ms var(--ease-io);
+      transition-delay: calc(var(--i, 0) * 50ms);
     }
 
     html.js [data-reveal="rule"].is-in {
@@ -204,8 +252,10 @@
       transition: opacity var(--d-3) var(--ease);
     }
 
-    .spot:hover::before {
-      opacity: 1;
+    @media (hover: hover) and (pointer: fine) {
+      .spot:hover::before {
+        opacity: 1;
+      }
     }
   }
 

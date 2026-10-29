@@ -7,6 +7,7 @@ import { Releve } from "./releve";
 import { PlatformBento } from "./platform-bento";
 import { AudiencePicker } from "./audience-picker";
 import { BeforeAfter } from "./before-after";
+import { WhyUs } from "./why-us";
 import { Focus } from "./focus";
 import { useSiteActions } from "./site-frame";
 import { steps } from "@/lib/steps";
@@ -83,11 +84,11 @@ export function HomePage() {
         <div className="wrap audience-grid">
           <div className="head">
             <Focus className="t-h2" id="why-title">
-              Le carbone entre dans vos décisions.
+              Vos raisons de mesurer.
             </Focus>
             <p className="t-lead" data-reveal="rise">
-              Une demande client, un marché export, une facture d’énergie, un rapport RSE : les raisons de mesurer arrivent
-              souvent en même temps. Choisissez votre situation.
+              Une demande client, un marché export, une facture d’énergie, un rapport RSE : elles arrivent souvent en même
+              temps. Choisissez votre situation.
             </p>
           </div>
           <div data-reveal="rise">
@@ -121,7 +122,9 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="chapter" id="pourquoi-nous" aria-labelledby="compare-title">
+      <WhyUs />
+
+      <section className="chapter s-tint" id="comparaison" aria-labelledby="compare-title">
         <div className="wrap">
           <div className="head is-split">
             <Focus className="t-h2" id="compare-title">
@@ -165,7 +168,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="chapter s-tint" id="offres" aria-labelledby="offers-title">
+      <section className="chapter" id="offres" aria-labelledby="offers-title">
         <div className="wrap">
           <div className="head is-split">
             <Focus className="t-h2" id="offers-title">
@@ -175,21 +178,22 @@ export function HomePage() {
               Chaque mission démarre par un cadrage. Le prix dépend de vos sites, de vos données et des livrables attendus.
             </p>
           </div>
-          <div className="offer-cards" data-reveal="stagger">
+          <div className="offer-deck" data-reveal="stagger">
             {plans.map((offer) => (
-              <article key={offer.name} className={`offer-card spot ${offer.featured ? "is-featured" : ""}`}>
-                <div className="offer-top">
-                  <span className="offer-scope">{offer.scope}</span>
-                  {offer.badge && <span className="offer-badge">{offer.badge}</span>}
-                </div>
-                <h3 className="t-h3">{offer.name}</h3>
-                <p>{offer.text}</p>
+              <article key={offer.id} className={offer.featured ? "offer is-featured s-night" : "offer spot"}>
+                <p className="offer-scope">{offer.scope}</p>
+                <h3 className="offer-name">{offer.name}</h3>
+                <p className="offer-for">{offer.forWho}</p>
                 <ul className="check-list">
                   {offer.items.map((item) => (
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
-                <Link href={offer.href} className="link" aria-label={`En savoir plus : ${offer.name}`}>
+                <Link
+                  href={offer.href}
+                  className={offer.featured ? "btn btn-signal btn-small" : "link"}
+                  aria-label={`En savoir plus : ${offer.name}`}
+                >
                   En savoir plus
                 </Link>
               </article>
@@ -227,7 +231,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="chapter path-chapter" id="deroulement" aria-labelledby="process-title">
+      <section className="chapter s-tint path-chapter" id="deroulement" aria-labelledby="process-title">
         <div className="wrap">
           <div className="head is-split">
             <Focus className="t-h2" id="process-title">
@@ -245,9 +249,18 @@ export function HomePage() {
             </svg>
             {steps.map((step, n) => (
               <li key={step.title} style={i(n)}>
-                <span className="path-n">{n + 1}</span>
+                <span className="path-n" aria-hidden="true" />
                 <h3>{step.title}</h3>
-                <p>{step.text}</p>
+                <dl className="path-io">
+                  <div>
+                    <dt>Vous apportez</dt>
+                    <dd>{step.give}</dd>
+                  </div>
+                  <div>
+                    <dt>Vous recevez</dt>
+                    <dd>{step.get}</dd>
+                  </div>
+                </dl>
               </li>
             ))}
           </ol>
@@ -260,7 +273,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="chapter s-tint faq-chapter" aria-labelledby="faq-title">
+      <section className="chapter faq-chapter" aria-labelledby="faq-title">
         <div className="wrap faq-grid">
           <div className="faq-side">
             <Focus className="t-h2" id="faq-title">
