@@ -1,0 +1,272 @@
+/*
+ * Phones and small tablets. The desktop layouts already collapse to one
+ * column; these rules make the phone version feel designed for the hand:
+ * layered instruments instead of stacked boxes, chips instead of truncated
+ * tabs, cards instead of tables that scroll sideways, equal buttons, and
+ * content before decoration.
+ */
+
+@layer utilities {
+  @media (max-width: 900px) {
+    /* Hero: the chart is the instrument and the goal card rests on it. */
+    .hero-deck {
+      order: 1;
+    }
+
+    .hf-goal {
+      z-index: 3;
+      order: 2;
+      margin: -2.75rem 0.85rem 0;
+    }
+
+    .hf-proof {
+      order: 3;
+    }
+  }
+
+  @media (max-width: 700px) {
+    /* Functional pages start with the task, not with a picture of it. */
+    .page-head:has(.pi-steps, .pi-sheet, .pi-receipt, .pi-ruler) .pi {
+      display: none;
+    }
+
+    /* Offers: one formula at a time, chosen above the table. */
+    .plan-pick {
+      display: flex;
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+
+    .plan-pick button {
+      flex: 1 1 0;
+      min-width: 0;
+      padding: 0.5rem;
+      font-size: 0.8125rem;
+      line-height: 1.2;
+      white-space: normal;
+      text-align: center;
+    }
+
+    /* Laid out as rows of two cells: the criterion and the chosen formula.
+       Without the table model the group headers no longer need four columns. */
+    .plan-compare .plan-table,
+    .plan-compare .plan-table thead,
+    .plan-compare .plan-table tbody,
+    .plan-compare .plan-table tfoot {
+      display: block;
+      min-width: 0;
+    }
+
+    .plan-compare .plan-table tr {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      align-items: center;
+    }
+
+    .plan-compare .plan-table .pt-group th {
+      grid-column: 1 / -1;
+    }
+
+    .plan-compare .plan-table thead th,
+    .plan-compare .plan-table tbody th:first-child,
+    .plan-compare .plan-table tfoot td:first-child,
+    .plan-compare .plan-table thead td:first-child {
+      position: static;
+      min-width: 0;
+    }
+
+    .plan-compare .plan-table tr > * {
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    .plan-compare .plan-table thead th {
+      display: block;
+    }
+
+    .plan-compare .plan-table th,
+    .plan-compare .plan-table td {
+      padding: 0.85rem 0.9rem;
+    }
+
+    .plan-compare:not([data-plan="1"]) .plan-table tr > :nth-child(2):not([colspan]),
+    .plan-compare:not([data-plan="2"]) .plan-table tr > :nth-child(3),
+    .plan-compare:not([data-plan="3"]) .plan-table tr > :nth-child(4) {
+      display: none;
+    }
+
+    .plan-scroll-hint {
+      display: none !important;
+    }
+  }
+
+  @media (min-width: 701px) {
+    .plan-pick {
+      display: none;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .hf-proof {
+      display: none;
+    }
+
+    /* Two calls of the same width, stacked, within thumb reach. */
+    .hero-actions {
+      display: grid;
+      width: 100%;
+      max-width: 22rem;
+    }
+
+    .hero-actions .btn {
+      justify-content: center;
+      width: 100%;
+    }
+
+    /* References: the label on its own line, no separators to start a line. */
+    .hero-calib {
+      gap: 0.35rem 1.1rem;
+    }
+
+    .hero-calib-label {
+      flex-basis: 100%;
+      margin: 0;
+    }
+
+    .hero-calib-item + .hero-calib-item::before {
+      display: none;
+    }
+
+    /* Profiles: every choice visible, as soft chips. */
+    .audience-tabs {
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      overflow: visible;
+      border-bottom: 0;
+    }
+
+    .audience-tabs button {
+      min-height: 2.75rem;
+      padding: 0.55rem 1rem;
+      border-radius: 999px;
+      box-shadow: inset 0 0 0 1px var(--line-2);
+      color: var(--ink-2);
+      font-size: 0.9375rem;
+    }
+
+    .audience-tabs button[aria-selected="true"] {
+      background: var(--ink);
+      box-shadow: none;
+      color: var(--paper);
+    }
+
+    /* Comparison: one card per criterion, our answer highlighted. */
+    .compare-wrap {
+      overflow: visible;
+      background: none;
+      box-shadow: none;
+    }
+
+    .compare,
+    .compare tbody {
+      display: block;
+      min-width: 0;
+    }
+
+    .compare thead {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+    }
+
+    .compare tr {
+      display: grid;
+      gap: 0.15rem;
+      margin-bottom: 0.75rem;
+      padding: 1.1rem 1.15rem;
+      border-radius: var(--r-l);
+      background: var(--surface);
+      box-shadow: 0 0 0 1px var(--line), var(--shadow-1);
+    }
+
+    .compare th,
+    .compare td {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.35rem 0;
+      border: 0;
+    }
+
+    .compare tbody th {
+      margin-bottom: 0.35rem;
+      font-size: 1rem;
+    }
+
+    .compare td::before {
+      content: attr(data-label);
+      flex: none;
+      color: var(--ink-3);
+      font-weight: 500;
+    }
+
+    .compare td {
+      text-align: right;
+    }
+
+    .compare .is-us {
+      margin: 0.35rem -0.6rem 0;
+      padding: 0.6rem;
+      border-radius: var(--r-s);
+    }
+
+    .compare .is-us::before {
+      color: var(--signal);
+      font-weight: 640;
+    }
+
+    /* Le relevé: each still is as tall as its picture, no empty glass. */
+    .rv-glass {
+      min-height: 0;
+    }
+
+    /* Hero: the goal card covers the axis, so the axis gives way. */
+    .hd-years {
+      display: none;
+    }
+
+    /* Le relevé, first step: the invoice, then its context underneath,
+       instead of labels laid over the document. */
+    .rv-meta {
+      position: relative;
+      inset: auto;
+      grid-template-columns: repeat(auto-fit, minmax(6.5rem, 1fr));
+      width: 100%;
+      margin-top: 0.85rem;
+    }
+
+    /* Figures never break between the number and its unit. */
+    .rv-plan-k .readout,
+    .readout {
+      white-space: nowrap;
+    }
+  }
+
+  /* Touch screens keep no "hover" after a tap: lifted cards and lit edges
+     would otherwise stay on until the next tap elsewhere. */
+  @media (hover: none) {
+    .spot:hover::before {
+      opacity: 0;
+    }
+
+    .offer-card:hover,
+    .nx-norm:hover,
+    .app-proof-btn:hover,
+    .diag-options button:hover {
+      transform: none;
+    }
+  }
+}

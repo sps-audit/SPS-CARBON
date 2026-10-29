@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Focus } from "@/components/focus";
 import { OfferBuilder } from "@/components/offer-builder";
 import { PageHead } from "@/components/page-head";
+import { PlanCompare } from "@/components/plan-compare";
 import { comparisonGroups, options, plans, priceDrivers, type Cell } from "@/lib/offers";
 import { shareMetadata } from "@/lib/share";
 
@@ -10,7 +11,7 @@ const title = "Offres | SPS-CARBON";
 const description =
   "Bilan essentiel (Scopes 1 et 2), bilan complet (Scopes 1, 2 et 3) ou accompagnement MACF : comparez les formules SPS-CARBON, ajoutez des options et composez votre périmètre.";
 
-export const metadata: Metadata = { title, description, ...shareMetadata(title, description) };
+export const metadata: Metadata = { title, description, ...shareMetadata(title, description, "offres") };
 
 const faq = [
   {
@@ -134,6 +135,7 @@ export default function OffresPage() {
             title="Comparer les formules."
             lead="Ce que chaque formule mesure, la méthode appliquée, les documents que vous recevez et l’accompagnement prévu."
           />
+          <PlanCompare names={plans.map((plan) => plan.name)} featured={Math.max(0, plans.findIndex((plan) => plan.featured))}>
           <div className="plan-table-wrap" data-reveal="rise">
             <table className="plan-table">
               <caption className="sr-only">Comparaison des trois formules SPS-CARBON</caption>
@@ -181,6 +183,7 @@ export default function OffresPage() {
               </tfoot>
             </table>
           </div>
+          </PlanCompare>
           <p className="plan-scroll-hint">Faites glisser le tableau pour voir les trois formules.</p>
         </div>
       </section>

@@ -181,7 +181,7 @@ function ReleveVisual({ stage }: { stage: number }) {
 
         {/* 5: trajectory and report */}
         <div className="rv-layer rv-plan">
-          <svg className="rv-traj" viewBox="0 0 520 170" preserveAspectRatio="none">
+          <svg className="rv-traj" viewBox="0 0 520 170">
             <path className="rv-traj-grid" d="M0 20 H520 M0 85 H520 M0 150 H520" />
             <path className="rv-traj-trend" d="M10 40 L 510 28" />
             <path className="rv-traj-plan" d="M10 40 C 160 46, 300 80, 510 118" pathLength={1} />

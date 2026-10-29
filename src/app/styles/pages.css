@@ -6,6 +6,7 @@
     position: relative;
     padding-top: calc(var(--header) + clamp(2.5rem, 1.5rem + 4vw, 5rem));
     padding-bottom: clamp(3rem, 2rem + 4vw, 6rem);
+    overflow: hidden; /* older Safari */
     overflow: clip;
     isolation: isolate;
   }
@@ -83,11 +84,12 @@
   }
 
   .page-status {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.65rem;
-    max-width: 36rem;
-    padding: 0.85rem 1rem;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.6rem 0.75rem;
+    align-items: start;
+    max-width: 38rem;
+    padding: 1rem 1.1rem;
     border-radius: var(--r-m);
     background: color-mix(in srgb, var(--surface) 70%, transparent);
     box-shadow: inset 0 0 0 1px var(--line);
@@ -96,14 +98,24 @@
     line-height: 1.5;
   }
 
+  .page-status strong {
+    color: var(--ink);
+    font-weight: 620;
+  }
+
+  .page-status .btn {
+    grid-column: 2;
+    justify-self: start;
+  }
+
   .page-status i {
     flex: none;
     width: 0.5rem;
     height: 0.5rem;
     margin-top: 0.5em;
     border-radius: 50%;
-    background: var(--check-fill);
-    box-shadow: 0 0 0 4px var(--check-soft);
+    background: var(--signal-fill);
+    box-shadow: 0 0 0 4px var(--signal-soft);
   }
 
   @media (max-width: 1000px) {
@@ -205,7 +217,6 @@
   @keyframes pi-row {
     from {
       opacity: 0;
-      filter: blur(5px);
       transform: translateX(-10px);
     }
   }
@@ -770,7 +781,7 @@
     border-radius: 14px;
     background: color-mix(in srgb, var(--paper) 70%, transparent);
     box-shadow: inset 0 0 0 1px var(--line);
-    opacity: 0.55;
+    opacity: 0.72;
     filter: saturate(0.4);
     transition: opacity var(--d-3) var(--ease), filter var(--d-3) var(--ease), box-shadow var(--d-3) var(--ease), transform var(--d-3) var(--ease-out);
   }

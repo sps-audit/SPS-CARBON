@@ -1,27 +1,39 @@
 /*
  * Motion language "Instrument de précision".
  * Hidden states only exist when JavaScript runs (html.js) and the visitor
- * allows motion. Everything animates transform, opacity, filter or clip-path.
+ * allows motion. Everything animates transform, opacity, masks or clip-path;
+ * nothing is blurred in or out.
  */
 
 @layer motion {
   @media (prefers-reduced-motion: no-preference) {
-    /* Mise au point: headings come into focus word by word. */
+    /* Tracé: a heading is drawn in, word after word, by a soft edge slanted
+       at the angle of the logo's cuts, as a pen traces a measured line. No
+       blur: the letters are sharp from the first pixel that appears. */
     html.js [data-reveal="focus"] .fw {
       display: inline-block;
-      opacity: 0;
-      filter: blur(10px);
-      transform: translateY(0.14em);
+      /* Room for accents and descenders inside the mask, layout unchanged. */
+      padding: 0.2em 0.06em;
+      margin: -0.2em -0.06em;
+      -webkit-mask-image: linear-gradient(118deg, #000 38%, transparent 50%);
+      mask-image: linear-gradient(118deg, #000 38%, transparent 50%);
+      -webkit-mask-size: 300% 100%;
+      mask-size: 300% 100%;
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      -webkit-mask-position: 100% 0;
+      mask-position: 100% 0;
+      transform: translateY(0.06em);
       transition:
-        opacity 700ms var(--ease),
-        filter 900ms var(--ease-out),
-        transform 900ms var(--ease-out);
-      transition-delay: calc(var(--fd, 0ms) + var(--w, 0) * 42ms);
+        -webkit-mask-position 1100ms var(--ease-out),
+        mask-position 1100ms var(--ease-out),
+        transform 1100ms var(--ease-out);
+      transition-delay: calc(var(--fd, 0ms) + var(--w, 0) * 60ms);
     }
 
     html.js [data-reveal="focus"].is-in .fw {
-      opacity: 1;
-      filter: blur(0);
+      -webkit-mask-position: 0 0;
+      mask-position: 0 0;
       transform: none;
     }
 
@@ -175,7 +187,7 @@
       }
     }
 
-    /* Cursor light on instrument surfaces (.spot). */
+    /* Instrument surfaces (.spot) light their edge under the pointer. */
     .spot {
       position: relative;
     }
@@ -187,7 +199,7 @@
       inset: 0;
       border-radius: inherit;
       pointer-events: none;
-      background: radial-gradient(420px circle at var(--mx, 50%) var(--my, -30%), color-mix(in srgb, var(--signal-fill) 11%, transparent), transparent 62%);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--signal-fill) 55%, transparent);
       opacity: 0;
       transition: opacity var(--d-3) var(--ease);
     }

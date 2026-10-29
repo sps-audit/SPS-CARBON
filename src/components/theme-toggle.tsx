@@ -2,12 +2,13 @@
 
 import { useEffect, useSyncExternalStore, type MouseEvent } from "react";
 import { DEFAULT_THEME, THEME_COLORS, THEME_KEY, type Theme } from "@/lib/theme";
+import { cellPath, coverRadius } from "@/lib/cell";
 
 /*
  * Switch between the light version (default) and the dark one. Where the
- * browser supports view transitions, the new version sweeps across the page
- * along the diagonal of the SPS-CARBON symbol, starting at the switch;
- * otherwise, or with reduced motion, it changes at once.
+ * browser supports view transitions, the new version opens from the switch
+ * inside the soft hexagon of the logo until it covers the page; otherwise,
+ * or with reduced motion, it changes at once.
  */
 
 function current(): Theme {
@@ -31,18 +32,6 @@ function subscribe(onChange: () => void) {
     observer.disconnect();
     window.removeEventListener("storage", onStorage);
   };
-}
-
-// The new version is revealed behind a line on the brand diagonal (the 30° of the
-// symbol's cuts) that sweeps from the switch across the whole page.
-const U = [0.866, 0.5]; // along the diagonal
-const N = [-0.5, 0.866]; // perpendicular, towards the far side of the page
-function halfPlane(px: number, py: number, offset: number) {
-  const big = 6000;
-  const lx = px + N[0] * offset;
-  const ly = py + N[1] * offset;
-  const pt = (a: number, b: number) => `${(lx + U[0] * a - N[0] * b).toFixed(1)}px ${(ly + U[1] * a - N[1] * b).toFixed(1)}px`;
-  return `polygon(${pt(big, 0)}, ${pt(-big, 0)}, ${pt(-big, big)}, ${pt(big, big)})`;
 }
 
 type TransitionDocument = Document & { startViewTransition?: (update: () => void) => { ready: Promise<void> } };
@@ -72,20 +61,13 @@ export function ThemeToggle({ className = "" }: { className?: string }) {
     const box = event.currentTarget.getBoundingClientRect();
     const x = box.left + box.width / 2;
     const y = box.top + box.height / 2;
-    const corners = [
-      [0, 0],
-      [window.innerWidth, 0],
-      [0, window.innerHeight],
-      [window.innerWidth, window.innerHeight],
-    ].map(([cx, cy]) => N[0] * (cx - x) + N[1] * (cy - y));
-    const from = Math.min(...corners) - 8;
-    const to = Math.max(...corners) + 8;
+    const full = coverRadius(x, y, window.innerWidth, window.innerHeight);
     const transition = doc.startViewTransition(() => apply(next));
     transition.ready
       .then(() => {
         document.documentElement.animate(
-          { clipPath: [halfPlane(x, y, from), halfPlane(x, y, to)] },
-          { duration: 820, easing: "cubic-bezier(0.7, 0, 0.2, 1)", pseudoElement: "::view-transition-new(root)" },
+          { clipPath: [`path("${cellPath(x, y, 6)}")`, `path("${cellPath(x, y, full)}")`] },
+          { duration: 760, easing: "cubic-bezier(0.7, 0, 0.2, 1)", pseudoElement: "::view-transition-new(root)" },
         );
       })
       .catch(() => {});

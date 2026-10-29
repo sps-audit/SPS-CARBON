@@ -11,6 +11,6 @@ export const THEME_KEY = "sps-theme";
 export const DEFAULT_THEME: Theme = "light";
 
 // Browser bar colour for each version (matches the page background).
-export const THEME_COLORS: Record<Theme, string> = { light: "#F2F7F5", dark: "#04151A" };
+export const THEME_COLORS: Record<Theme, string> = { light: "#F5FAF8", dark: "#03151A" };
 
 export const THEME_BOOT = `(function(){var d=document.documentElement;d.classList.add('js');var t=null;try{t=localStorage.getItem('${THEME_KEY}')}catch(e){}if(t!=='light'&&t!=='dark'){t='light'}d.setAttribute('data-theme',t)})();`;

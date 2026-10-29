@@ -201,6 +201,28 @@
     display: none;
   }
 
+  /* Honeypot for robots: never seen, never focused. */
+  .form-trap {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .contact-form button[type="submit"][disabled] {
+    opacity: 0.65;
+    cursor: progress;
+  }
+
+  .form-sent .form-step {
+    color: var(--signal);
+  }
+
+  .contact-book {
+    justify-self: start;
+  }
+
   .contact-form button[type="submit"],
   .draft-actions .btn {
     justify-self: start;
@@ -286,7 +308,7 @@
     border-radius: var(--r-xl);
     background: var(--surface);
     color: var(--ink);
-    box-shadow: var(--glass-lit), 0 0 0 1px var(--line), 0 40px 100px -30px rgba(7, 31, 39, 0.55);
+    box-shadow: var(--glass-lit), 0 0 0 1px var(--line), 0 40px 100px -30px rgba(6, 33, 41, 0.55);
     overflow: auto;
   }
 
@@ -304,7 +326,6 @@
   @keyframes dialog-in {
     from {
       opacity: 0;
-      filter: blur(8px);
       transform: translateY(16px) scale(0.98);
     }
   }

@@ -10,7 +10,7 @@ const title = "Normes carbone | SPS-CARBON";
 const description =
   "GHG Protocol, ISO 14064, ISO 14067, ISO 14083, MACF, CSRD, SBTi, ISO 14068-1 : quelle norme carbone sert à quoi, laquelle vous concerne et ce que SPS-CARBON fait avec chacune.";
 
-export const metadata: Metadata = { title, description, ...shareMetadata(title, description) };
+export const metadata: Metadata = { title, description, ...shareMetadata(title, description, "normes") };
 
 const commitments = [
   {

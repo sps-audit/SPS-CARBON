@@ -1,42 +1,16 @@
 "use client";
 
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { HeroInstrument } from "./hero-instrument";
 import { Releve } from "./releve";
 import { PlatformBento } from "./platform-bento";
 import { AudiencePicker } from "./audience-picker";
-import { SectorExplorer } from "./sector-explorer";
 import { BeforeAfter } from "./before-after";
 import { Focus } from "./focus";
 import { useSiteActions } from "./site-frame";
 import { steps } from "@/lib/steps";
 import { plans } from "@/lib/offers";
-
-const frameworks = [
-  { name: "GHG Protocol", ref: "Corporate Standard", text: "Classement en Scopes 1, 2 et 3 et principes de comptabilisation." },
-  { name: "ISO 14064-1", ref: "Organisations", text: "Quantification et déclaration des gaz à effet de serre d’une organisation." },
-  { name: "MACF / CBAM", ref: "Règlement (UE) 2023/956", text: "Émissions intrinsèques des marchandises importées dans l’Union européenne." },
-  { name: "Loi 09-08", ref: "Maroc, CNDP", text: "Protection des personnes physiques à l’égard du traitement des données personnelles." },
-];
-
-const drivers = [
-  {
-    title: "Vos clients posent la question.",
-    text: "Donneurs d’ordre et acheteurs demandent les émissions de leurs fournisseurs. Une réponse documentée protège la relation commerciale.",
-  },
-  {
-    title: "L’export vers l’Europe change.",
-    text: "Le MACF concerne le ciment, le fer et l’acier, l’aluminium, les engrais, l’hydrogène et l’électricité importés dans l’Union européenne.",
-  },
-  {
-    title: "L’énergie pèse sur vos coûts.",
-    text: "Mesurer l’électricité et les carburants, c’est savoir où se concentrent les consommations, donc où agir en premier.",
-  },
-  {
-    title: "Le reporting RSE se structure.",
-    text: "Banques, partenaires et systèmes de management attendent des informations environnementales structurées et vérifiables.",
-  },
-];
 
 const comparison = [
   ["Pensé pour les entreprises marocaines", "À construire soi-même", "Variable", "En français, avec des sources locales"],
@@ -48,29 +22,10 @@ const comparison = [
   ["Lien avec votre système de management", "Non", "Non", "ISO 14001, 9001 et 45001"],
 ];
 
-const principles = [
-  {
-    term: "Vos données vous appartiennent",
-    text: "Elles servent à votre bilan, et à rien d’autre. Vos données et vos rapports restent exportables.",
-  },
-  {
-    term: "Des accès selon les rôles",
-    text: "Contributeurs, validateurs et direction voient ce qui les concerne. Chacun sait ce qu’il fournit et ce qu’il peut modifier.",
-  },
-  {
-    term: "Un historique complet",
-    text: "Chaque correction garde sa justification, chaque rapport sa version. Une évolution s’explique d’une année sur l’autre.",
-  },
-  {
-    term: "Le cadre marocain",
-    text: "Les données personnelles sont traitées selon la loi 09-08, avec les formalités CNDP accomplies avant l’ouverture des espaces clients.",
-  },
-];
-
-const faq = [
+const faq: { q: string; a: ReactNode }[] = [
   {
     q: "Que puis-je découvrir aujourd’hui ?",
-    a: "Une démonstration interactive avec des données d’exemple, des outils gratuits (calculateur express, vérificateur MACF, diagnostic) et une checklist adaptée à votre activité. Les missions sont menées dès maintenant par nos consultants avec la méthode SPS-CARBON ; les espaces clients de la plateforme ouvrent progressivement.",
+    a: "Une démonstration interactive avec des données d’exemple, des outils gratuits (calculateur express, vérificateur MACF, diagnostic) et une checklist adaptée à votre activité. Les missions sont menées dès maintenant par nos consultants avec la méthode SPS-CARBON ; l’accès à la plateforme ouvre sur invitation, dans le cadre du programme pilote 2026.",
   },
   {
     q: "Quelles données faut-il pour commencer ?",
@@ -87,6 +42,22 @@ const faq = [
   {
     q: "Mon entreprise est-elle concernée par le MACF ?",
     a: "Le MACF vise certaines marchandises importées dans l’UE : ciment, fer et acier, aluminium, engrais, hydrogène et électricité, selon leur code douanier. Les obligations déclaratives reposent sur l’importateur européen, qui demande des données à ses fournisseurs.",
+  },
+  {
+    q: "Sur quelles normes s’appuie la méthode ?",
+    a: (
+      <>
+        Le GHG Protocol pour le classement en Scopes 1, 2 et 3, l’ISO 14064-1 pour la quantification et la déclaration,
+        le règlement (UE) 2023/956 pour le MACF, et la loi 09-08 pour les données personnelles.{" "}
+        <Link href="/normes" className="link">
+          Toutes les normes carbone, expliquées
+        </Link>
+      </>
+    ),
+  },
+  {
+    q: "Que deviennent nos données ?",
+    a: "Elles vous appartiennent, servent à votre bilan et à rien d’autre, et restent exportables. Les accès dépendent des rôles (contributeurs, validateurs, direction) ; chaque correction garde sa justification et chaque rapport sa version. Les données personnelles sont traitées selon la loi 09-08, avec les formalités CNDP accomplies avant l’ouverture des espaces clients.",
   },
   {
     q: "Les résultats sont-ils certifiés ?",
@@ -108,48 +79,20 @@ export function HomePage() {
     <main id="main" className="home">
       <HeroInstrument />
 
-      <section className="chapter is-tight frames" aria-labelledby="frames-title">
-        <div className="wrap frames-grid">
-          <h2 id="frames-title" className="frames-title">
-            Nos cadres de référence
-          </h2>
-          <ul className="frames-list" data-reveal="stagger">
-            {frameworks.map((item) => (
-              <li key={item.name}>
-                <strong>{item.name}</strong>
-                <span>{item.ref}</span>
-                <p>{item.text}</p>
-              </li>
-            ))}
-          </ul>
-          <p className="frames-note">
-            Se référer à un standard ne vaut pas certification : une vérification indépendante reste une mission distincte.{" "}
-            <Link href="/normes" className="link">
-              Toutes les normes carbone, expliquées
-            </Link>
-          </p>
-        </div>
-      </section>
-
-      <section className="chapter why" id="pourquoi" aria-labelledby="why-title">
-        <div className="wrap why-grid">
-          <div className="why-head">
+      <section className="chapter" id="pourquoi" aria-labelledby="why-title">
+        <div className="wrap audience-grid">
+          <div className="head">
             <Focus className="t-h2" id="why-title">
-              Le carbone entre dans les décisions de l’entreprise.
+              Le carbone entre dans vos décisions.
             </Focus>
             <p className="t-lead" data-reveal="rise">
               Une demande client, un marché export, une facture d’énergie, un rapport RSE : les raisons de mesurer arrivent
-              souvent en même temps.
+              souvent en même temps. Choisissez votre situation.
             </p>
           </div>
-          <ul className="why-list">
-            {drivers.map((driver, n) => (
-              <li key={driver.title} data-reveal="rise" style={i(n)}>
-                <h3 className="t-h3">{driver.title}</h3>
-                <p>{driver.text}</p>
-              </li>
-            ))}
-          </ul>
+          <div data-reveal="rise">
+            <AudiencePicker />
+          </div>
         </div>
       </section>
 
@@ -174,40 +117,6 @@ export function HomePage() {
             <Link href="/plateforme#demonstration" className="link">
               Essayer la démonstration
             </Link>
-          </div>
-        </div>
-      </section>
-
-      <section className="chapter" id="public" aria-labelledby="audience-title">
-        <div className="wrap audience-grid">
-          <div className="head">
-            <Focus className="t-h2" id="audience-title">
-              Pour qui ?
-            </Focus>
-            <p className="t-lead" data-reveal="rise">
-              Pour les organisations qui doivent connaître leurs émissions, les justifier et les réduire, quel que soit leur
-              point de départ.
-            </p>
-          </div>
-          <div data-reveal="rise">
-            <AudiencePicker />
-          </div>
-        </div>
-      </section>
-
-      <section className="chapter s-tint" id="secteurs" aria-labelledby="sectors-title">
-        <div className="wrap">
-          <div className="head is-split">
-            <Focus className="t-h2" id="sectors-title">
-              Votre secteur, vos sources d’émissions.
-            </Focus>
-            <p className="t-lead" data-reveal="rise">
-              Choisissez un secteur pour voir où se situent, en général, les principales sources, et dans quel scope elles se
-              rangent.
-            </p>
-          </div>
-          <div data-reveal="rise">
-            <SectorExplorer />
           </div>
         </div>
       </section>
@@ -243,9 +152,11 @@ export function HomePage() {
                 {comparison.map(([criterion, sheet, generic, us]) => (
                   <tr key={criterion}>
                     <th scope="row">{criterion}</th>
-                    <td>{sheet}</td>
-                    <td>{generic}</td>
-                    <td className="is-us">{us}</td>
+                    <td data-label="Tableur interne">{sheet}</td>
+                    <td data-label="Logiciel générique">{generic}</td>
+                    <td data-label="SPS-CARBON" className="is-us">
+                      {us}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -349,28 +260,7 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="chapter s-tint" id="confiance" aria-labelledby="trust-title">
-        <div className="wrap trust-grid">
-          <div className="head">
-            <Focus className="t-h2" id="trust-title">
-              Vos données, sous contrôle.
-            </Focus>
-            <p className="t-lead" data-reveal="rise">
-              Quatre principes, posés dès la conception de la plateforme et appliqués dans chaque mission.
-            </p>
-          </div>
-          <dl className="spec" data-reveal="stagger">
-            {principles.map((item) => (
-              <div key={item.term}>
-                <dt>{item.term}</dt>
-                <dd>{item.text}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </section>
-
-      <section className="chapter faq-chapter" aria-labelledby="faq-title">
+      <section className="chapter s-tint faq-chapter" aria-labelledby="faq-title">
         <div className="wrap faq-grid">
           <div className="faq-side">
             <Focus className="t-h2" id="faq-title">

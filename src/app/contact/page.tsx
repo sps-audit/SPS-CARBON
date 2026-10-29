@@ -8,7 +8,7 @@ const title = "Parlons de votre projet | SPS-CARBON";
 const description =
   "Contactez SAFEPERFORM SOLUTIONS à El Jadida pour échanger sur votre inventaire carbone, vos données et vos objectifs QHSE et RSE.";
 
-export const metadata: Metadata = { title, description, ...shareMetadata(title, description) };
+export const metadata: Metadata = { title, description, ...shareMetadata(title, description, "contact") };
 
 export default function ContactPage() {
   return (
@@ -33,6 +33,11 @@ export default function ContactPage() {
               {company.email}
             </a>
             <address>{company.address}</address>
+            {company.bookingUrl ? (
+              <a className="btn btn-quiet btn-small contact-book" href={company.bookingUrl} target="_blank" rel="noopener noreferrer">
+                Réserver un appel de 30 min
+              </a>
+            ) : null}
             <h3>Pour préparer notre échange</h3>
             <ul className="dash-list">
               <li>Votre secteur d’activité et les sites concernés.</li>

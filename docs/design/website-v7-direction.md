@@ -72,3 +72,13 @@ Everything is transform, opacity, clip or filter on small elements; nothing anim
 - Menus, phone menu, page shutter, checklist dialog and the theme sweep exercised in a browser.
 - 2560 px, 3840 px and 3× pixel density checked for proportion and sharpness.
 - `tsc --noEmit` clean. A real `next build` is run on the publishing machine (`verifier-build.cmd`).
+
+## v8: 2026 brand kit, soft geometry, night and phone pass
+
+- Logo and icons from the 2026 brand kit (outlined SVG, softened hexagon), cropped to the artwork in `public/brand/`; favicon, app icons and manifest from the kit. Palette values aligned on the kit (Petrol #062129, Viridian #25C691, Ice #F5FAF8, Mist #EFF6F4). The kit suggests Inter for website text; the site keeps Mona Sans, which is less common.
+- Every large movement has the logo's shape: the page change is a soft hexagon that grows from the clicked link and shrinks back into the header logo (`page-transition.tsx`, `lib/cell.ts`); the theme switch opens the new version inside the same cell from the switch (view transitions, instant elsewhere).
+- Headings are traced in by a soft slanted edge (masks), never blurred. Nothing on the site blurs in or out any more. The cursor spotlight and the button shine were removed: instrument surfaces light their edge, buttons take a little of their text colour.
+- The one-screen modules form a single console with hairline cells instead of loose cards; the hero's "Nouveau" pill and checkmark row became one line of references linking to the norms page.
+- Dark version: deeper petrol, surfaces lifted by light (top edge, faint lamp), true-dark shadows; night panels inside a page rise instead of sinking.
+- Phone (`styles/phone.css`): goal card layered on the hero chart, equal stacked calls, profiles as chips, comparison as one card per criterion, one formula at a time on the offers table, functional pages without a decorative instrument, no sticky hover after a tap.
+- Compatibility: prefixed masks and blurs, overflow fallbacks for older Safari, view transitions optional, forced-colours mode, no tap flash or double-tap zoom on controls.

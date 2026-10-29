@@ -8,13 +8,13 @@ import { onScrollFrame, requestScrollFrame } from "./scroll-store";
  * Site-wide motion engine (v7). One passive scroll loop, one pointer loop.
  *
  * - Reveals: [data-reveal] gets .is-in once its top passes 88 % of the viewport.
- *   Variants are styled in motion.css: focus (headings come into focus word by
+ *   Variants are styled in motion.css: focus (headings are traced in word by
  *   word), scan (an instrument panel is read by a scan line), rise (a quiet
  *   focus-in for text and groups), stagger (children one after the other).
  * - Page progress: the graduated line of the header (.site-progress i).
  * - Hero settle: --hp on .hero-deck (0 at rest, 1 when the hero has scrolled away).
- * - Pointer: a light follows the cursor on .spot surfaces, and the page-head
- *   instrument tilts a little (--px, --py), mouse only, never under reduced motion.
+ * - Pointer: the page-head instrument tilts a little (--px, --py), mouse
+ *   only, never under reduced motion.
  *
  * Geometry is measured once (and again when the page changes size), then each
  * scroll frame only compares cached positions with scrollY and writes: no
@@ -125,11 +125,6 @@ export function MotionLayer() {
       px = (event.clientX / window.innerWidth - 0.5) * 2;
       py = (event.clientY / window.innerHeight - 0.5) * 2;
       if (!drift) drift = requestAnimationFrame(applyDrift);
-      const card = (event.target as Element | null)?.closest?.(".spot") as HTMLElement | null;
-      if (!card) return;
-      const rect = card.getBoundingClientRect();
-      card.style.setProperty("--mx", `${(event.clientX - rect.left).toFixed(0)}px`);
-      card.style.setProperty("--my", `${(event.clientY - rect.top).toFixed(0)}px`);
     };
     document.addEventListener("pointermove", onPointer, { passive: true });
 

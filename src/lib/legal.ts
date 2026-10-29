@@ -3,6 +3,8 @@ import type { EditorialPage } from "./editorial";
 
 const revised = "Dernière révision : 29 octobre 2026.";
 const host = "Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis";
+// The texts follow how the contact form actually works (see company.formKey).
+const direct = Boolean(company.formKey);
 
 export const legalPages: EditorialPage[] = [
   {
@@ -88,8 +90,14 @@ export const legalPages: EditorialPage[] = [
       },
       {
         id: "contact",
-        title: "De votre brouillon à l’envoi du courriel",
-        body: [
+        title: direct ? "Votre demande, de la page de contact à notre boîte" : "De votre brouillon à l’envoi du courriel",
+        body: direct
+          ? [
+              `Lorsque vous choisissez « Envoyer ma demande », les informations saisies (nom, e-mail, téléphone et entreprise s’ils sont indiqués, besoin, sites, échéance et message) sont transmises par le service d’acheminement de formulaires ${company.formService}, qui les remet par e-mail à SAFEPERFORM SOLUTIONS. Le site lui-même ne les enregistre pas dans une base de données.`,
+              "Si l’envoi n’aboutit pas, le message est conservé dans la page sous forme de brouillon : vous pouvez alors l’ouvrir dans votre messagerie ou le copier, et décidez vous-même de son envoi.",
+              `${company.formService} intervient comme prestataire technique pour l’acheminement et peut traiter ces données hors du Maroc, dans les conditions prévues par la loi n° 09-08 pour les transferts à l’étranger.`,
+            ]
+          : [
           "Les champs de la page de contact servent à composer un brouillon localement dans votre navigateur. Vous pouvez relire le message avant de choisir « Ouvrir ma messagerie ». Ce lien confie le brouillon à votre application de messagerie ; vous décidez ensuite de l’envoyer. Le site ne l’envoie pas automatiquement et ne peut pas confirmer sa réception.",
           "L’option de copie place le texte dans votre presse-papiers à votre demande. Elle vous permet de le coller dans une messagerie si le lien ne s’ouvre pas. La saisie n’est pas transmise à un formulaire serveur du site.",
           "Lorsque vous envoyez l’e-mail, l’entreprise reçoit votre adresse d’expédition, le contenu et les informations habituelles du message. Cet échange relève alors du fonctionnement des services de messagerie utilisés par vous et par l’entreprise.",
@@ -101,10 +109,22 @@ export const legalPages: EditorialPage[] = [
         ],
       },
       {
+        id: "espace-entreprise",
+        title: "Demande d’espace entreprise",
+        body: [
+          "La page « Créer un espace entreprise » recueille les informations nécessaires à l’étude d’une demande d’ouverture d’espace pendant le programme pilote : raison sociale, ICE s’il est indiqué, secteur, nombre de sites et ville ; nom, fonction, e-mail professionnel et téléphone s’il est indiqué de la personne qui fait la demande ; objectif de la démarche et précisions éventuelles ; acceptation des conditions d’utilisation.",
+          direct
+            ? `La demande est transmise par ${company.formService} à SAFEPERFORM SOLUTIONS lorsque vous choisissez « Envoyer ma demande ». Si l’envoi n’aboutit pas, elle vous est proposée sous forme de courriel à envoyer depuis votre messagerie.`
+            : "La demande est rédigée dans la page, puis envoyée depuis votre messagerie lorsque vous le décidez ; le site ne la transmet pas lui-même.",
+          "Elle sert à vérifier l’entreprise, à préparer un échange de cadrage et, si la demande est retenue, à ouvrir l’espace et à adresser une invitation. Aucun mot de passe n’est demandé sur le site : il est créé à partir du lien d’invitation.",
+          "Pendant la saisie, les réponses sont conservées dans le stockage de session de l’onglet (clé « sps-signup ») pour ne pas être perdues en cas de rechargement ; elles sont effacées après l’envoi ou à la fermeture de l’onglet. Les cases d’acceptation ne sont jamais conservées.",
+        ],
+      },
+      {
         id: "destinataires",
         title: "Destinataires et services techniques",
         body: [
-          "Les demandes sont destinées aux personnes habilitées à y répondre au sein de SAFEPERFORM SOLUTIONS. Les fournisseurs nécessaires à la messagerie et à l’hébergement peuvent également intervenir dans le traitement selon les services retenus.",
+          `Les demandes sont destinées aux personnes habilitées à y répondre au sein de SAFEPERFORM SOLUTIONS. Les fournisseurs nécessaires à la messagerie et à l’hébergement${direct ? `, ainsi que ${company.formService} pour l’acheminement du formulaire,` : ""} peuvent également intervenir dans le traitement selon les services retenus.`,
           "L’absence de base de données dans le site ne signifie pas l’absence de tout traitement : les courriels reçus et les journaux techniques de l’hébergeur sont aussi concernés. Vercel Inc. étant établie aux États-Unis, ces journaux peuvent être traités hors du Maroc, dans les conditions prévues par la loi n° 09-08 pour les transferts à l’étranger.",
         ],
       },
@@ -130,7 +150,9 @@ export const legalPages: EditorialPage[] = [
         title: "Navigation et évolution du service",
         body: [
           "Le site n’intègre pas d’outil publicitaire ni de mesure d’audience. Ses ressources sont disponibles sans inscription. La page Cookies précise le périmètre technique de ce constat.",
-          "L’ajout d’un formulaire serveur, de comptes clients, d’imports de fichiers ou de services tiers nécessitera une nouvelle information adaptée aux traitements réels. Les références CNDP correspondantes seront indiquées après accomplissement et vérification des démarches applicables.",
+          direct
+            ? "L’ajout de comptes clients, d’imports de fichiers ou d’autres services tiers nécessitera une nouvelle information adaptée aux traitements réels. Les références CNDP correspondantes seront indiquées après accomplissement et vérification des démarches applicables."
+            : "L’ajout d’un formulaire serveur, de comptes clients, d’imports de fichiers ou de services tiers nécessitera une nouvelle information adaptée aux traitements réels. Les références CNDP correspondantes seront indiquées après accomplissement et vérification des démarches applicables.",
         ],
       },
     ],
@@ -147,7 +169,7 @@ export const legalPages: EditorialPage[] = [
         title: "Ce que le site enregistre",
         body: [
           `${revised} Le code du site n’ajoute ni cookie publicitaire ni outil de mesure d’audience. Ses images, polices et autres ressources visuelles sont servies avec le site, sans appel à un service tiers.`,
-          "Votre choix entre la version claire et la version sombre est enregistré dans le stockage local de votre navigateur, sous la clé « sps-theme ». Il ne quitte pas votre appareil et vous pouvez l’effacer depuis les paramètres du navigateur. Les journaux techniques de l’hébergeur sont décrits dans la politique de confidentialité.",
+          "Votre choix entre la version claire et la version sombre est enregistré dans le stockage local de votre navigateur, sous la clé « sps-theme ». Il ne quitte pas votre appareil et vous pouvez l’effacer depuis les paramètres du navigateur. Pendant une demande d’espace entreprise, les réponses en cours sont gardées dans le stockage de session de l’onglet (clé « sps-signup ») et effacées après l’envoi ou à la fermeture de l’onglet. Les journaux techniques de l’hébergeur sont décrits dans la politique de confidentialité.",
         ],
       },
       {
@@ -155,7 +177,9 @@ export const legalPages: EditorialPage[] = [
         title: "Ce qui se passe dans votre navigateur",
         body: [
           "Le code du site n’ajoute pas de cookie publicitaire ou analytique. Les ressources proposées peuvent être téléchargées sans créer de compte ni communiquer une adresse électronique.",
-          "Les champs de contact servent à préparer un brouillon dans la page. La copie du message utilise votre presse-papiers à votre demande ; l’ouverture de la messagerie vous laisse décider de l’envoi. Ces actions ne constituent pas un outil de suivi publicitaire.",
+          direct
+            ? `Le formulaire de contact envoie votre demande par ${company.formService} lorsque vous le choisissez ; il ne dépose pas de cookie publicitaire ou analytique. Ces actions ne constituent pas un outil de suivi publicitaire.`
+            : "Les champs de contact servent à préparer un brouillon dans la page. La copie du message utilise votre presse-papiers à votre demande ; l’ouverture de la messagerie vous laisse décider de l’envoi. Ces actions ne constituent pas un outil de suivi publicitaire.",
         ],
       },
       {
@@ -204,15 +228,28 @@ export const legalPages: EditorialPage[] = [
         title: "Le statut de la démonstration",
         body: [
           "La démonstration illustre un parcours de travail avec des données et des facteurs d’exemple. Ses résultats ne doivent pas être utilisés pour un inventaire réel, une déclaration réglementaire, une communication environnementale ou une décision reposant sur des émissions vérifiées.",
-          "La plateforme est en cours de déploiement : toutes les fonctionnalités présentées en démonstration ne sont pas encore des services ouverts. La démonstration ne doit pas recevoir de documents confidentiels ni de données réelles nécessitant un espace sécurisé.",
+          "La plateforme est en programme pilote, avec un accès ouvert sur invitation : toutes les fonctionnalités présentées en démonstration ne sont pas encore des services ouverts. La démonstration ne doit pas recevoir de documents confidentiels ni de données réelles nécessitant un espace sécurisé.",
         ],
       },
       {
         id: "contact",
         title: "Préparer et envoyer une demande",
-        body: [
+        body: direct
+          ? [
+              `Le parcours de contact envoie votre demande à SAFEPERFORM SOLUTIONS par ${company.formService}. Une confirmation s’affiche lorsque l’envoi a abouti ; si ce n’est pas le cas, la page vous propose d’envoyer le même message depuis votre messagerie.`,
+              `Vous pouvez aussi écrire directement à ${company.email}. Une demande de contact ne vaut pas confirmation de rendez-vous ou acceptation d’une prestation.`,
+            ]
+          : [
           "Le parcours de contact vous permet de préparer et de relire un message. Le lien « Ouvrir ma messagerie » ouvre un brouillon dans votre application. Vous pouvez le modifier et décidez de son envoi. Le site ne peut pas confirmer qu’un message a été envoyé ou reçu.",
           `Si votre messagerie ne s’ouvre pas, utilisez la copie du message ou écrivez directement à ${company.email}. Une demande de contact ne vaut pas confirmation de rendez-vous ou acceptation d’une prestation.`,
+        ],
+      },
+      {
+        id: "espace-entreprise",
+        title: "Espace entreprise et programme pilote",
+        body: [
+          "Pendant le programme pilote 2026, les espaces entreprise de la plateforme sont ouverts par SAFEPERFORM SOLUTIONS, sur invitation, après l’étude de la demande et un échange de cadrage. Une demande ne vaut ni ouverture d’espace, ni acceptation d’une prestation, ni engagement financier.",
+          "La personne qui fait la demande déclare agir pour le compte de l’entreprise indiquée et fournir des informations exactes. Les conditions propres à l’utilisation de l’espace et à l’accompagnement sont communiquées avec l’invitation ou la proposition ; elles complètent les présentes conditions.",
         ],
       },
       {

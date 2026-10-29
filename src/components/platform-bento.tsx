@@ -34,7 +34,7 @@ export function PlatformBento() {
   const open = fixed.filter((f) => !f).length;
 
   return (
-    <div className="bento" data-reveal="stagger">
+    <div className="bento" data-reveal="scan">
       <article className="bento-tile spot bt-trajectory">
         <div className="bt-head">
           <h3>Où allons-nous d’ici 2030 ?</h3>

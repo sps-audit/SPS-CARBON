@@ -12,7 +12,7 @@ const title = "Outils gratuits | SPS-CARBON";
 const description =
   "Calculateur carbone express des Scopes 1 et 2, vérificateur MACF / CBAM, diagnostic express et checklist des données : des outils gratuits, sans inscription, calculés dans votre navigateur.";
 
-export const metadata: Metadata = { title, description, ...shareMetadata(title, description) };
+export const metadata: Metadata = { title, description, ...shareMetadata(title, description, "outils") };
 
 const tools = [
   { href: "#calculateur", name: "Calculateur express", text: "Vos émissions des Scopes 1 et 2 à partir de vos factures.", time: "2 minutes" },

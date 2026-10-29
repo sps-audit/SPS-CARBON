@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import { CoastMap } from "./coast-map";
+import { company } from "@/lib/company";
 
 /*
  * The instrument at the head of each inner page: a small glass screen that
@@ -220,7 +221,7 @@ function Normes() {
 }
 
 function Contact() {
-  const steps = ["Votre besoin", "Vos informations", "Relecture"];
+  const steps = company.formKey ? ["Votre besoin", "Vos coordonnées", "Envoi"] : ["Votre besoin", "Vos informations", "Relecture"];
   return (
     <Frame title="Premier échange" chip="">
       <ol className="pi-steps">
@@ -231,7 +232,11 @@ function Contact() {
           </li>
         ))}
       </ol>
-      <p className="pi-note">Le message est préparé ici, puis envoyé depuis votre messagerie.</p>
+      <p className="pi-note">
+        {company.formKey
+          ? "Votre demande nous parvient directement, avec une confirmation à l’écran."
+          : "Le message est préparé ici, puis envoyé depuis votre messagerie."}
+      </p>
     </Frame>
   );
 }

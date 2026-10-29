@@ -18,7 +18,9 @@ export type IconName =
   | "play"
   | "menu"
   | "shield"
-  | "compass";
+  | "compass"
+  | "signin"
+  | "building";
 const paths: Record<IconName, React.ReactNode> = {
   arrow: (
     <>
@@ -88,6 +90,18 @@ const paths: Record<IconName, React.ReactNode> = {
     <>
       <circle cx="12" cy="12" r="9" />
       <path d="m16 8-3 5-5 3 3-5Z" />
+    </>
+  ),
+  signin: (
+    <>
+      <path d="M14 4h3.5A2.5 2.5 0 0 1 20 6.5v11a2.5 2.5 0 0 1-2.5 2.5H14" />
+      <path d="M4 12h11M11 8l4 4-4 4" />
+    </>
+  ),
+  building: (
+    <>
+      <path d="M4 20V6.5A2.5 2.5 0 0 1 6.5 4h6A2.5 2.5 0 0 1 15 6.5V20M15 10h2.5A2.5 2.5 0 0 1 20 12.5V20M3 20h18" />
+      <path d="M8 8h3M8 12h3M8 16h3" />
     </>
   ),
 };

@@ -121,8 +121,8 @@ export function ProjectDialog({
       }}
     >
       <div className="dialog-top">
-        <img className="logo-on-light" src="/brand/logo-dark.svg" width="170" height="27" alt="SPS CARBON" />
-        <img className="logo-on-dark" src="/brand/logo-light.svg" width="170" height="27" alt="" aria-hidden="true" />
+        <img className="logo-on-light" src="/brand/logo-dark.svg" width="168" height="21" alt="SPS CARBON" />
+        <img className="logo-on-dark" src="/brand/logo-light.svg" width="168" height="21" alt="" aria-hidden="true" />
         <button className="icon-button" onClick={onClose} aria-label="Fermer">
           <Icon name="close" />
         </button>

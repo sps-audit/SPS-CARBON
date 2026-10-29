@@ -82,10 +82,6 @@ export function HeroInstrument() {
   return (
     <section className="hero" aria-labelledby="hero-title">
       <div className="wrap hero-head">
-        <Link href="/outils" className="hero-news">
-          <span>Nouveau</span>
-          Calculateur express et vérificateur MACF, gratuits
-        </Link>
         <Focus as="h1" id="hero-title" className="t-display hero-title" delay={120}>
           Votre bilan carbone, enfin pilotable.
         </Focus>
@@ -101,11 +97,20 @@ export function HeroInstrument() {
             Essayer la démonstration
           </Link>
         </div>
-        <ul className="hero-frames" aria-label="Cadres de référence de la méthode" data-reveal="rise" style={{ ["--i" as string]: 6 }}>
+        <Link
+          href="/normes"
+          className="hero-calib"
+          data-reveal="rise"
+          style={{ ["--i" as string]: 6 }}
+          aria-label="Référentiels de la méthode : GHG Protocol, ISO 14064-1, MACF / CBAM et loi 09-08. Voir les normes expliquées."
+        >
+          <span className="hero-calib-label">Référentiels</span>
           {["GHG Protocol", "ISO 14064-1", "MACF / CBAM", "Loi 09-08"].map((name) => (
-            <li key={name}>{name}</li>
+            <span key={name} className="hero-calib-item">
+              {name}
+            </span>
           ))}
-        </ul>
+        </Link>
       </div>
 
       <div className="hero-stage" ref={stage}>
@@ -143,19 +148,22 @@ export function HeroInstrument() {
                 >
                   <defs>
                     <linearGradient id="hdArea" x1="0" x2="0" y1="0" y2="1">
-                      <stop offset="0" stopColor="#29C792" stopOpacity="0.3" />
-                      <stop offset="1" stopColor="#29C792" stopOpacity="0" />
+                      <stop offset="0" stopColor="#25c691" stopOpacity="0.3" />
+                      <stop offset="1" stopColor="#25c691" stopOpacity="0" />
                     </linearGradient>
                   </defs>
                   <path className="hd-grid" d="M0 44 H800 M0 110 H800 M0 176 H800" />
                   <path className="hd-trend" d={line(trend)} />
                   <path className="hd-area" d={`${planD} L 788 220 L 12 220 Z`} fill="url(#hdArea)" />
                   <path className="hd-plan" d={planD} />
-                  <circle className="hd-end" cx="788" cy={plan[5][1].toFixed(1)} r="6" />
+                  {/* Dots are zero-length round strokes: they stay round in a stretched chart. */}
+                  <path className="hd-end" d={`M788 ${plan[5][1].toFixed(1)} l0.001 0`} />
+                  <path className="hd-end-core" d={`M788 ${plan[5][1].toFixed(1)} l0.001 0`} />
                   {read !== null && (
                     <g className="hd-cross">
                       <line x1={XS[read]} x2={XS[read]} y1="0" y2="220" />
-                      <circle cx={XS[read]} cy={plan[read][1].toFixed(1)} r="5" />
+                      <path className="hd-cross-ring" d={`M${XS[read]} ${plan[read][1].toFixed(1)} l0.001 0`} />
+                      <path className="hd-cross-dot" d={`M${XS[read]} ${plan[read][1].toFixed(1)} l0.001 0`} />
                     </g>
                   )}
                 </svg>

@@ -8,7 +8,7 @@ import { PageHead } from "@/components/page-head";
 import type { InstrumentName } from "@/components/page-instruments";
 import { PageShowcase } from "@/components/page-showcase";
 import { Trajectory } from "@/components/trajectory";
-import { shareMetadata } from "@/lib/share";
+import { shareCards, shareMetadata, type ShareCard } from "@/lib/share";
 
 type EditorialPageProps = {
   params: Promise<{ slug: string }>;
@@ -86,7 +86,7 @@ export async function generateMetadata({
   return {
     title,
     description: page.description,
-    ...shareMetadata(title, page.description),
+    ...shareMetadata(title, page.description, (shareCards as readonly string[]).includes(slug) ? (slug as ShareCard) : "accueil"),
   };
 }
 
@@ -105,11 +105,16 @@ export default async function EditorialPage({ params }: EditorialPageProps) {
     <main id="main" className={legal ? "page page-legal" : "page"}>
       <PageHead crumb={page.kicker} title={page.title} lead={page.description} instrument={legal ? undefined : instruments[slug]}>
         {slug === "plateforme" && (
-          <p className="page-status">
+          <div className="page-status">
             <i aria-hidden="true" />
-            En cours de déploiement : les missions sont menées dès aujourd’hui avec la méthode SPS-CARBON, les espaces clients
-            ouvrent progressivement.
-          </p>
+            <p>
+              <strong>Programme pilote 2026.</strong> Les missions sont menées dès aujourd’hui avec la méthode SPS-CARBON ;
+              l’accès à la plateforme ouvre sur invitation, entreprise par entreprise.
+            </p>
+            <Link href="/inscription" className="btn btn-signal btn-small">
+              Créer un espace entreprise
+            </Link>
+          </div>
         )}
       </PageHead>
 

@@ -380,7 +380,7 @@
   .calc-insight {
     padding: 0.85rem 1rem;
     border-radius: 12px;
-    background: rgba(41, 199, 146, 0.12);
+    background: rgba(37, 198, 145, 0.12);
     font-size: 0.9rem;
   }
 
@@ -573,7 +573,7 @@
   .builder-ghost li {
     height: 0.8rem;
     border-radius: 4px;
-    background: linear-gradient(90deg, var(--night-line) 0%, rgba(237, 245, 243, 0.2) 50%, var(--night-line) 100%) 0 0 / 200% 100%;
+    background: linear-gradient(90deg, var(--night-line) 0%, rgba(245, 250, 248, 0.2) 50%, var(--night-line) 100%) 0 0 / 200% 100%;
     animation: ghost 2.4s linear infinite;
   }
 
@@ -661,7 +661,7 @@
 
   .checker-result.is-no .checker-dot {
     background: var(--viridian);
-    box-shadow: 0 0 0 5px rgba(41, 199, 146, 0.18);
+    box-shadow: 0 0 0 5px rgba(37, 198, 145, 0.18);
   }
 
   .checker-sub {

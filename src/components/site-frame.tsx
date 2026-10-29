@@ -16,6 +16,8 @@ import { company } from "@/lib/company";
 
 // Pages that end with their own call to action: the footer skips its closing call there.
 const ownCall = new Set(["/contact", "/plateforme", "/solutions", "/methodologie", "/cabinet", "/ressources"]);
+// Sign-in and account pages bring their own focused frame (components/auth).
+const focused = new Set(["/connexion", "/inscription"]);
 
 const SiteActions = createContext({ openChecklist: () => {} });
 export const useSiteActions = () => useContext(SiteActions);
@@ -113,6 +115,20 @@ export function SiteFrame({ children }: { children: ReactNode }) {
     window.setTimeout(() => target.scrollIntoView({ block: "start" }), 80);
   }
 
+  if (focused.has(pathname.replace(/\/$/, "") || "/")) {
+    return (
+      <SiteActions.Provider value={{ openChecklist }}>
+        <MotionLayer />
+        <PageTransition />
+        <a className="skip-link" href="#main">
+          Aller au contenu
+        </a>
+        {children}
+        <ProjectDialog open={dialog} onClose={closeChecklist} />
+      </SiteActions.Provider>
+    );
+  }
+
   return (
     <SiteActions.Provider value={{ openChecklist }}>
       <MotionLayer />
@@ -126,8 +142,8 @@ export function SiteFrame({ children }: { children: ReactNode }) {
             <i />
           </span>
           <Link href="/" aria-label="SPS CARBON, accueil" className="site-brand">
-            <img className="logo-on-dark" src="/brand/logo-light.svg" width="204" height="32" alt="SPS CARBON" />
-            <img className="logo-on-light" src="/brand/logo-dark.svg" width="204" height="32" alt="" aria-hidden="true" />
+            <img className="logo-on-dark" src="/brand/logo-light.svg" width="200" height="25" alt="SPS CARBON" />
+            <img className="logo-on-light" src="/brand/logo-dark.svg" width="200" height="25" alt="" aria-hidden="true" />
           </Link>
           <SiteNav pathname={pathname} />
           <button
@@ -184,6 +200,16 @@ export function SiteFrame({ children }: { children: ReactNode }) {
               <Link href="/contact" className="btn btn-signal m-cta" aria-current={current("/contact")} onClick={closeMenu}>
                 Parlons de votre projet
               </Link>
+              <div className="m-account">
+                <Link href="/connexion" onClick={closeMenu}>
+                  <Icon name="signin" />
+                  Espace client
+                </Link>
+                <Link href="/inscription" onClick={closeMenu}>
+                  <Icon name="building" />
+                  Créer un espace entreprise
+                </Link>
+              </div>
               <Link href="/outils#diagnostic" className="m-alt" onClick={closeMenu}>
                 Faire le diagnostic express
               </Link>
@@ -193,6 +219,10 @@ export function SiteFrame({ children }: { children: ReactNode }) {
             </div>
           </nav>
           <ThemeToggle />
+          <Link className="site-login" href="/connexion" aria-label="Espace client, connexion" title="Espace client">
+            <Icon name="signin" />
+            <span>Espace client</span>
+          </Link>
           <Link className="btn btn-small site-cta" href="/contact">
             Parlons de votre projet
           </Link>
@@ -226,8 +256,8 @@ export function SiteFrame({ children }: { children: ReactNode }) {
         )}
         <div className="wrap footer-grid">
           <div className="footer-company">
-            <img className="logo-on-dark" src="/brand/logo-light.svg" width="236" height="37" alt="SPS CARBON" />
-            <img className="logo-on-light" src="/brand/logo-dark.svg" width="236" height="37" alt="" aria-hidden="true" />
+            <img className="logo-on-dark" src="/brand/logo-light.svg" width="256" height="32" alt="SPS CARBON" />
+            <img className="logo-on-light" src="/brand/logo-dark.svg" width="256" height="32" alt="" aria-hidden="true" />
             <p>
               Une initiative de SAFEPERFORM SOLUTIONS, cabinet d’audit, de conseil et de formation en management QHSE et RSE.
             </p>
@@ -258,6 +288,12 @@ export function SiteFrame({ children }: { children: ReactNode }) {
                 <Link href="/contact">Contact</Link>
               </li>
               <li>
+                <Link href="/connexion">Espace client</Link>
+              </li>
+              <li>
+                <Link href="/inscription">Créer un espace entreprise</Link>
+              </li>
+              <li>
                 <button type="button" onClick={openChecklist}>
                   Préparer mon inventaire
                 </button>
@@ -282,10 +318,10 @@ export function SiteFrame({ children }: { children: ReactNode }) {
         </div>
         <div className="wrap footer-base">
           <span>© 2026 SAFEPERFORM SOLUTIONS SARL AU</span>
-          <span className="footer-status">
+          <Link href="/inscription" className="footer-status">
             <i aria-hidden="true" />
-            Plateforme en cours de déploiement
-          </span>
+            Programme pilote 2026, accès sur invitation
+          </Link>
           <Link href="/cookies" className="footer-clean">
             Sans traceur publicitaire ni mesure d’audience
           </Link>

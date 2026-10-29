@@ -42,7 +42,7 @@
   }
 
   .site-brand img {
-    width: 168px;
+    width: 184px;
     height: auto;
   }
 
@@ -88,6 +88,72 @@
 
   .site-cta {
     flex: none;
+  }
+
+  /* Client space: an icon on most screens, with its name on wide ones. */
+  .site-login {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    min-width: 2.6rem;
+    height: 2.6rem;
+    margin-right: 0.35rem;
+    padding: 0 0.65rem;
+    border-radius: 999px;
+    color: var(--ink-2);
+    font-size: 0.9375rem;
+    font-weight: 560;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color var(--d-2) var(--ease), color var(--d-2) var(--ease);
+  }
+
+  .site-login:hover {
+    background: var(--line);
+    color: var(--ink);
+  }
+
+  .site-login[aria-current="page"] {
+    color: var(--ink);
+  }
+
+  .site-login span {
+    display: none;
+  }
+
+  @media (min-width: 1440px) {
+    .site-login span {
+      display: inline;
+    }
+  }
+
+  /* Phone menu: the client space and the account request, side by side. */
+  .m-account {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+
+  .m-account a {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    min-height: 3rem;
+    padding: 0.6rem 0.85rem;
+    border-radius: var(--r-m);
+    box-shadow: inset 0 0 0 1px var(--line-2);
+    color: var(--ink);
+    font-size: 0.875rem;
+    font-weight: 580;
+    line-height: 1.25;
+    text-decoration: none;
+  }
+
+  .m-account svg {
+    flex: none;
+    color: var(--signal);
   }
 
   /* ---------- Desktop navigation ---------- */
@@ -308,7 +374,7 @@
   .mv-screen i {
     flex: 1;
     border-radius: 3px 3px 0 0;
-    background: linear-gradient(var(--viridian), rgba(41, 199, 146, 0.35));
+    background: linear-gradient(var(--viridian), rgba(37, 198, 145, 0.35));
     transform-origin: 50% 100%;
   }
 
@@ -366,7 +432,7 @@
   .mv-plans i {
     height: 1.05rem;
     border-radius: 4px;
-    background: rgba(41, 199, 146, 0.3);
+    background: rgba(37, 198, 145, 0.3);
   }
 
   .mv-plans span:last-child i {
@@ -639,7 +705,6 @@
   @keyframes m-in {
     from {
       opacity: 0;
-      filter: blur(6px);
       transform: translateY(10px);
     }
   }
@@ -761,8 +826,8 @@
     gap: 2rem 4rem;
     padding: clamp(2.5rem, 1.5rem + 4vw, 5.5rem) clamp(1.5rem, 1rem + 3vw, 4.5rem);
     border-radius: var(--r-xl);
-    background: linear-gradient(180deg, rgba(237, 245, 243, 0.05), rgba(237, 245, 243, 0.015));
-    box-shadow: inset 0 1px 0 rgba(237, 245, 243, 0.12), inset 0 0 0 1px var(--night-line);
+    background: linear-gradient(180deg, rgba(245, 250, 248, 0.05), rgba(245, 250, 248, 0.015));
+    box-shadow: inset 0 1px 0 rgba(245, 250, 248, 0.12), inset 0 0 0 1px var(--night-line);
     isolation: isolate;
     overflow: hidden;
   }
@@ -844,7 +909,7 @@
   }
 
   .footer-company img {
-    width: 200px;
+    width: 224px;
     height: auto;
   }
 
@@ -895,8 +960,8 @@
     width: 7px;
     height: 7px;
     border-radius: 50%;
-    background: var(--amber);
-    box-shadow: 0 0 0 4px rgba(223, 183, 122, 0.16);
+    background: var(--viridian);
+    box-shadow: 0 0 0 4px rgba(37, 198, 145, 0.18);
   }
 
   .site-footer.is-compact {
@@ -946,11 +1011,11 @@
   }
 
   .trajectory-a {
-    stroke: rgba(237, 245, 243, 0.16);
+    stroke: rgba(245, 250, 248, 0.16);
   }
 
   .trajectory-b {
-    stroke: rgba(41, 199, 146, 0.5);
+    stroke: rgba(37, 198, 145, 0.5);
   }
 
   .trajectory-run {
@@ -967,7 +1032,7 @@
     margin: -4.5px 0 0 -4.5px;
     border-radius: 50%;
     background: var(--viridian);
-    box-shadow: 0 0 0 5px rgba(41, 199, 146, 0.16), 0 0 18px rgba(41, 199, 146, 0.6);
+    box-shadow: 0 0 0 5px rgba(37, 198, 145, 0.16), 0 0 18px rgba(37, 198, 145, 0.6);
   }
 
   /* ---------- Sticky bar (phones) ---------- */
@@ -1008,62 +1073,54 @@
     }
   }
 
-  /* ---------- Shutter (page change) ---------- */
-  .shutter {
+  /* ---------- The cell (page change), see page-transition.tsx ---------- */
+  .cell-veil {
     position: fixed;
     z-index: 300;
     inset: 0;
     pointer-events: none;
-    overflow: hidden;
+    visibility: hidden;
   }
 
-  .shutter-blade {
-    position: absolute;
-    inset: 0;
-    background: var(--petrol);
+  .cell-veil.is-on {
+    visibility: visible;
+  }
+
+  .cell-veil svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .cell-veil path {
+    transform-box: view-box;
+    transform-origin: 0 0;
+    transform: scale(0);
     will-change: transform;
   }
 
-  .shutter-a {
-    clip-path: polygon(0 0, 100% 0, 100% calc(50% + 28.9vw), 0 calc(50% - 28.9vw));
-    transform: translate(60vmax, -104vmax);
+  .cell-body {
+    fill: var(--petrol);
   }
 
-  .shutter-b {
-    clip-path: polygon(0 calc(50% - 28.9vw), 100% calc(50% + 28.9vw), 100% 100%, 0 100%);
-    transform: translate(-60vmax, 104vmax);
-  }
-
-  .shutter-seam {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 160vmax;
-    height: 1.5px;
-    background: var(--viridian);
-    box-shadow: 0 0 16px rgba(41, 199, 146, 0.7);
-    transform: translate(-50%, -50%) rotate(30deg) scaleX(0);
+  .cell-ring {
+    fill: none;
+    stroke: var(--viridian);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
     opacity: 0;
   }
+}
 
-  .shutter.is-close .shutter-blade {
-    transform: none;
-    transition: transform 320ms var(--ease-io);
-  }
-
-  .shutter.is-close .shutter-seam {
-    opacity: 1;
-    transform: translate(-50%, -50%) rotate(30deg) scaleX(1);
-    transition: transform 360ms var(--ease-out) 120ms, opacity 120ms var(--ease) 120ms;
-  }
-
-  .shutter.is-open .shutter-blade {
-    transition: transform 600ms var(--ease-out) 60ms;
-  }
-
-  .shutter.is-open .shutter-seam {
-    opacity: 0;
-    transform: translate(-50%, -50%) rotate(30deg) scaleX(1);
-    transition: opacity 260ms var(--ease);
+/* Phones: solid surfaces instead of live blurs. A blur behind a fixed bar is
+   recomputed on every scrolled frame, which mid-range phones feel. */
+@layer chrome {
+  @media (max-width: 760px), (pointer: coarse) {
+    .sticky-cta {
+      background: color-mix(in srgb, var(--surface) 96%, transparent);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
   }
 }

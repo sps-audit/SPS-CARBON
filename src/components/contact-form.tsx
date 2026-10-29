@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { company } from "@/lib/company";
+import { deliver } from "@/lib/deliver";
 
 // Indexes are used in links (?sujet=N): keep the order, append new subjects at the end.
 const subjects = [
@@ -13,6 +14,7 @@ const subjects = [
   "Échanger sur un autre besoin",
   "Répondre à un questionnaire carbone",
   "Proposer un partenariat",
+  "Demander un accès pilote",
 ];
 
 // Step 1: the reason for the request, in the order a visitor thinks of it.
@@ -21,7 +23,7 @@ const reasons = [
   { subject: 5, title: "Répondre à un client ou à une banque", text: "Un questionnaire ou une demande d’émissions à traiter" },
   { subject: 1, title: "Élargir au Scope 3", text: "Achats, transport, déchets et fournisseurs" },
   { subject: 2, title: "Préparer le MACF / CBAM", text: "Les données produit pour votre client européen" },
-  { subject: 3, title: "Découvrir la plateforme", text: "La démonstration et la feuille de route" },
+  { subject: 7, title: "Demander un accès pilote", text: "Programme pilote 2026, accès sur invitation" },
   { subject: 6, title: "Proposer un partenariat", text: "Bureau d’études, expert-comptable, fédération…" },
   { subject: 4, title: "Un autre besoin", text: "Formation, système de management, question ponctuelle" },
 ];
@@ -29,17 +31,29 @@ const reasons = [
 const siteOptions = ["Un seul site", "2 à 5 sites", "Plus de 5 sites", "Je ne sais pas encore"];
 const deadlineOptions = ["Moins de 3 mois", "3 à 6 mois", "Plus de 6 mois", "Pas d’échéance précise"];
 
+// With a delivery key the request is sent from the page; without one (or if
+// sending fails) the visitor gets a draft for their own mail app, so a request
+// is never lost.
+const direct = Boolean(company.formKey);
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
 export function ContactForm() {
   const [fields, setFields] = useState({
     name: "",
+    email: "",
+    phone: "",
     organisation: "",
     subject: subjects[0],
     sites: "",
     deadline: "",
     message: "",
   });
-  const [stage, setStage] = useState<"reason" | "details" | "review">("reason");
-  const review = stage === "review";
+  const [stage, setStage] = useState<"reason" | "details" | "review" | "sent">("reason");
+  const [sending, setSending] = useState(false);
+  const [failed, setFailed] = useState(false);
+  const trap = useRef<HTMLInputElement>(null);
+  const sentHeading = useRef<HTMLHeadingElement>(null);
+  const emailInput = useRef<HTMLInputElement>(null);
   const reasonHeading = useRef<HTMLHeadingElement>(null);
   const detailsHeading = useRef<HTMLHeadingElement>(null);
   const skipFocus = useRef(true);
@@ -55,6 +69,7 @@ export function ContactForm() {
       return;
     }
     if (stage === "review") reviewHeading.current?.focus();
+    if (stage === "sent") sentHeading.current?.focus();
     if (stage === "details") detailsHeading.current?.focus();
     if (stage === "reason") reasonHeading.current?.focus();
   }, [stage]);
@@ -86,6 +101,8 @@ export function ContactForm() {
     fields.message.trim(),
     "",
     `Nom : ${fields.name.trim()}`,
+    ...(fields.email.trim() ? [`E-mail : ${fields.email.trim()}`] : []),
+    ...(fields.phone.trim() ? [`Téléphone : ${fields.phone.trim()}`] : []),
     ...(fields.organisation.trim()
       ? [`Entreprise : ${fields.organisation.trim()}`]
       : []),
@@ -99,12 +116,58 @@ export function ContactForm() {
     `[SPS-CARBON] ${fields.subject}`,
   )}&body=${encodeURIComponent(body)}`;
 
+  async function send() {
+    setSending(true);
+    setStatus("Envoi de votre demande…");
+    const sent = await deliver(
+      fields.subject,
+      {
+        name: fields.name.trim(),
+        email: fields.email.trim(),
+        "Téléphone": fields.phone.trim() || "Non indiqué",
+        Entreprise: fields.organisation.trim() || "Non indiquée",
+        Besoin: fields.subject,
+        "Sites concernés": fields.sites || "Non indiqué",
+        "Échéance": fields.deadline || "Non indiquée",
+        message: fields.message.trim(),
+      },
+      trap.current?.checked ?? false,
+    );
+    if (sent) {
+      setStage("sent");
+      // The confirmation heading takes the focus and is read out; no echo below.
+      setStatus("");
+    } else {
+      // Nothing is lost: the same message becomes a draft to send by e-mail.
+      setFailed(true);
+      setStage("review");
+      setStatus("L’envoi n’a pas abouti. Votre message est conservé : envoyez-le depuis votre messagerie.");
+    }
+    setSending(false);
+  }
+
   function prepareMessage(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!fields.name.trim() || !fields.message.trim()) {
-      setStatus("Indiquez votre nom et quelques mots sur votre besoin.");
+    if (sending) return;
+    const email = fields.email.trim();
+    if (!fields.name.trim() || (direct && !email) || !fields.message.trim()) {
+      setStatus(
+        direct
+          ? "Indiquez votre nom, votre e-mail et quelques mots sur votre besoin."
+          : "Indiquez votre nom et quelques mots sur votre besoin.",
+      );
       if (!fields.name.trim()) nameInput.current?.focus();
+      else if (direct && !email) emailInput.current?.focus();
       else messageInput.current?.focus();
+      return;
+    }
+    if (email && !emailPattern.test(email)) {
+      setStatus("Vérifiez votre adresse e-mail : elle semble incomplète.");
+      emailInput.current?.focus();
+      return;
+    }
+    if (direct && !failed) {
+      void send();
       return;
     }
     setStage("review");
@@ -135,8 +198,8 @@ export function ContactForm() {
   return (
     <div className="contact-form">
       <ol className="form-progress" aria-hidden="true">
-        {["Votre besoin", "Vos informations", "Relecture"].map((label, n) => {
-          const at = ["reason", "details", "review"].indexOf(stage);
+        {(direct && !failed ? ["Votre besoin", "Vos coordonnées", "Envoi"] : ["Votre besoin", "Vos informations", "Relecture"]).map((label, n) => {
+          const at = stage === "sent" ? 3 : ["reason", "details", "review"].indexOf(stage);
           return (
             <li key={label} className={n < at ? "is-done" : n === at ? "is-current" : ""}>
               <span>{n + 1}</span>
@@ -179,7 +242,7 @@ export function ContactForm() {
             Continuer
           </button>
         </form>
-      ) : !review ? (
+      ) : stage === "details" ? (
         <form onSubmit={prepareMessage} aria-labelledby="contact-form-title">
           <p className="form-step">Étape 2 sur 3</p>
           <h2 id="contact-form-title" ref={detailsHeading} tabIndex={-1}>
@@ -225,6 +288,38 @@ export function ContactForm() {
                 onChange={(event) =>
                   setFields({ ...fields, organisation: event.target.value })
                 }
+                placeholder="Facultatif"
+              />
+            </div>
+          </div>
+          <div className="form-grid">
+            <div className="form-field">
+              <label htmlFor="contact-email">Votre e-mail{direct ? " *" : ""}</label>
+              <input
+                id="contact-email"
+                name="email"
+                type="email"
+                inputMode="email"
+                autoComplete="email"
+                required={direct}
+                maxLength={180}
+                ref={emailInput}
+                value={fields.email}
+                onChange={(event) => setFields({ ...fields, email: event.target.value })}
+                placeholder={direct ? "Pour vous répondre" : "Facultatif"}
+              />
+            </div>
+            <div className="form-field">
+              <label htmlFor="contact-phone">Téléphone</label>
+              <input
+                id="contact-phone"
+                name="phone"
+                type="tel"
+                inputMode="tel"
+                autoComplete="tel"
+                maxLength={40}
+                value={fields.phone}
+                onChange={(event) => setFields({ ...fields, phone: event.target.value })}
                 placeholder="Facultatif"
               />
             </div>
@@ -280,17 +375,66 @@ export function ContactForm() {
               aria-describedby="contact-privacy"
             />
           </div>
+          {direct && (
+            <label className="form-trap" aria-hidden="true">
+              Ne pas cocher
+              <input ref={trap} type="checkbox" name="botcheck" tabIndex={-1} autoComplete="off" />
+            </label>
+          )}
           <p className="form-notice" id="contact-privacy">
-            Ce formulaire prépare un brouillon dans cette page. Aucune donnée
-            n’est envoyée automatiquement ni enregistrée par ce formulaire.
-            Après relecture, vous pourrez ouvrir votre messagerie et choisir
-            d’envoyer le message. Consultez notre{" "}
-            <Link href="/confidentialite">politique de confidentialité</Link>.
+            {direct && !failed ? (
+              <>
+                Vos informations servent uniquement à répondre à votre demande. Elles sont
+                transmises par e-mail à {company.name.replace(" SARL AU", "")} par
+                l’intermédiaire du service d’envoi {company.formService}.
+              </>
+            ) : (
+              <>
+                Ce formulaire prépare un brouillon dans cette page. Aucune donnée
+                n’est envoyée automatiquement ni enregistrée par ce formulaire.
+                Après relecture, vous pourrez ouvrir votre messagerie et choisir
+                d’envoyer le message.
+              </>
+            )}{" "}
+            Consultez notre <Link href="/confidentialite">politique de confidentialité</Link>.
           </p>
-          <button className="btn" type="submit">
-            Préparer mon message
+          <button className="btn" type="submit" disabled={sending} aria-busy={sending}>
+            {direct && !failed ? (sending ? "Envoi en cours…" : "Envoyer ma demande") : "Préparer mon message"}
           </button>
         </form>
+      ) : stage === "sent" ? (
+        <section className="draft-review form-sent" aria-labelledby="contact-sent-title">
+          <p className="form-step">Demande envoyée</p>
+          <h2 id="contact-sent-title" ref={sentHeading} tabIndex={-1}>
+            Merci, votre demande est bien partie.
+          </h2>
+          <p>
+            Nous vous répondons à <strong>{fields.email.trim()}</strong>. Pour compléter votre
+            demande, écrivez à <a href={`mailto:${company.email}`}>{company.email}</a>.
+          </p>
+          <dl className="draft-meta">
+            <div>
+              <dt>Votre besoin</dt>
+              <dd>{currentReason?.title ?? fields.subject}</dd>
+            </div>
+            {fields.organisation.trim() && (
+              <div>
+                <dt>Entreprise</dt>
+                <dd>{fields.organisation.trim()}</dd>
+              </div>
+            )}
+          </dl>
+          <div className="draft-actions">
+            {company.bookingUrl ? (
+              <a className="btn" href={company.bookingUrl} target="_blank" rel="noopener noreferrer">
+                Réserver un appel de 30 min
+              </a>
+            ) : null}
+            <Link className={company.bookingUrl ? "link" : "btn"} href="/outils">
+              Essayer les outils gratuits
+            </Link>
+          </div>
+        </section>
       ) : (
         <section className="draft-review" aria-labelledby="contact-review-title">
           <p className="form-step">Étape 3 sur 3</p>

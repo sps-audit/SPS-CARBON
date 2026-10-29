@@ -8,4 +8,16 @@ export const company = {
   rc: "21613",
   ice: "003437542000008",
   fiscal: "60212218",
+  // Contact form delivery. Empty: the form prepares an e-mail draft for the
+  // visitor's own mail app. Filled with a Web3Forms access key (public by
+  // design, created at web3forms.com with the address that receives the
+  // requests): the form sends the request directly.
+  formKey: "",
+  formService: "Web3Forms",
+  // Optional booking page (Cal.com, Calendly, Google Agenda…). Empty: hidden.
+  bookingUrl: "",
+  // Address of the client application once it is open (for example
+  // "https://app.sps-carbon.ma"). Empty: the sign-in page explains that
+  // client spaces open by invitation during the pilot programme.
+  appUrl: "",
 };
