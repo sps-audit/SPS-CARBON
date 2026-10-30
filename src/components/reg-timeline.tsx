@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { onMediaChange, useScrollProgress } from "./motion";
+import { onScrollFrame, requestScrollFrame } from "./scroll-store";
 
 /* Key dates for Moroccan companies. Sources listed under the timeline. */
 const events = [
@@ -33,6 +34,15 @@ export function RegTimeline() {
     const motion = window.matchMedia("(prefers-reduced-motion: no-preference)");
     const list = root.querySelector("ol");
     const items = Array.from(root.querySelectorAll<HTMLLIElement>("ol > li"));
+    // Measured on layout changes only; each scroll frame compares the cached
+    // positions with scrollY and never reads layout (no forced reflow on phones).
+    let listTop = 0;
+    let start = 0;
+    let track = 0;
+    let offset = 0;
+    let centres: number[] = [];
+    let scrub = false;
+    let lastFill = "";
     let frame = 0;
 
     const reset = () => {
@@ -41,21 +51,26 @@ export function RegTimeline() {
       for (const item of items) item.classList.remove("is-lit");
     };
 
-    const centre = (item: Element | undefined) => {
+    const centre = (item: Element | undefined, top: number) => {
       const box = item?.querySelector(".tl-dot")?.getBoundingClientRect();
-      return box ? box.top + box.height / 2 : 0;
+      return box ? box.top + box.height / 2 - top : 0;
     };
 
-    const update = () => {
+    const geometry = () => {
       frame = 0;
+      scrub = false;
+      lastFill = "";
       if (!list || !vertical.matches) {
         reset();
         return;
       }
       // The rail runs from the first event to the last one.
       const top = list.getBoundingClientRect().top;
-      const start = centre(items[0]) - top;
-      const track = centre(items[items.length - 1]) - top - start;
+      listTop = top + window.scrollY;
+      centres = items.map((item) => centre(item, top));
+      start = centres[0] ?? 0;
+      track = (centres[centres.length - 1] ?? 0) - start;
+      offset = list.offsetTop;
       root.style.setProperty("--rail-top", `${start}px`);
       root.style.setProperty("--track", `${track}px`);
       if (!motion.matches || !document.documentElement.classList.contains("js")) {
@@ -64,27 +79,40 @@ export function RegTimeline() {
         root.style.removeProperty("--head");
         return;
       }
-      // It fills up to the reading line; events above that line are lit.
-      const line = window.innerHeight * 0.62;
-      const fill = Math.max(0, Math.min(track, line - top - start));
+      scrub = true;
       root.classList.add("is-scrubbed");
+      requestScrollFrame();
+    };
+
+    // It fills up to the reading line; events above that line are lit.
+    const update = (y: number, vh: number) => {
+      if (!scrub) return;
+      const top = listTop - y;
+      const line = vh * 0.62;
+      const fill = Math.max(0, Math.min(track, line - top - start));
+      const value = fill.toFixed(1);
+      if (value === lastFill) return;
+      lastFill = value;
       root.style.setProperty("--fill", `${fill}px`);
-      root.style.setProperty("--head", `${list.offsetTop + start + fill}px`);
-      for (const item of items) item.classList.toggle("is-lit", centre(item) <= line);
+      root.style.setProperty("--head", `${offset + start + fill}px`);
+      items.forEach((item, i) => item.classList.toggle("is-lit", top + centres[i] <= line));
     };
 
     const schedule = () => {
-      if (!frame) frame = requestAnimationFrame(update);
+      if (!frame) frame = requestAnimationFrame(geometry);
     };
 
-    update();
-    window.addEventListener("scroll", schedule, { passive: true });
+    geometry();
+    const stopScroll = onScrollFrame(update);
+    const sizes = new ResizeObserver(schedule);
+    sizes.observe(document.body);
     window.addEventListener("resize", schedule);
     const stopVertical = onMediaChange(vertical, schedule);
     const stopMotion = onMediaChange(motion, schedule);
     return () => {
       cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", schedule);
+      stopScroll();
+      sizes.disconnect();
       window.removeEventListener("resize", schedule);
       stopVertical();
       stopMotion();

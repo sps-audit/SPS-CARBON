@@ -578,7 +578,7 @@
     height: 0.8rem;
     border-radius: 4px;
     background: linear-gradient(90deg, var(--night-line) 0%, rgba(245, 250, 248, 0.2) 50%, var(--night-line) 100%) 0 0 / 200% 100%;
-    animation: ghost 2.4s linear infinite;
+    animation: ghost 2.4s linear 3;
   }
 
   .builder-ghost li:nth-child(2) {

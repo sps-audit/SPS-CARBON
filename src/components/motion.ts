@@ -68,18 +68,18 @@ export function useScrollProgress<T extends HTMLElement>(
     if (!element) return;
     const media = window.matchMedia("(prefers-reduced-motion: reduce)");
     let top = 0;
+    let last = "";
     // Cached document position: scrolling compares it with scrollY, no layout read.
     const geometry = () => {
       top = element.getBoundingClientRect().top + window.scrollY;
       requestScrollFrame();
     };
     const stop = onScrollFrame((y, vh) => {
-      if (media.matches) {
-        element.style.setProperty("--p", "1");
-        return;
-      }
-      const value = (vh * start - (top - y)) / (vh * (start - end));
-      element.style.setProperty("--p", Math.min(1, Math.max(0, value)).toFixed(4));
+      const raw = media.matches ? 1 : (vh * start - (top - y)) / (vh * (start - end));
+      const value = Math.min(1, Math.max(0, raw)).toFixed(4);
+      if (value === last) return;
+      last = value;
+      element.style.setProperty("--p", value);
     });
     geometry();
     const sizes = new ResizeObserver(geometry);

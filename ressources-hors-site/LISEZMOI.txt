@@ -1,0 +1,3 @@
+Fichiers de marque et images non utilises par le site, sortis de public/
+pour ne plus etre publies sur Vercel (le site ne les charge pas).
+Pour en publier un, remettez-le dans public/ au meme chemin.

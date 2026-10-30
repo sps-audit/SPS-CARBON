@@ -773,7 +773,9 @@
 
     /* The hills breathe: a drift slow enough to be felt rather than seen. */
     .auth-backdrop.is-ready .auth-photo {
-      animation: hills 46s var(--ease) var(--since, 0s) infinite alternate;
+      /* Two passes (out and back), then still: the blurred card above it no
+         longer has to be recomposed every frame while the visitor types. */
+      animation: hills 46s var(--ease) var(--since, 0s) 2 alternate both;
     }
 
     /* Switching between sign-in and account: the landscape stays, the card
@@ -826,7 +828,7 @@
     }
 
     .auth-backdrop.is-ready .auth-light {
-      animation: light-pass 28s var(--ease) var(--since, 0s) infinite alternate;
+      animation: light-pass 28s var(--ease) var(--since, 0s) 2 alternate both;
     }
 
     @keyframes light-pass {

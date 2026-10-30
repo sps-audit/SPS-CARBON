@@ -36,6 +36,7 @@ export function MotionLayer() {
     let bar: HTMLElement | null = null;
     let hero: HTMLElement | null = null;
     let deck: HTMLElement | null = null;
+    let head: HTMLElement | null = null;
     // Until the visitor scrolls, the page is "arriving": everything already on
     // screen comes in, even after fonts or images move it a little.
     const startY = window.scrollY;
@@ -45,6 +46,7 @@ export function MotionLayer() {
       bar = document.querySelector<HTMLElement>(".site-progress i");
       hero = document.querySelector<HTMLElement>(".hero");
       deck = document.querySelector<HTMLElement>(".hero-deck");
+      head = document.querySelector<HTMLElement>(".page-head");
       max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
       if (hero) {
         const rect = hero.getBoundingClientRect();
@@ -88,25 +90,35 @@ export function MotionLayer() {
       }
     };
 
+    // Layout changes come in bursts (an accordion opening, fonts arriving):
+    // positions are measured once the burst is over, not on every frame of it.
     let remeasure = 0;
-    const refresh = () => {
+    let settle = 0;
+    const run = () => {
       cancelAnimationFrame(remeasure);
       remeasure = requestAnimationFrame(() => {
         measure();
         requestScrollFrame();
       });
     };
+    const refresh = () => {
+      window.clearTimeout(settle);
+      settle = window.setTimeout(run, 120);
+    };
 
-    refresh();
+    run();
     const stopScroll = onScrollFrame(update);
     window.addEventListener("resize", refresh);
     document.fonts?.ready.then(refresh);
     // The page grew or shrank (fonts, an accordion, a tab): positions are measured again.
     const sizes = new ResizeObserver(refresh);
     sizes.observe(document.body);
-    // Elements added later (a step, a panel) are picked up as they appear.
+    // Elements to reveal added later (a step, a panel) are picked up as they
+    // appear. Other DOM changes (typing in a tool, a live figure) are ignored.
+    const isReveal = (node: Node) =>
+      node instanceof Element && (node.matches("[data-reveal]") || node.querySelector("[data-reveal]") !== null);
     const added = new MutationObserver((mutations) => {
-      if (mutations.some((m) => Array.from(m.addedNodes).some((node) => node.nodeType === 1))) refresh();
+      if (mutations.some((m) => Array.from(m.addedNodes).some(isReveal))) refresh();
     });
     added.observe(document.body, { childList: true, subtree: true });
 
@@ -115,13 +127,12 @@ export function MotionLayer() {
     let py = 0;
     const applyDrift = () => {
       drift = 0;
-      const head = document.querySelector<HTMLElement>(".page-head");
       if (!head) return;
       head.style.setProperty("--px", px.toFixed(3));
       head.style.setProperty("--py", py.toFixed(3));
     };
     const onPointer = (event: PointerEvent) => {
-      if (!fine.matches || reduce.matches) return;
+      if (!head || !fine.matches || reduce.matches) return;
       px = (event.clientX / window.innerWidth - 0.5) * 2;
       py = (event.clientY / window.innerHeight - 0.5) * 2;
       if (!drift) drift = requestAnimationFrame(applyDrift);
@@ -132,6 +143,7 @@ export function MotionLayer() {
       stopScroll();
       cancelAnimationFrame(drift);
       cancelAnimationFrame(remeasure);
+      window.clearTimeout(settle);
       sizes.disconnect();
       added.disconnect();
       window.removeEventListener("resize", refresh);

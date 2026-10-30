@@ -701,7 +701,8 @@
     stroke: var(--signal-fill);
     stroke-width: 1.5;
     transform-origin: 0 0;
-    animation: pin-wave 2600ms var(--ease-out) 1800ms infinite;
+    /* A few pulses, then rest: an SVG transform repaints on the main thread. */
+    animation: pin-wave 2600ms var(--ease-out) 1800ms 4;
     opacity: 0;
   }
 
