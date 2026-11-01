@@ -119,6 +119,13 @@ export function LoginForm() {
       <p className="auth-note">
         Programme pilote 2026 : les espaces entreprise sont ouverts par notre équipe, sur invitation.
       </p>
+
+      <nav className="auth-links" aria-label="Liens utiles">
+        <Link href="/plateforme">Découvrir la plateforme</Link>
+        <Link href="/plateforme#demonstration">Voir la démonstration</Link>
+        <Link href="/offres">Offres</Link>
+        <Link href="/contact">Aide et contact</Link>
+      </nav>
     </section>
   );
 }

@@ -2,15 +2,15 @@
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 
-// When the landscape was first shown in this visit: moving between the sign-in
+// When the backdrop was first shown in this visit: moving between the sign-in
 // and account pages keeps it in place instead of fading it in again.
 let shownAt = 0;
 
 /*
- * The landscape behind the sign-in and account pages. It arrives softly
- * once decoded, then breathes: a very slow drift of the hills, a band of
- * light travelling across the valley, and, with a mouse, a slight depth that
- * follows the pointer. A fine grain keeps the large gradients free of banding
+ * The backdrop behind the sign-in and account pages, shared with the
+ * platform's entry: soft green ribbons. It arrives softly once decoded, then
+ * breathes: a very slow drift, a band of light travelling across, and, with
+ * a mouse, a slight depth that follows the pointer. A fine grain keeps the large gradients free of banding
  * on every screen. Portrait screens get a portrait crop; AVIF, WebP and JPEG
  * are offered in that order. Still under reduced motion.
  */
@@ -60,17 +60,19 @@ export function AuthBackdrop() {
     >
       <div className="auth-scene" ref={scene}>
         <picture className="auth-photo">
-          <source media="(orientation: portrait)" type="image/avif" srcSet="/images/auth/paysage-portrait-1290.avif" />
-          <source media="(orientation: portrait)" type="image/webp" srcSet="/images/auth/paysage-portrait-1290.webp" />
-          <source media="(orientation: portrait)" srcSet="/images/auth/paysage-portrait-1290.jpg" />
-          <source type="image/avif" srcSet="/images/auth/paysage-1920.avif 1920w, /images/auth/paysage-3200.avif 3200w" sizes="100vw" />
-          <source type="image/webp" srcSet="/images/auth/paysage-1920.webp 1920w" sizes="100vw" />
+          <source media="(orientation: portrait)" type="image/avif" srcSet="/images/auth/vagues-portrait-1290.avif" />
+          <source media="(orientation: portrait)" type="image/webp" srcSet="/images/auth/vagues-portrait-1290.webp" />
+          <source media="(orientation: portrait)" srcSet="/images/auth/vagues-portrait-1290.jpg" />
+          <source type="image/avif" srcSet="/images/auth/vagues-1920.avif 1920w, /images/auth/vagues-3200.avif 3200w" sizes="100vw" />
+          <source type="image/webp" srcSet="/images/auth/vagues-1920.webp 1920w, /images/auth/vagues-3200.webp 3200w" sizes="100vw" />
           <img
             ref={photo}
-            src="/images/auth/paysage-1920.jpg"
+            src="/images/auth/vagues-1920.jpg"
+            srcSet="/images/auth/vagues-1920.jpg 1920w, /images/auth/vagues-3200.jpg 3200w"
+            sizes="100vw"
             alt=""
             width={1920}
-            height={1081}
+            height={1080}
             decoding="async"
             fetchPriority="high"
             onLoad={show}

@@ -1,9 +1,9 @@
 /*
- * Sign-in and account pages. A soft landscape fills the window (the visitor's
- * own light: misty hills in the brand's greens, ice and amber); light travels
- * slowly over it and the form sits in the middle on frosted glass with the
- * soft corners of the logo. In the dark version the same landscape is seen at
- * dusk, under a petrol veil.
+ * Sign-in and account pages. Soft green ribbons fill the window (the same
+ * backdrop as the platform's entry, so leaving the site for the platform
+ * feels like one place); light travels slowly over them and the form sits in
+ * the middle on frosted glass with the soft corners of the logo. In the dark
+ * version the same ribbons are seen at dusk, under a petrol veil.
  */
 
 @layer components {
@@ -18,13 +18,13 @@
     background: var(--paper);
   }
 
-  /* ---------- The landscape ---------- */
+  /* ---------- The backdrop ---------- */
   .auth-backdrop {
     position: fixed;
     z-index: -1;
     inset: 0;
     overflow: hidden;
-    background: #dfe9e4;
+    background: #cfe8c6;
   }
 
   html[data-theme="dark"] .auth-backdrop {
@@ -59,11 +59,11 @@
     transform: scale(1.04);
   }
 
-  /* A band of warm light crossing the valley. */
+  /* A band of light crossing the ribbons. */
   .auth-light {
     position: absolute;
     inset: -25% -40%;
-    background: radial-gradient(28% 34% at 50% 48%, rgba(255, 248, 228, 0.55), rgba(255, 248, 228, 0) 70%);
+    background: radial-gradient(28% 34% at 50% 48%, rgba(255, 255, 250, 0.6), rgba(255, 255, 250, 0) 70%);
     mix-blend-mode: soft-light;
     opacity: 0;
     transition: opacity 2000ms var(--ease) 600ms;
@@ -78,8 +78,8 @@
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(180deg, rgba(245, 250, 248, 0.5), rgba(245, 250, 248, 0) 22%, rgba(245, 250, 248, 0) 78%, rgba(245, 250, 248, 0.55)),
-      radial-gradient(60% 55% at 50% 52%, rgba(245, 250, 248, 0.22), rgba(245, 250, 248, 0) 70%);
+      linear-gradient(180deg, rgba(245, 250, 248, 0.42), rgba(245, 250, 248, 0) 22%, rgba(245, 250, 248, 0) 78%, rgba(245, 250, 248, 0.5)),
+      radial-gradient(60% 55% at 50% 52%, rgba(245, 250, 248, 0.2), rgba(245, 250, 248, 0) 70%);
   }
 
   html[data-theme="dark"] .auth-veil {
@@ -418,6 +418,30 @@
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem 1.5rem;
+  }
+
+  /* Where to go next, without leaving the frame: the platform, the demo,
+     the offers and help. */
+  .auth-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.1rem;
+    padding-top: 0.95rem;
+    border-top: 1px solid var(--line);
+    font-size: var(--t-meta);
+  }
+
+  .auth-links a {
+    color: var(--ink-2);
+    font-weight: 560;
+    text-decoration: none;
+    transition: color var(--d-2) var(--ease);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .auth-links a:hover {
+      color: var(--signal);
+    }
   }
 
   /* Fields: errors next to the field, hints under the label. */
@@ -759,7 +783,7 @@
 
 @layer motion {
   @media (prefers-reduced-motion: no-preference) {
-    /* The card arrives once the landscape is there. */
+    /* The card arrives once the backdrop is there. */
     .auth-card {
       animation: card-in 1100ms var(--ease-out) 180ms both;
     }
@@ -771,14 +795,14 @@
       }
     }
 
-    /* The hills breathe: a drift slow enough to be felt rather than seen. */
+    /* The ribbons breathe: a drift slow enough to be felt rather than seen. */
     .auth-backdrop.is-ready .auth-photo {
       /* Two passes (out and back), then still: the blurred card above it no
          longer has to be recomposed every frame while the visitor types. */
       animation: hills 46s var(--ease) var(--since, 0s) 2 alternate both;
     }
 
-    /* Switching between sign-in and account: the landscape stays, the card
+    /* Switching between sign-in and account: the backdrop stays, the card
        simply cross-fades in. */
     .auth-backdrop.is-instant .auth-photo img,
     .auth-backdrop.is-instant .auth-light {

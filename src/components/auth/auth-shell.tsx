@@ -9,11 +9,11 @@ import { AuthTabs, type AuthRoute } from "./auth-tabs";
 
 /*
  * A focused frame for the sign-in and account pages: no site navigation and
- * no footer call. The landscape fills the window, light travels slowly over
+ * no footer call. The backdrop fills the window, light travels slowly over
  * it, and the form sits in the middle on frosted glass.
  *
  * The frame is mounted once for both pages (see site-frame.tsx), so switching
- * between "Connexion" and "Créer un espace" keeps the landscape, the card and
+ * between "Connexion" and "Créer un espace" keeps the backdrop, the card and
  * the tabs in place: the card changes size smoothly, the tab mark slides, and
  * only the form itself is replaced, arriving from the side it was asked from.
  */
@@ -99,6 +99,7 @@ export function AuthShell({ children }: { children: ReactNode }) {
             <Link href="/conditions-utilisation">Conditions d’utilisation</Link>
             <Link href="/confidentialite">Confidentialité</Link>
             <Link href="/mentions-legales">Mentions légales</Link>
+            <Link href="/contact">Aide et contact</Link>
           </nav>
         </footer>
       </div>
