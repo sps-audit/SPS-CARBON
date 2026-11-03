@@ -14,6 +14,7 @@ import { ThemeToggle } from "./theme-toggle";
 import { Trajectory } from "./trajectory";
 import { onScrollFrame } from "./scroll-store";
 import { company } from "@/lib/company";
+import { SafeperformLogo } from "@/components/safeperform-logo";
 
 // Pages that end with their own call to action: the footer skips its closing call there.
 const ownCall = new Set(["/contact", "/plateforme", "/solutions", "/methodologie", "/cabinet", "/ressources"]);
@@ -263,6 +264,9 @@ export function SiteFrame({ children }: { children: ReactNode }) {
             <p>
               Une initiative de SAFEPERFORM SOLUTIONS, cabinet d’audit, de conseil et de formation en management QHSE et RSE.
             </p>
+            <Link href="/cabinet" className="footer-parent">
+              <SafeperformLogo />
+            </Link>
             <a className="footer-mail" href={`mailto:${company.email}`}>
               {company.email}
             </a>

@@ -1,0 +1,624 @@
+/* Import demo (platform page): drop zone with folder, imported-file list, hold-to-delete button. */
+
+@layer controls {
+  /* Hold to confirm. Two copies of the same label sit on top of each other:
+     the danger copy is revealed from the left while the button is held. */
+  .hold {
+    position: relative;
+    isolation: isolate;
+    display: inline-grid;
+    flex: none;
+    min-height: 2.5rem;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    overflow: hidden;
+    background: color-mix(in srgb, var(--ink) 6%, transparent);
+    color: var(--ink);
+    font-size: var(--t-ui);
+    font-weight: 560;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    touch-action: manipulation;
+    transition:
+      scale var(--d-2) var(--ease-out),
+      background-color var(--d-2) var(--ease);
+  }
+
+  .hold > span {
+    grid-area: 1 / 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0 1.05rem 0 0.9rem;
+  }
+
+  .hold svg {
+    width: 1.15em;
+    height: 1.15em;
+    flex: none;
+  }
+
+  .hold-fill {
+    background: color-mix(in srgb, var(--danger) 15%, var(--surface));
+    color: var(--danger);
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 420ms var(--ease-out);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .hold:hover {
+      background: color-mix(in srgb, var(--ink) 10%, transparent);
+    }
+  }
+
+  .hold.is-holding {
+    scale: 0.97;
+  }
+
+  .hold.is-holding .hold-fill {
+    clip-path: inset(0 0 0 0);
+    transition: clip-path var(--hold-ms, 1200ms) linear;
+  }
+
+  .hold.is-done .hold-fill {
+    clip-path: inset(0 0 0 0);
+    transition: none;
+  }
+
+  .hold.is-done {
+    scale: 1;
+  }
+}
+
+@layer components {
+  .imp {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: var(--col-gap);
+    align-items: stretch;
+  }
+
+  @media (max-width: 1000px) {
+    .imp {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* ---------- Drop zone ---------- */
+  .imp-card {
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    gap: 1.5rem;
+    min-height: 23rem;
+    padding: clamp(1.75rem, 1.2rem + 2vw, 2.75rem) clamp(1.25rem, 1rem + 1.5vw, 2.25rem);
+    border-radius: var(--r-xl);
+    background: var(--surface);
+    box-shadow: 0 0 0 1px var(--line), var(--shadow-2);
+    text-align: center;
+    transition:
+      box-shadow var(--d-2) var(--ease),
+      background-color var(--d-2) var(--ease);
+  }
+
+  .imp-card[data-stage="over"] {
+    background: color-mix(in srgb, var(--signal-fill) 6%, var(--surface));
+    box-shadow: 0 0 0 2px var(--signal-fill), 0 0 0 8px var(--signal-soft), var(--shadow-2);
+  }
+
+  .imp-art {
+    position: relative;
+    width: 10rem;
+    height: 7.5rem;
+  }
+
+  /* The stack of documents at rest */
+  .imp-docs {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    transition:
+      opacity var(--d-3) var(--ease),
+      transform var(--d-3) var(--ease-out);
+  }
+
+  .imp-doc,
+  .imp-sheet {
+    border-radius: 10px;
+    background:
+      linear-gradient(var(--line-2) 0 0) 0.7rem 2.35rem / 2.5rem 2px no-repeat,
+      linear-gradient(var(--line-2) 0 0) 0.7rem 2.9rem / 3rem 2px no-repeat,
+      linear-gradient(var(--line-2) 0 0) 0.7rem 3.45rem / 1.9rem 2px no-repeat,
+      var(--surface);
+    box-shadow: 0 0 0 1px var(--line-2), var(--shadow-2);
+  }
+
+  .imp-doc {
+    grid-area: 1 / 1;
+    width: 4.5rem;
+    height: 5.6rem;
+    transition: transform var(--d-3) var(--ease-out);
+  }
+
+  .imp-doc.d1 {
+    transform: translate(-0.75rem, 0.3rem) rotate(-9deg);
+  }
+
+  .imp-doc.d2 {
+    transform: translate(0.75rem, 0.25rem) rotate(8deg);
+  }
+
+  .imp-doc.d3 {
+    display: grid;
+    align-content: space-between;
+    justify-items: start;
+    padding: 0.6rem;
+    transform: translateY(-0.1rem);
+  }
+
+  .imp-doc.d3 svg {
+    width: 1.05rem;
+    height: 1.05rem;
+    color: var(--signal);
+  }
+
+  .imp-doc.d3 b {
+    padding: 0.2em 0.5em;
+    border-radius: 999px;
+    background: var(--signal-soft);
+    color: var(--signal);
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+  }
+
+  /* Hover hints, a dragged file opens the fan wide */
+  @media (hover: hover) and (pointer: fine) {
+    .imp-card[data-stage="idle"]:hover .d1 {
+      transform: translate(-1.15rem, 0.25rem) rotate(-13deg);
+    }
+
+    .imp-card[data-stage="idle"]:hover .d2 {
+      transform: translate(1.15rem, 0.2rem) rotate(12deg);
+    }
+
+    .imp-card[data-stage="idle"]:hover .d3 {
+      transform: translateY(-0.4rem);
+    }
+  }
+
+  .imp-card[data-stage="over"] .d1 {
+    transform: translate(-1.9rem, 0.35rem) rotate(-18deg);
+  }
+
+  .imp-card[data-stage="over"] .d2 {
+    transform: translate(1.9rem, 0.3rem) rotate(17deg);
+  }
+
+  .imp-card[data-stage="over"] .d3 {
+    transform: translateY(-0.75rem) scale(1.04);
+  }
+
+  .imp-card:is([data-stage="loading"], [data-stage="done"]) .imp-docs {
+    opacity: 0;
+    transform: translateY(-1.25rem) scale(0.82);
+  }
+
+  /* The folder that receives them */
+  .imp-folder {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 8.5rem;
+    height: 6.5rem;
+    margin-left: -4.25rem;
+    perspective: 500px;
+    opacity: 0;
+    transform: translateY(1rem) scale(0.9);
+    transition:
+      opacity var(--d-3) var(--ease),
+      transform var(--d-3) var(--ease-out);
+  }
+
+  .imp-card:is([data-stage="loading"], [data-stage="done"]) .imp-folder {
+    opacity: 1;
+    transform: none;
+    transition-delay: 120ms;
+  }
+
+  .imp-folder-back {
+    position: absolute;
+    inset: 0.75rem 0 0;
+    border-radius: 6px 14px 14px 14px;
+    background: color-mix(in srgb, var(--signal-fill) 70%, var(--petrol));
+  }
+
+  .imp-folder-back::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: -0.65rem;
+    width: 44%;
+    height: 1rem;
+    border-radius: 9px 9px 0 0;
+    background: inherit;
+  }
+
+  .imp-sheet {
+    position: absolute;
+    top: 0.3rem;
+    left: 12%;
+    right: 12%;
+    height: 4.4rem;
+    border-radius: 7px;
+  }
+
+  .imp-sheet.s2 {
+    top: 0.6rem;
+    left: 20%;
+    right: 7%;
+  }
+
+  .imp-folder-front {
+    position: absolute;
+    inset: auto 0 0;
+    height: 4.5rem;
+    display: flex;
+    align-items: flex-end;
+    gap: 0.5rem;
+    padding: 0.6rem 0.65rem;
+    border-radius: 10px 10px 14px 14px;
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--signal-fill) 76%, white),
+      var(--signal-fill) 55%,
+      color-mix(in srgb, var(--signal-fill) 86%, var(--petrol))
+    );
+    box-shadow:
+      inset 0 1px 0 color-mix(in srgb, white 60%, transparent),
+      0 16px 30px -16px color-mix(in srgb, var(--signal-fill) 80%, var(--petrol));
+    color: var(--signal-ink);
+    text-align: left;
+    transform-origin: 50% 100%;
+  }
+
+  .imp-folder-front svg {
+    width: 1.4rem;
+    height: 1.4rem;
+    flex: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .imp-mark-dot {
+    stroke-width: 3.2;
+  }
+
+  .imp-folder-text {
+    display: grid;
+    gap: 0.1rem;
+    line-height: 1.1;
+  }
+
+  .imp-folder-text small {
+    font-size: 0.625rem;
+    font-weight: 600;
+    opacity: 0.72;
+  }
+
+  .imp-folder-text strong {
+    font-size: var(--t-micro);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  /* Words under the picture */
+  .imp-copy {
+    display: grid;
+    justify-items: center;
+    gap: 0.45rem;
+    max-width: 25rem;
+  }
+
+  .imp-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--ink);
+    font-size: var(--t-large);
+    font-weight: 620;
+    letter-spacing: -0.01em;
+  }
+
+  .imp-ok {
+    width: 1.15em;
+    height: 1.15em;
+    color: var(--signal);
+    stroke-width: 2.2;
+  }
+
+  .imp-spin {
+    display: inline-block;
+    width: 0.95em;
+    height: 0.95em;
+    border: 2px solid var(--signal-soft);
+    border-top-color: var(--signal);
+    border-radius: 50%;
+  }
+
+  .imp-hint {
+    color: var(--ink-2);
+    font-size: var(--t-small);
+    line-height: 1.5;
+    text-wrap: balance;
+    overflow-wrap: anywhere;
+  }
+
+  .imp-hint .link {
+    color: var(--signal);
+  }
+
+  .imp-formats {
+    color: var(--ink-3);
+    font-size: var(--t-meta);
+    text-wrap: balance;
+  }
+
+  .imp-error {
+    color: var(--danger);
+    font-size: var(--t-meta);
+    font-weight: 560;
+  }
+
+  /* ---------- Imported files ---------- */
+  .imp-list {
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--r-xl);
+    background: var(--surface);
+    box-shadow: 0 0 0 1px var(--line);
+  }
+
+  .imp-list-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.2rem 1.4rem 1rem;
+    border-bottom: 1px solid var(--line);
+    font-size: var(--t-ui);
+  }
+
+  .imp-list-head span {
+    color: var(--ink-3);
+    font-size: var(--t-meta);
+  }
+
+  .imp-list ul {
+    margin: 0;
+    padding: 0.35rem 0;
+    list-style: none;
+  }
+
+  .imp-row {
+    display: grid;
+    grid-template-rows: 1fr;
+    transition:
+      grid-template-rows var(--d-3) var(--ease-io),
+      opacity var(--d-2) var(--ease);
+  }
+
+  .imp-row-in {
+    min-height: 0;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.8rem 1.4rem;
+    transition: padding var(--d-3) var(--ease-io);
+  }
+
+  .imp-row + .imp-row .imp-row-in {
+    border-top: 1px solid var(--line);
+  }
+
+  .imp-row.is-leaving {
+    grid-template-rows: 0fr;
+    opacity: 0;
+  }
+
+  .imp-row.is-leaving .imp-row-in {
+    overflow: hidden;
+    padding-block: 0;
+  }
+
+  .imp-row-icon {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--r-s);
+    background: var(--signal-soft);
+    color: var(--signal);
+  }
+
+  .imp-row-name {
+    display: grid;
+    gap: 0.2rem;
+    min-width: 0;
+  }
+
+  .imp-row-name strong {
+    overflow: hidden;
+    font-size: var(--t-ui);
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .imp-row-name small {
+    color: var(--ink-3);
+    font-size: var(--t-meta);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .imp-empty {
+    padding: 2.25rem 1.4rem;
+    color: var(--ink-3);
+    font-size: var(--t-small);
+  }
+
+  .imp-note {
+    margin-top: auto;
+    padding: 1rem 1.4rem 1.2rem;
+    border-top: 1px solid var(--line);
+    color: var(--ink-3);
+    font-size: var(--t-meta);
+  }
+
+  @media (max-width: 640px) {
+    .imp-note {
+      padding-inline: 1.1rem;
+    }
+
+    .imp-row-in {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      padding-inline: 1.1rem;
+      row-gap: 0.7rem;
+    }
+
+    .imp-row-in .hold {
+      grid-column: 2 / -1;
+      justify-self: start;
+    }
+
+    .imp-list-head {
+      padding-inline: 1.1rem;
+    }
+  }
+}
+
+@layer motion {
+  @media (prefers-reduced-motion: no-preference) {
+    .imp-spin {
+      animation: imp-spin 800ms linear infinite;
+    }
+
+    .imp-title {
+      animation: imp-word var(--d-3) var(--ease-out) both;
+    }
+
+    /* Pages slide into the folder while the front flap breathes. */
+    .imp-card[data-stage="loading"] .imp-sheet.s1 {
+      animation: imp-feed 1100ms var(--ease-io) infinite;
+    }
+
+    .imp-card[data-stage="loading"] .imp-sheet.s2 {
+      animation: imp-feed 1100ms var(--ease-io) 550ms infinite;
+    }
+
+    .imp-card[data-stage="loading"] .imp-folder-front {
+      animation: imp-flap 550ms var(--ease-io) infinite;
+    }
+
+    .imp-card[data-stage="done"] .imp-folder {
+      animation: imp-pop var(--d-3) var(--ease-out);
+    }
+
+    .imp-card[data-stage="done"] .imp-mark-check {
+      stroke-dasharray: 12;
+      animation: imp-tick var(--d-3) var(--ease-out) 120ms both;
+    }
+
+    .imp-row.is-fresh {
+      animation: imp-row-in 620ms var(--ease-out) both;
+    }
+
+    .imp-row.is-fresh .imp-row-in {
+      animation: imp-row-glow 2200ms var(--ease) both;
+    }
+
+    @keyframes imp-spin {
+      to {
+        rotate: 1turn;
+      }
+    }
+
+    @keyframes imp-word {
+      from {
+        opacity: 0;
+        translate: 0 4px;
+      }
+    }
+
+    @keyframes imp-feed {
+      0% {
+        opacity: 0;
+        transform: translateY(-2.75rem) rotate(-4deg);
+      }
+      22% {
+        opacity: 1;
+      }
+      70% {
+        opacity: 1;
+        transform: translateY(0.5rem) rotate(0deg);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(1.25rem);
+      }
+    }
+
+    @keyframes imp-flap {
+      0%,
+      100% {
+        transform: rotateX(0deg);
+      }
+      50% {
+        transform: rotateX(-12deg);
+      }
+    }
+
+    @keyframes imp-pop {
+      40% {
+        scale: 1.05;
+      }
+    }
+
+    @keyframes imp-tick {
+      from {
+        stroke-dashoffset: 12;
+      }
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    @keyframes imp-row-in {
+      from {
+        opacity: 0;
+        translate: 0 -6px;
+      }
+    }
+
+    @keyframes imp-row-glow {
+      from {
+        background: var(--signal-soft);
+      }
+      to {
+        background: transparent;
+      }
+    }
+  }
+}

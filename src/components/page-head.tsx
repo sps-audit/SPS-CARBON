@@ -2,10 +2,12 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { Focus } from "./focus";
 import { PageInstrument, type InstrumentName } from "./page-instruments";
+import { SafeperformLogo } from "./safeperform-logo";
 
 /*
  * One header for every inner page: breadcrumb, a title that comes into focus,
  * the lead, optional actions or a status line, and the page's instrument.
+ * The firm's own page opens with its logo.
  * Legal pages pass no instrument and get a quieter, text-only header.
  */
 export function PageHead({
@@ -30,6 +32,11 @@ export function PageHead({
             <span aria-hidden="true">/</span>
             <span aria-current="page">{crumb}</span>
           </nav>
+          {crumb === "Le cabinet" && (
+            <div className="page-head-logo" data-reveal="rise" style={{ ["--i" as string]: 1 }}>
+              <SafeperformLogo full />
+            </div>
+          )}
           <Focus as="h1" className="t-h1 page-title" delay={80}>
             {title}
           </Focus>

@@ -20,7 +20,8 @@ export type IconName =
   | "shield"
   | "compass"
   | "signin"
-  | "building";
+  | "building"
+  | "trash";
 const paths: Record<IconName, React.ReactNode> = {
   arrow: (
     <>
@@ -104,6 +105,7 @@ const paths: Record<IconName, React.ReactNode> = {
       <path d="M8 8h3M8 12h3M8 16h3" />
     </>
   ),
+  trash: <path d="M4 7h16M10 11v6M14 11v6M5.5 7l.9 12.1A2 2 0 0 0 8.4 21h7.2a2 2 0 0 0 2-1.9L18.5 7M9 7V4.5A1.5 1.5 0 0 1 10.5 3h3A1.5 1.5 0 0 1 15 4.5V7" />,
 };
 export function Icon({
   name,

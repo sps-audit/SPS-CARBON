@@ -60,6 +60,34 @@
     display: none;
   }
 
+  /* SAFEPERFORM SOLUTIONS: the firm's logo, sized by each placement. */
+  .sp-logo {
+    display: inline-flex;
+    flex: none;
+    line-height: 0;
+  }
+
+  .sp-logo img,
+  .footer-company .sp-logo img {
+    width: auto;
+    height: var(--sp-h, 4rem);
+  }
+
+  .footer-parent {
+    --sp-h: 4.75rem;
+    justify-self: start;
+  }
+
+  .page-head-logo {
+    --sp-h: clamp(6.5rem, 4rem + 4.5vw, 8.25rem);
+    margin-bottom: 1.1rem;
+  }
+
+  .why-parent {
+    --sp-h: 3.9rem;
+    margin-bottom: 1.1rem;
+  }
+
   /* Page progress: a graduated hairline along the bottom of the bar. */
   .site-progress {
     position: absolute;

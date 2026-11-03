@@ -8,6 +8,7 @@ import { Diagnostic } from "./diagnostic";
 import { ScopeChain } from "./scope-chain";
 import { SectorExplorer } from "./sector-explorer";
 import { Focus } from "./focus";
+import { ImportDemo } from "./import-demo";
 import { useSiteActions } from "./site-frame";
 
 /*
@@ -43,6 +44,18 @@ export function PageShowcase({ slug }: { slug: string }) {
             />
             <div data-reveal="rise">
               <ProductPreview />
+            </div>
+          </div>
+        </section>
+        <section className="chapter page-import" id="import" aria-labelledby="import-title">
+          <div className="wrap">
+            <Head
+              id="import-title"
+              title="Déposez, la collecte démarre."
+              lead="Glissez une facture ou un export : il rejoint la collecte et attend le contrôle qualité. Dans cette démonstration, votre fichier reste dans votre navigateur."
+            />
+            <div data-reveal="rise">
+              <ImportDemo />
             </div>
           </div>
         </section>

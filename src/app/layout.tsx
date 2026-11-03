@@ -9,6 +9,7 @@ import "./styles/home.css";
 import "./styles/pages.css";
 import "./styles/product.css";
 import "./styles/tools.css";
+import "./styles/import.css";
 import "./styles/contact.css";
 import "./styles/auth.css";
 import "./styles/motion.css";

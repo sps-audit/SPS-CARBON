@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { CoastMap } from "./coast-map";
 import { Focus } from "./focus";
+import { SafeperformLogo } from "@/components/safeperform-logo";
 
 /*
  * "Pourquoi SPS-CARBON" (home page): the three differences the firm stands
@@ -47,6 +48,7 @@ export function WhyUs() {
         <div className="why-rows">
           <article className="why-row" data-reveal="rise">
             <div className="why-copy">
+              <SafeperformLogo className="why-parent" />
               <h3 className="t-h3">Un cabinet d’audit derrière chaque chiffre.</h3>
               <p>
                 SPS-CARBON est porté par SAFEPERFORM SOLUTIONS, cabinet d’audit, de conseil et de formation en QHSE et RSE.
