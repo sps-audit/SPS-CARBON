@@ -232,12 +232,14 @@ export function SignupForm() {
             <button
               type="button"
               className="link"
-              onClick={() =>
+              onClick={() => {
+                const unavailable = () => setCopied("Copie indisponible : écrivez à " + company.email + ".");
+                if (!navigator.clipboard) return unavailable();
                 navigator.clipboard
-                  ?.writeText(`À : ${company.email}\n\n${summary}`)
+                  .writeText(`À : ${company.email}\n\n${summary}`)
                   .then(() => setCopied("Demande copiée : collez-la dans un e-mail à " + company.email + "."))
-                  .catch(() => setCopied("Copie indisponible : écrivez à " + company.email + "."))
-              }
+                  .catch(unavailable);
+              }}
             >
               Copier la demande
             </button>

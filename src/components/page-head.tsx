@@ -34,7 +34,7 @@ export function PageHead({
           </nav>
           {crumb === "Le cabinet" && (
             <div className="page-head-logo" data-reveal="rise" style={{ ["--i" as string]: 1 }}>
-              <SafeperformLogo full />
+              <SafeperformLogo full loading="eager" />
             </div>
           )}
           <Focus as="h1" className="t-h1 page-title" delay={80}>
