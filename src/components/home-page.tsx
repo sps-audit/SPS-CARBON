@@ -9,6 +9,7 @@ import { AudiencePicker } from "./audience-picker";
 import { BeforeAfter } from "./before-after";
 import { WhyUs } from "./why-us";
 import { Focus } from "./focus";
+import { CarbonReveal } from "./carbon-reveal";
 import { useSiteActions } from "./site-frame";
 import { steps } from "@/lib/steps";
 import { plans } from "@/lib/offers";
@@ -297,6 +298,8 @@ export function HomePage() {
           </div>
         </div>
       </section>
+
+      <CarbonReveal />
     </main>
   );
 }

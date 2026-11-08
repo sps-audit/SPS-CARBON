@@ -2034,4 +2034,47 @@
       gap: 0.15rem;
     }
   }
+
+  /* Closing moment of the homepage (components/carbon-reveal.tsx). It needs JavaScript, so it takes no room without. */
+  .carbon-reveal {
+    --reveal-ink: var(--ink);
+    --reveal-live: var(--signal);
+    --reveal-fill: var(--signal-fill);
+    --reveal-logo: var(--signal-fill);
+    --reveal-bg: var(--paper);
+    position: relative;
+    overflow: hidden;
+    height: clamp(27.5rem, 72vh, 40rem);
+    background: var(--paper);
+  }
+
+  html[data-theme="dark"] .carbon-reveal {
+    --reveal-logo: var(--ink);
+  }
+
+  html:not(.js) .carbon-reveal {
+    display: none;
+  }
+
+  .carbon-reveal svg {
+    position: absolute;
+    inset: 0;
+    display: block;
+  }
+
+  .carbon-reveal-text {
+    position: absolute;
+    inset-inline: 0;
+    bottom: clamp(1.75rem, 8%, 3.5rem);
+    display: grid;
+    justify-items: center;
+    padding-inline: var(--gutter, 1rem);
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .carbon-reveal-text > * {
+    grid-area: 1 / 1;
+    opacity: 0;
+  }
 }
