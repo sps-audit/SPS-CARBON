@@ -251,6 +251,27 @@
     font-variant-numeric: lining-nums proportional-nums;
   }
 
+  /* A rolling figure (reading.tsx): one real text, the moving digits drawn over
+     it by generated content while it rolls. Tabular figures keep the width still. */
+  .reading {
+    display: inline-grid;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+  .reading > * {
+    grid-area: 1 / 1;
+  }
+  .reading.is-rolling > .reading-value {
+    color: transparent;
+  }
+  .reading-face {
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .reading-face[data-face]::before {
+    content: attr(data-face);
+  }
+
   .readout small,
   .unit {
     font-size: 0.36em;

@@ -6,8 +6,14 @@ import { useEffect, useRef } from "react";
  * "Aiguille": a figure that settles on its value like the needle of a meter,
  * with a damped spring (a small overshoot, then rest) instead of a linear
  * count-up. It starts when it enters the viewport, and glides to any new
- * value afterwards. The real value is always in the DOM for assistive
- * technologies and search engines; under reduced motion it is shown at once.
+ * value afterwards.
+ *
+ * The page holds one text only, the real value: screen readers, copy-paste,
+ * search engines and translation tools all read "2 037", never "2 037 2 236".
+ * While the figure moves, that text is made transparent and the moving digits
+ * are drawn on top by CSS generated content (`.reading-face::before`), on an
+ * element hidden from assistive technologies. At rest the face is removed.
+ * Under reduced motion, or without JavaScript, the value is simply shown.
  */
 const formats = new Map<number, Intl.NumberFormat>();
 function format(value: number, decimals: number) {
@@ -33,27 +39,32 @@ export function Reading({
   className?: string;
   prefix?: string;
 }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  // The visible face is written directly (no re-render per frame); React only
-  // renders its first text. The real value stays in the screen-reader copy.
-  const face = useRef(prefix + format(value, decimals)).current;
+  const root = useRef<HTMLSpanElement>(null);
+  const face = useRef<HTMLSpanElement>(null);
   const state = useRef({ x: from ?? 0, v: 0, target: value, started: false, frame: 0, last: 0 });
 
   useEffect(() => {
-    const element = ref.current;
-    if (!element) return;
+    const element = root.current;
+    const dial = face.current;
+    if (!element || !dial) return;
     const s = state.current;
     s.target = value;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const write = (x: number) => {
-      element.textContent = prefix + format(x, decimals);
+    // The moving digits; `null` puts the figure back at rest (real text only).
+    const draw = (x: number | null) => {
+      if (x === null) {
+        element.classList.remove("is-rolling");
+        dial.removeAttribute("data-face");
+        return;
+      }
+      dial.setAttribute("data-face", prefix + format(x, decimals));
+      element.classList.add("is-rolling");
     };
-    if (reduce) {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       s.x = value;
-      write(value);
+      draw(null);
       return;
     }
-    // Critically under-damped spring: stiffness k, damping c (per second).
+    // Under-damped spring: stiffness k, damping c (per second).
     const k = 140;
     const c = 17;
     const step = (time: number) => {
@@ -62,16 +73,15 @@ export function Reading({
       const a = -k * (s.x - s.target) - c * s.v;
       s.v += a * dt;
       s.x += s.v * dt;
-      const settled = Math.abs(s.x - s.target) < Math.pow(10, -decimals) / 4 && Math.abs(s.v) < 0.5;
-      if (settled) {
+      if (Math.abs(s.x - s.target) < Math.pow(10, -decimals) / 4 && Math.abs(s.v) < 0.5) {
         s.x = s.target;
         s.v = 0;
         s.frame = 0;
         s.last = 0;
-        write(s.x);
+        draw(null);
         return;
       }
-      write(s.x);
+      draw(s.x);
       s.frame = requestAnimationFrame(step);
     };
     const run = () => {
@@ -85,12 +95,12 @@ export function Reading({
       return;
     }
     // First reading: wait until the figure is on screen.
-    write(s.x);
     if (!("IntersectionObserver" in window)) {
       s.started = true;
       run();
       return;
     }
+    draw(s.x);
     const observer = new IntersectionObserver(
       (entries) => {
         if (!entries.some((entry) => entry.isIntersecting)) return;
@@ -107,11 +117,9 @@ export function Reading({
   useEffect(() => () => cancelAnimationFrame(state.current.frame), []);
 
   return (
-    <span className={`reading ${className}`}>
-      <span className="sr-only">{prefix + format(value, decimals)}</span>
-      <span ref={ref} aria-hidden="true">
-        {face}
-      </span>
+    <span ref={root} className={`reading ${className}`}>
+      <span className="reading-value">{prefix + format(value, decimals)}</span>
+      <span ref={face} className="reading-face" aria-hidden="true" />
     </span>
   );
 }
