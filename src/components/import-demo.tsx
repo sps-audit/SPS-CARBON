@@ -176,7 +176,7 @@ export function ImportDemo() {
             <span className="imp-doc d1" />
             <span className="imp-doc d2" />
             <span className="imp-doc d3">
-              <Icon name="electric" />
+              <Icon name="bolt" />
               <b>XLSX</b>
             </span>
           </div>

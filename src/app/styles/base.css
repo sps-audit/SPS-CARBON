@@ -251,6 +251,26 @@
     font-variant-numeric: lining-nums proportional-nums;
   }
 
+  /* SPS icon family (icons.tsx): 1.7 strokes, round ends, a soft same-colour
+     tint on the parts marked .t that deepens when its control is pointed at. */
+  .i {
+    flex: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    overflow: visible;
+  }
+  .i .t {
+    fill: currentColor;
+    fill-opacity: 0.12;
+    transition: fill-opacity 150ms ease-out;
+  }
+  :is(a, button, summary, label):is(:hover, :focus-visible) .i .t {
+    fill-opacity: 0.22;
+  }
+
   /* A rolling figure (reading.tsx): one real text, the moving digits drawn over
      it by generated content while it rolls. Tabular figures keep the width still. */
   .reading {

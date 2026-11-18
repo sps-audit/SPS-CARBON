@@ -36,7 +36,7 @@ const sectors = {
   },
   hospitality: {
     name: "Hôtellerie & restauration",
-    icon: "compass",
+    icon: "target",
     data: [
       "Électricité, gaz et autres combustibles",
       "Achats alimentaires et autres fournitures",

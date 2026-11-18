@@ -259,6 +259,100 @@
     }
   }
 
+  /* ---------- Living icons ----------
+   * Each icon acts out its meaning with its own parts (.b to .e, icons.tsx)
+   * when its control is pointed at or reached with the keyboard: the menu
+   * lines are written again, the truck's body bobs while it drives, the bin's
+   * lid lifts. Transform and opacity only, ease-out, 300 ms (two-beat moves
+   * 450 ms), never looping, and every move ends exactly at rest. living-icons.ts
+   * keeps .is-acting for the whole move, so it always plays to its end.
+   * Ported from the platform (frame.css), for the icons the site uses. */
+  @media (prefers-reduced-motion: no-preference) {
+    .i * { transform-box: fill-box; transform-origin: 50% 50%; }
+    .i [transform] { transform-box: view-box; transform-origin: 0 0; }
+    .i.is-acting,
+    .i.is-acting :is(.b, .c, .d, .e) {
+      animation-duration: var(--act, 300ms);
+      animation-timing-function: var(--ease-out);
+      animation-fill-mode: backwards;
+    }
+    :is(.i-plus, .i-close, .i-sun, .i-target) :is(.b, .c) { transform-box: view-box; transform-origin: 12px 12px; }
+    :is(.i-flame, .i-chart, .i-report) :is(.b, .c, .d, .e) { transform-origin: 50% 100%; }
+    :is(.i-file, .i-menu) :is(.b, .c, .d) { transform-origin: 0% 50%; }
+    .i-trend .b { transform-origin: 0% 100%; }
+    .i-trash .b { transform-origin: 8% 100%; }
+    .i-mail .b { transform-origin: 50% 0%; }
+    .i-search .b { transform-origin: 40% 40%; }
+
+    .i-plus.is-acting .b, .i-close.is-acting .b { animation-name: ic-turn-90; }
+    .i-check.is-acting .b, .i-shield.is-acting .b { animation-name: ic-appear; }
+    .i-shield { --act: 450ms; }
+    .i-shield.is-acting .b { animation-delay: 80ms; }
+    .i-chevron.is-acting .b, .i-enter.is-acting .b { animation-name: ic-right; }
+    .i-down.is-acting .b, .i-download.is-acting .b { animation-name: ic-dip; }
+    .i-menu.is-acting :is(.b, .c, .d), .i-file.is-acting :is(.b, .c) { animation-name: ic-write; }
+    :is(.i-menu, .i-file, .i-report, .i-chart, .i-building) .c { animation-delay: 60ms; }
+    :is(.i-menu, .i-report, .i-chart, .i-building) .d { animation-delay: 120ms; }
+    .i-search.is-acting .b { animation-name: ic-scan; }
+    .i-trash.is-acting .b { animation-name: ic-lid; }
+    .i-help.is-acting .b { animation-name: ic-tilt; }
+    .i-alert.is-acting .b, .i-calendar.is-acting .b { animation-name: ic-pop; }
+    .i-info.is-acting .b { animation-name: ic-rise; }
+    .i-mail.is-acting .b { animation-name: ic-flap; }
+    .i-target.is-acting .b { animation-name: ic-ring; }
+    .i-target.is-acting .c { animation-name: ic-appear; animation-delay: 90ms; }
+    .i-sun.is-acting .b { animation-name: ic-turn-45; }
+    .i-report.is-acting :is(.b, .c, .d), .i-chart.is-acting :is(.b, .c, .d) { animation-name: ic-grow; }
+    .i-trend.is-acting .b { animation-name: ic-draw; }
+    .i-trend.is-acting .c { animation-name: ic-arrow-in; animation-delay: 100ms; }
+    .i-layers.is-acting .b { animation-name: ic-spread-1; }
+    .i-layers.is-acting .c { animation-name: ic-spread-2; }
+    .i-users.is-acting .b { animation-name: ic-join; }
+    .i-building.is-acting :is(.b, .c, .d) { animation-name: ic-light; }
+    .i-factory { --act: 450ms; }
+    .i-factory.is-acting .b { animation-name: ic-smoke; }
+    .i-globe.is-acting .b { animation-name: ic-spin-globe; }
+    .i-flame { --act: 450ms; }
+    .i-flame.is-acting .b { animation-name: ic-flicker; }
+    .i-flame.is-acting .c { animation-name: ic-flare; animation-delay: 60ms; }
+    .i-truck { --act: 450ms; }
+    .i-truck.is-acting { animation-name: ic-drive; }
+    .i-truck.is-acting .b { animation-name: ic-bob; }
+    .i-bolt.is-acting .b { animation-name: ic-flash; }
+    .i-box.is-acting .b { animation-name: ic-fold; }
+    .i-moon.is-acting .b { animation-name: ic-tilt-in; }
+
+    @keyframes ic-turn-45 { from { transform: rotate(-45deg); } }
+    @keyframes ic-turn-90 { from { transform: rotate(-90deg); } }
+    @keyframes ic-appear { from { opacity: 0; transform: scale(0.55); } }
+    @keyframes ic-pop { 40% { transform: scale(1.22); } }
+    @keyframes ic-right { 45% { transform: translateX(2.5px); } }
+    @keyframes ic-dip { 45% { transform: translateY(2.5px); } }
+    @keyframes ic-rise { 45% { transform: translateY(-2.2px); } }
+    @keyframes ic-write { from { transform: scaleX(0); } }
+    @keyframes ic-grow { from { transform: scaleY(0.25); } }
+    @keyframes ic-scan { 45% { transform: rotate(-14deg) scale(1.08); } }
+    @keyframes ic-lid { 45% { transform: translate(-0.4px, -2.2px) rotate(-16deg); } }
+    @keyframes ic-tilt { 40% { transform: rotate(-14deg); } }
+    @keyframes ic-tilt-in { from { transform: rotate(-22deg); } }
+    @keyframes ic-flap { from { opacity: 0.3; transform: scaleY(0.2); } }
+    @keyframes ic-ring { from { opacity: 0.3; transform: scale(0.55); } }
+    @keyframes ic-draw { from { opacity: 0.2; transform: scale(0.3); } }
+    @keyframes ic-arrow-in { from { opacity: 0; transform: translate(-2.5px, 2.5px); } }
+    @keyframes ic-spread-1 { 45% { transform: translateY(1.4px); } }
+    @keyframes ic-spread-2 { 45% { transform: translateY(2.8px); } }
+    @keyframes ic-join { from { opacity: 0; transform: translateX(-3px); } }
+    @keyframes ic-light { from { opacity: 0.1; } }
+    @keyframes ic-smoke { 55% { opacity: 0; transform: translate(1px, -3px); } 56% { opacity: 0; transform: translate(0, 1.5px); } }
+    @keyframes ic-spin-globe { 50% { transform: scaleX(0.15); } }
+    @keyframes ic-flicker { 30% { transform: scale(0.95, 1.07); } 62% { transform: scale(1.03, 0.97); } }
+    @keyframes ic-flare { from { opacity: 0.4; transform: scale(0.5); } }
+    @keyframes ic-drive { 40% { translate: 2px 0; } }
+    @keyframes ic-bob { 25% { transform: translateY(-1.2px); } 50% { transform: none; } 75% { transform: translateY(-0.6px); } }
+    @keyframes ic-flash { 20% { opacity: 0.25; transform: scale(0.92); } 45% { opacity: 1; transform: scale(1.08); } 65% { opacity: 0.6; } }
+    @keyframes ic-fold { from { opacity: 0; transform: translateY(-2px); } }
+  }
+
   /* Reduced motion: the device is simply drawn, nothing travels. */
   @media (prefers-reduced-motion: reduce) {
     .trajectory-run {
