@@ -455,9 +455,7 @@
    edges, and no decorative layers in the way. */
 @layer utilities {
   @media (forced-colors: active) {
-    .cell-veil,
-    .trajectory,
-    .hero::before {
+    .trajectory {
       display: none;
     }
 
