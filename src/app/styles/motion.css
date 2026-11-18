@@ -259,6 +259,58 @@
     }
   }
 
+  /* ---------- Signature motion: the trace (hero-trace.tsx) ----------
+   * Once, when the page is live: the consumption is picked out on the
+   * invoice, the rail runs down from it through the factor to the result,
+   * which rolls onto its value on the same clock (reading.tsx, delay), then
+   * the review is signed. About two seconds, transform and opacity only.
+   * Without scripts or under reduced motion the finished ledger is shown. */
+  @media (prefers-reduced-motion: no-preference) {
+    html.js .trace:not(.is-live) .trace-key::before {
+      transform: scaleX(0);
+    }
+    html.js .trace:not(.is-live) .trace-key::after {
+      transform: scale(0);
+    }
+    html.js .trace:not(.is-live) :is(.trace-key dt, .trace-step)::before {
+      transform: scaleY(0);
+    }
+    html.js .trace:not(.is-live) :is(.trace-step dt, .trace-step dd, .trace-op, .trace-review) {
+      opacity: 0;
+    }
+
+    .trace.is-live .trace-key::before {
+      animation: trace-mark 560ms var(--ease-out) 150ms backwards;
+    }
+    .trace.is-live .trace-key::after {
+      animation: trace-node 300ms var(--ease-out) 480ms backwards;
+    }
+    .trace.is-live .trace-key dt::before {
+      animation: trace-run 200ms linear 640ms backwards;
+    }
+    .trace.is-live .trace-step:first-child::before {
+      animation: trace-run 300ms linear 840ms backwards;
+    }
+    .trace.is-live .trace-result::before {
+      animation: trace-run 180ms linear 1140ms backwards;
+    }
+    .trace.is-live .trace-step :is(dt, dd, .trace-op) {
+      animation: trace-in 340ms var(--ease-out) backwards;
+      animation-delay: 900ms;
+    }
+    .trace.is-live .trace-result :is(dt, dd, .trace-op) {
+      animation-delay: 1160ms;
+    }
+    .trace.is-live .trace-review {
+      animation: trace-in 420ms var(--ease-out) 1750ms backwards;
+    }
+
+    @keyframes trace-mark { from { transform: scaleX(0); } }
+    @keyframes trace-node { from { transform: scale(0); } }
+    @keyframes trace-run { from { transform: scaleY(0); } }
+    @keyframes trace-in { from { opacity: 0; translate: 0 4px; } }
+  }
+
   /* ---------- Living icons ----------
    * Each icon acts out its meaning with its own parts (.b to .e, icons.tsx)
    * when its control is pointed at or reached with the keyboard: the menu

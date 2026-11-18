@@ -1,553 +1,354 @@
-/* Home: hero instrument, "Le relevé", one-screen modules. */
+/* Home: hero trace, "Le relevé", the sections of the page. */
 
 @layer sections {
-  /* ---------- Hero ---------- */
+  /* ---------- Hero: "Le tracé" ----------
+   * Editorial column on the left; on the right one invoice followed down a
+   * rail to its tonnes, laid out like a ledger (hero-trace.tsx). The rail sits
+   * in the left padding of the paper and carries on below it, so the paper and
+   * the ledger share one left edge and one column of figures. */
   .hero {
-    position: relative;
-    padding-top: calc(var(--header) + clamp(2rem, 1rem + 2.6vw, 3.25rem));
-    padding-bottom: clamp(3rem, 2rem + 4vw, 6rem);
-    overflow: hidden; /* older Safari */
-    overflow: clip;
-    isolation: isolate;
+    padding-top: calc(var(--header) + clamp(2.5rem, 0.5rem + 5vw, 6rem));
+    padding-bottom: clamp(3.5rem, 2rem + 5vw, 7.5rem);
+    border-bottom: 1px solid var(--line);
   }
 
-  /* One light source under the glass, nothing else. */
-  .hero::before {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    left: 50%;
-    bottom: 4%;
-    width: min(1400px, 130vw);
-    height: 60%;
-    transform: translateX(-50%);
-    background: radial-gradient(50% 50% at 50% 60%, color-mix(in srgb, var(--signal-fill) 13%, transparent), transparent 72%);
-    pointer-events: none;
-  }
-
-  .hero-head {
+  .hero-grid {
     display: grid;
-    justify-items: center;
-    gap: 1.25rem;
-    text-align: center;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+    column-gap: clamp(2.5rem, 0.5rem + 6vw, 7.5rem);
+    align-items: center;
   }
 
   .hero-title {
-    max-width: 11.5em;
+    max-width: 12.5em;
+    font-size: clamp(2.45rem, 1.2rem + 3.9vw, 4.55rem);
+    font-weight: 610;
+    line-height: 0.99;
+    letter-spacing: -0.042em;
+    text-wrap: balance;
   }
 
   .hero-lead {
-    max-width: 40em;
-    font-size: clamp(1.08rem, 1rem + 0.3vw, 1.25rem);
-    text-align: center;
+    max-width: 33em;
+    margin-top: clamp(1.25rem, 0.9rem + 1.2vw, 2rem);
+    font-size: var(--t-lead);
+    line-height: 1.52;
+    color: var(--ink-2);
   }
 
   .hero-actions {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.75rem;
-    margin-top: 0.25rem;
+    align-items: center;
+    gap: 1rem 2rem;
+    margin-top: clamp(1.75rem, 1.2rem + 1.6vw, 2.75rem);
   }
 
-  /* The method's references, read like the scale of an instrument. */
-  .hero-calib {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+  .hero-follow {
+    display: inline-flex;
     align-items: center;
-    gap: 0.35rem 0;
-    margin-top: 0.35rem;
-    color: var(--ink-3);
-    font-size: var(--t-ui);
-    font-weight: 540;
+    gap: 0.45em;
+    padding-block: 0.35rem;
+    border-bottom: 1px solid var(--line-2);
+    color: var(--ink);
+    font-weight: 560;
     text-decoration: none;
-    transition: color var(--d-2) var(--ease);
+    transition: border-color var(--d-2) var(--ease);
+  }
+
+  .hero-follow .i {
+    width: 1.1em;
+    height: 1.1em;
   }
 
   @media (hover: hover) and (pointer: fine) {
-    .hero-calib:hover {
-      color: var(--ink-2);
+    .hero-follow:hover {
+      border-color: currentColor;
     }
   }
 
-  .hero-calib-label {
-    margin-right: 1rem;
-    color: var(--signal);
-    font-weight: 620;
-  }
-
-  .hero-calib-item + .hero-calib-item::before {
-    content: "";
-    display: inline-block;
-    width: 1px;
-    height: 0.8em;
-    margin: 0 0.9rem;
-    vertical-align: -0.08em;
-    background: var(--line-3);
-  }
-
-  /* Stage: the dashboard lies in perspective, then settles flat as the page scrolls. */
-  .hero-stage {
-    --mx: 0;
-    --my: 0;
-    position: relative;
-    width: min(100% - 2 * var(--gutter), 72rem);
-    height: 34rem;
-    margin: clamp(2.5rem, 1.5rem + 2.4vw, 3.5rem) auto 0;
-    perspective: 1800px;
-  }
-
-  .hero-deck {
-    --hp: 0;
-    --flat: clamp(0, calc(1 - var(--hp) * 1.8), 1);
-    position: absolute;
-    left: 50%;
-    top: 0;
-    width: min(100%, 62.5rem);
-    height: 32.5rem;
-    transform: translateX(-50%) rotateX(calc(16deg * var(--flat))) translateY(calc(var(--hp) * -12px));
-    transform-origin: 50% 0;
-    transform-style: preserve-3d;
-  }
-
-  .hero-deck-glass {
-    position: relative;
-    transform: rotateY(calc(var(--mx) * 2.5deg));
-    transition: transform 900ms var(--ease-out);
-    display: grid;
-    grid-template-columns: 13rem minmax(0, 1fr);
-    height: 100%;
-    border-radius: 24px;
-    background: var(--glass-strong);
-    box-shadow: var(--glass-lit), 0 0 0 1px var(--glass-edge), var(--shadow-3);
-    overflow: hidden;
-  }
-
-  .hd-side {
-    display: grid;
-    align-content: start;
-    gap: 0.25rem;
-    padding: 1.25rem 0.85rem;
-    border-right: 1px solid var(--line);
-    background: color-mix(in srgb, var(--paper) 55%, transparent);
-    font-size: var(--t-ui);
-    color: var(--ink-3);
-  }
-
-  .hd-side > span {
-    padding: 0.55rem 0.75rem;
-    border-radius: 10px;
-    font-weight: 520;
-  }
-
-  .hd-side > span.is-on {
-    background: var(--surface);
-    color: var(--ink);
-    box-shadow: 0 0 0 1px var(--line), var(--shadow-1);
-  }
-
-  .hd-org {
+  /* The firm behind the figures, signed under the call to action. */
+  .hero-byline {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
-    margin-bottom: 1rem;
-    padding: 0 0.5rem;
-    color: var(--ink);
-    font-weight: 600;
+    gap: 0.9rem;
+    max-width: 33em;
+    margin-top: clamp(2.5rem, 1.5rem + 3vw, 4.25rem);
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--line);
+    font-size: var(--t-meta);
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--ink-3);
   }
 
-  .hd-org span {
-    display: grid;
-    place-items: center;
-    width: 2rem;
+  .hero-byline-logo img {
+    width: auto;
     height: 2rem;
-    border-radius: 8px;
-    background: var(--petrol);
-    color: var(--viridian);
-    font-size: var(--t-micro);
-    font-weight: 700;
   }
 
-  html[data-theme="dark"] .hd-org span {
-    background: var(--viridian);
-    color: var(--petrol);
-  }
-
-  .hd-main {
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    gap: 0.75rem;
-    padding: 1.5rem 1.75rem 1.25rem;
-    min-width: 0;
-  }
-
-  .hd-top {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 1rem;
-  }
-
-  .hd-k {
-    color: var(--ink-3);
-    font-size: var(--t-ui);
-    font-weight: 540;
-  }
-
-  .hd-total {
-    margin-top: 0.4rem;
-    font-size: 3.5rem;
-  }
-
-  .hd-chart-wrap {
-    position: relative;
-    min-height: 0;
-  }
-
-  .hd-chart {
-    width: 100%;
-    height: 100%;
-    cursor: crosshair;
-  }
-
-  .hd-grid {
-    fill: none;
-    stroke: var(--line);
-    stroke-dasharray: 3 5;
-  }
-
-  .hd-trend {
-    fill: none;
-    stroke: var(--ink-3);
-    stroke-width: 1.5;
-    stroke-dasharray: 5 6;
-    vector-effect: non-scaling-stroke;
-  }
-
-  .hd-plan {
-    fill: none;
-    stroke: var(--signal-fill);
-    stroke-width: 3;
-    stroke-linecap: round;
-    vector-effect: non-scaling-stroke;
-    transition: d 600ms var(--ease-out);
-  }
-
-  .hd-area {
-    transition: d 600ms var(--ease-out);
-  }
-
-  .hd-end,
-  .hd-end-core,
-  .hd-cross-ring,
-  .hd-cross-dot {
-    fill: none;
-    stroke-linecap: round;
-    vector-effect: non-scaling-stroke;
-    transition: d 600ms var(--ease-out);
-  }
-
-  .hd-end {
-    stroke: var(--signal-fill);
-    stroke-width: 15;
-  }
-
-  .hd-end-core {
-    stroke: var(--surface);
-    stroke-width: 8;
-  }
-
-  .hd-cross line {
-    stroke: var(--ink-3);
-    stroke-width: 1;
-    stroke-dasharray: 2 3;
-    vector-effect: non-scaling-stroke;
-  }
-
-  .hd-cross-ring {
-    stroke: var(--surface);
-    stroke-width: 14;
-    transition: none;
-  }
-
-  .hd-cross-dot {
-    stroke: var(--signal-fill);
-    stroke-width: 10;
-    transition: none;
-  }
-
-  .hd-read {
-    position: absolute;
-    top: 0.25rem;
-    display: grid;
-    gap: 0.1rem;
-    margin-left: 10px;
-    padding: 0.55rem 0.75rem;
-    border-radius: 10px;
-    background: var(--petrol);
-    color: var(--ice);
-    font-size: var(--t-micro);
-    line-height: 1.35;
-    white-space: nowrap;
-    pointer-events: none;
-    transform: translateX(var(--side, 0%));
-  }
-
-  .hd-read[style*="-100%"] {
-    margin-left: -10px;
-  }
-
-  .hd-read strong {
-    font-size: var(--t-ui);
-  }
-
-  .hd-read span {
-    color: rgba(243, 248, 247, 0.75);
-  }
-
-  .hd-years {
-    display: flex;
-    justify-content: space-between;
-    color: var(--ink-3);
-    font-size: var(--t-micro);
+  /* The trace */
+  .trace {
+    --pad: clamp(1.15rem, 0.9rem + 0.8vw, 1.6rem);
+    --rail-x: calc(var(--pad) / 2);
+    --rail: var(--signal-fill);
+    margin: 0;
     font-variant-numeric: lining-nums proportional-nums;
   }
 
-  /* Floating cards */
-  .hero-float {
-    position: absolute;
-    z-index: 2;
-    display: grid;
-    gap: 0.55rem;
-    padding: 1.1rem 1.2rem;
-    border-radius: 18px;
-    /* Near-opaque: inside the 3D deck a backdrop blur is not guaranteed, and
-       the dashboard must never read through a card. */
-    background: color-mix(in srgb, var(--surface) 94%, transparent);
-    -webkit-backdrop-filter: var(--blur);
-    backdrop-filter: var(--blur);
-    box-shadow: var(--glass-lit), 0 0 0 1px var(--glass-edge), var(--shadow-3);
-    transition: translate 700ms var(--ease-out);
-  }
-
-  html.js .hero-float {
-    animation: float-in 800ms var(--ease-out) both;
-  }
-
-  .hf-quality {
-    left: 0;
-    top: 3.5rem;
-    width: 17rem;
-    translate: calc(var(--mx) * -14px) calc(var(--my) * -10px);
-  }
-
-  .hf-goal {
-    right: 0;
-    top: -1rem;
-    width: 21rem;
-    translate: calc(var(--mx) * 16px) calc(var(--my) * 12px);
-  }
-
-  .hf-proof {
-    right: 3.5rem;
-    bottom: 0;
-    width: 18.5rem;
-    translate: calc(var(--mx) * 10px) calc(var(--my) * 8px);
-  }
-
-  html.js .hf-quality {
-    animation-delay: 1100ms;
-  }
-
-  html.js .hf-goal {
-    animation-delay: 1250ms;
-  }
-
-  html.js .hf-proof {
-    animation-delay: 1400ms;
-  }
-
-  @keyframes float-in {
-    from {
-      opacity: 0;
-      transform: translateY(18px) scale(0.97);
-    }
-  }
-
-  .hf-title {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: var(--t-small);
-    font-weight: 600;
-  }
-
-  .hf-dot {
-    width: 0.55rem;
-    height: 0.55rem;
-    border-radius: 50%;
-    background: var(--signal-fill);
-  }
-
-  .hf-dot.is-check {
-    background: var(--check-fill);
-    box-shadow: 0 0 0 4px var(--check-soft);
-  }
-
-  .hf-sub {
-    color: var(--ink-3);
-    font-size: var(--t-meta);
-    line-height: 1.4;
-  }
-
-  .hf-alert {
-    padding: 0.5rem 0.65rem;
-    border-radius: 9px;
-    background: var(--check-soft);
-    color: var(--ink);
-    font-size: var(--t-meta);
-    font-weight: 520;
-    line-height: 1.35;
-  }
-
-  .hf-value {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 1rem;
-  }
-
-  .hf-value .readout {
-    font-size: 2.4rem;
-  }
-
-  .hf-value span {
-    color: var(--ink-3);
-    font-size: var(--t-meta);
-    text-align: right;
-  }
-
-  .hf-actions {
-    display: grid;
-    gap: 0.15rem;
-    padding-top: 0.25rem;
-    border-top: 1px solid var(--line);
-  }
-
-  .hf-actions li {
-    display: flex;
-    justify-content: space-between;
-    gap: 0.75rem;
-    padding: 0.35rem 0;
-    color: var(--ink-3);
-    font-size: var(--t-meta);
-    transition: color var(--d-3) var(--ease);
-  }
-
-  .hf-actions strong {
-    flex: none;
-    font-weight: 560;
-  }
-
-  .hf-actions li.is-in {
-    color: var(--ink);
-  }
-
-  .hf-actions li.is-in strong {
-    color: var(--signal);
-  }
-
-  .hf-foot {
-    color: var(--ink-3);
-    font-size: var(--t-micro);
-  }
-
-  .hf-eq {
+  .trace-caption {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.4rem;
-    font-size: var(--t-ui);
-    font-weight: 560;
-    font-variant-numeric: lining-nums proportional-nums;
-  }
-
-  .hf-eq span,
-  .hf-eq strong {
-    padding: 0.35rem 0.5rem;
-    border-radius: 8px;
-    box-shadow: inset 0 0 0 1px var(--line-2);
-  }
-
-  .hf-eq strong {
-    background: var(--signal-fill);
-    color: var(--petrol);
-    box-shadow: none;
-  }
-
-  .hf-eq b {
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    margin-bottom: 0.85rem;
+    font-size: var(--t-meta);
+    font-weight: 520;
     color: var(--ink-3);
-    font-weight: 400;
   }
 
-  @media (max-width: 1100px) {
-    .hf-quality {
-      display: none;
-    }
+  .trace-paper {
+    padding: var(--pad) var(--pad) 0;
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: 0 0 0 1px var(--line), var(--shadow-2);
   }
 
-  /* Tablets and phones: a flat stack, the control first. */
-  @media (max-width: 900px) {
-    .hero {
-      padding-top: calc(var(--header) + 2.5rem);
-    }
+  .trace-doc {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--line);
+    font-size: var(--t-small);
+  }
 
-    .hero-stage {
-      display: grid;
-      gap: 1rem;
-      height: auto;
-      perspective: none;
-    }
+  .trace-doc strong {
+    font-weight: 600;
+  }
 
-    .hero-deck {
-      position: relative;
-      left: auto;
-      order: 2;
-      width: 100%;
-      height: 21rem;
-      transform: none;
-    }
+  .trace-doc span {
+    font-size: var(--t-meta);
+    color: var(--ink-3);
+  }
 
-    .hero-deck-glass {
+  .trace-lines > div,
+  .trace-ledger > div {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 1rem;
+  }
+
+  .trace-lines > div {
+    padding-block: 0.62rem;
+    border-bottom: 1px solid var(--line);
+    font-size: var(--t-small);
+  }
+
+  .trace-lines dt {
+    color: var(--ink-3);
+  }
+
+  .trace dd {
+    margin: 0;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .trace dd small {
+    font-size: var(--t-meta);
+    font-weight: 500;
+    color: var(--ink-3);
+  }
+
+  /* The line we follow: picked out across the paper, with the rail's first node. */
+  .trace-key {
+    margin-inline: calc(-1 * var(--pad));
+    padding: 0.95rem var(--pad) !important;
+    border-bottom: 0 !important;
+    isolation: isolate;
+  }
+
+  .trace-key::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background: var(--signal-soft);
+    transform-origin: 0 50%;
+  }
+
+  .trace-key dt {
+    color: var(--ink);
+    font-weight: 560;
+  }
+
+  .trace-key dd {
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  /* Rail: node and first segment in the paper, then one segment per ledger row. */
+  .trace-key::after,
+  .trace-key dt::before,
+  .trace-step::before {
+    content: "";
+    position: absolute;
+    left: var(--rail-x);
+    pointer-events: none;
+  }
+
+  .trace-key::after {
+    top: 50%;
+    width: 9px;
+    height: 9px;
+    margin: -4.5px 0 0 -4.5px;
+    border-radius: 50%;
+    background: var(--rail);
+    box-shadow: 0 0 0 3px var(--surface);
+  }
+
+  .trace-key dt::before,
+  .trace-step::before {
+    width: 1.5px;
+    margin-left: -0.75px;
+    background: var(--rail);
+    transform-origin: 50% 0;
+  }
+
+  .trace-key dt::before {
+    top: 50%;
+    bottom: 0;
+  }
+
+  .trace-ledger {
+    margin: 0;
+    padding-inline: var(--pad);
+  }
+
+  .trace-step {
+    padding-block: 1.05rem;
+  }
+
+  .trace-step::before {
+    top: 0;
+    bottom: 0;
+    left: calc(var(--rail-x) - var(--pad));
+  }
+
+  .trace-result::before {
+    bottom: 50%;
+  }
+
+  .trace-step dt {
+    font-size: var(--t-small);
+    font-weight: 560;
+  }
+
+  .trace-step dt small {
+    display: block;
+    margin-top: 0.15rem;
+    font-size: var(--t-meta);
+    font-weight: 500;
+    color: var(--ink-3);
+  }
+
+  .trace-step dd {
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  /* Operators ride on the rail. */
+  .trace-op {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: calc(var(--rail-x) - var(--pad));
+    display: grid;
+    place-items: center;
+    width: 1.45rem;
+    height: 1.45rem;
+    border-radius: 50%;
+    background: var(--paper);
+    box-shadow: inset 0 0 0 1.5px var(--rail);
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--ink);
+    transform: translate(-50%, -50%);
+  }
+
+  /* The total, ruled off as in a ledger. */
+  .trace-result {
+    border-top: 1px solid var(--line-2);
+  }
+
+  .trace-result dd {
+    font-size: clamp(2.1rem, 1.5rem + 1.6vw, 2.9rem);
+    font-weight: 600;
+  }
+
+  .trace-result dd small {
+    font-size: var(--t-small);
+  }
+
+  .trace-review {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.65rem;
+    margin: 0.35rem var(--pad) 0;
+    padding-top: 0.95rem;
+    border-top: 1px solid var(--line);
+    font-size: var(--t-meta);
+    font-weight: 500;
+    color: var(--ink-2);
+  }
+
+  .trace-review .i {
+    width: 1.15rem;
+    height: 1.15rem;
+    color: var(--signal);
+  }
+
+  .trace-review span {
+    flex: 1 1 14rem;
+  }
+
+  @media (max-width: 960px) {
+    .hero-grid {
       grid-template-columns: minmax(0, 1fr);
+      row-gap: clamp(3rem, 2rem + 4vw, 4.5rem);
     }
 
-    .hd-side {
-      display: none;
+    .hero-title {
+      max-width: 14em;
     }
 
-    .hd-total {
-      font-size: 2.6rem;
+    .trace {
+      max-width: 36rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .hero-actions {
+      display: grid;
+      justify-items: start;
     }
 
-    .hd-top .demo-chip {
-      display: none;
+    .hero-byline {
+      margin-top: 2.25rem;
     }
 
-    .hero-float {
-      position: relative;
-      inset: auto;
-      width: auto;
-      translate: none;
-    }
-
-    .hf-goal {
-      order: 1;
-    }
-
-    .hf-proof {
-      order: 3;
+    .trace-caption .demo-chip {
+      white-space: normal;
     }
   }
 
@@ -1791,15 +1592,6 @@
 
     .bt-chain li + li::before {
       display: none;
-    }
-  }
-}
-
-@layer sections {
-  @media (max-width: 760px), (pointer: coarse) {
-    .hero-float {
-      -webkit-backdrop-filter: none;
-      backdrop-filter: none;
     }
   }
 }

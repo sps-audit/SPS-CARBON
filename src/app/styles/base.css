@@ -272,10 +272,9 @@
   }
 
   /* A rolling figure (reading.tsx): one real text, the moving digits drawn over
-     it by generated content while it rolls. Tabular figures keep the width still. */
+     it by generated content while it rolls. The cell keeps the wider of the two. */
   .reading {
     display: inline-grid;
-    font-variant-numeric: lining-nums tabular-nums;
   }
   .reading > * {
     grid-area: 1 / 1;

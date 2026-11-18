@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { HeroInstrument } from "./hero-instrument";
+import { HeroTrace } from "./hero-trace";
 import { Releve } from "./releve";
 import { PlatformBento } from "./platform-bento";
 import { AudiencePicker } from "./audience-picker";
@@ -79,7 +79,7 @@ export function HomePage() {
   const { openChecklist } = useSiteActions();
   return (
     <main id="main" className="home">
-      <HeroInstrument />
+      <HeroTrace />
 
       <section className="chapter" id="pourquoi" aria-labelledby="why-title">
         <div className="wrap audience-grid">

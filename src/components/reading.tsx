@@ -31,6 +31,7 @@ export function Reading({
   from,
   className = "",
   prefix = "",
+  delay = 0,
 }: {
   value: number;
   decimals?: number;
@@ -38,6 +39,8 @@ export function Reading({
   from?: number;
   className?: string;
   prefix?: string;
+  /** Wait before the first reading, in ms (to land on a beat of a sequence). */
+  delay?: number;
 }) {
   const root = useRef<HTMLSpanElement>(null);
   const face = useRef<HTMLSpanElement>(null);
@@ -95,24 +98,31 @@ export function Reading({
       return;
     }
     // First reading: wait until the figure is on screen.
-    if (!("IntersectionObserver" in window)) {
+    let wait = 0;
+    const start = () => {
       s.started = true;
-      run();
-      return;
-    }
+      if (delay > 0) wait = window.setTimeout(run, delay);
+      else run();
+    };
     draw(s.x);
+    if (!("IntersectionObserver" in window)) {
+      start();
+      return () => window.clearTimeout(wait);
+    }
     const observer = new IntersectionObserver(
       (entries) => {
         if (!entries.some((entry) => entry.isIntersecting)) return;
-        s.started = true;
         observer.disconnect();
-        run();
+        start();
       },
       { rootMargin: "0px 0px -8% 0px" },
     );
     observer.observe(element);
-    return () => observer.disconnect();
-  }, [value, decimals, prefix]);
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(wait);
+    };
+  }, [value, decimals, prefix, delay]);
 
   useEffect(() => () => cancelAnimationFrame(state.current.frame), []);
 
