@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Icon } from "./icons";
 import { Reading } from "./reading";
@@ -14,15 +14,32 @@ import { homeHero, invoiceTrace as tr } from "@/lib/editorial";
  * to the tonnes of the Scope 2, and the consultant's review underneath.
  *
  * Everything is real text in the static page (a reader, a search engine or a
- * visitor without scripts gets the full calculation). Once the page is live
- * the rail draws itself once and the result rolls onto its value: the two
- * signature motions of the site, started together so they share one clock
- * (.is-live, motion.css). Under reduced motion the finished state is shown.
+ * visitor without scripts gets the full calculation). When the ledger is in
+ * view (at once on a large screen, on scrolling on a phone) the rail draws
+ * itself once and the result rolls onto its value: the two signature motions
+ * of the site, released together so they share one clock (.is-live in
+ * motion.css, `armed` on the figure). Under reduced motion the finished state
+ * is shown.
  */
 export function HeroTrace() {
   const figure = useRef<HTMLElement>(null);
+  const [live, setLive] = useState(false);
   useEffect(() => {
-    figure.current?.classList.add("is-live");
+    const element = figure.current;
+    if (!element || !("IntersectionObserver" in window)) {
+      setLive(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        observer.disconnect();
+        setLive(true);
+      },
+      { threshold: 0.45 },
+    );
+    observer.observe(element);
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -43,12 +60,12 @@ export function HeroTrace() {
             </a>
           </div>
           <p className="hero-byline">
-            <SafeperformLogo loading="eager" className="hero-byline-logo" />
+            <SafeperformLogo className="hero-byline-logo" />
             <span>{homeHero.byline}</span>
           </p>
         </div>
 
-        <figure ref={figure} className="trace" aria-labelledby="trace-caption">
+        <figure ref={figure} className={live ? "trace is-live" : "trace"} aria-labelledby="trace-caption">
           <figcaption id="trace-caption" className="trace-caption">
             <span>{tr.caption}</span>
             <span className="demo-chip">{tr.demo}</span>
@@ -99,7 +116,7 @@ export function HeroTrace() {
                 <small>{tr.result.source}</small>
               </dt>
               <dd>
-                <Reading value={tr.result.value} decimals={2} delay={1150} className="readout" />
+                <Reading value={tr.result.value} decimals={2} delay={1150} armed={live} className="readout" />
                 <small> {tr.result.unit}</small>
               </dd>
             </div>

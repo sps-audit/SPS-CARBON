@@ -32,6 +32,7 @@ export function Reading({
   className = "",
   prefix = "",
   delay = 0,
+  armed,
 }: {
   value: number;
   decimals?: number;
@@ -41,6 +42,12 @@ export function Reading({
   prefix?: string;
   /** Wait before the first reading, in ms (to land on a beat of a sequence). */
   delay?: number;
+  /**
+   * Who starts the first reading: left out, the figure starts itself when it
+   * enters the viewport; false/true, a parent holds it, then releases it
+   * (so a sequence and its figure share one clock).
+   */
+  armed?: boolean;
 }) {
   const root = useRef<HTMLSpanElement>(null);
   const face = useRef<HTMLSpanElement>(null);
@@ -105,7 +112,9 @@ export function Reading({
       else run();
     };
     draw(s.x);
-    if (!("IntersectionObserver" in window)) {
+    // Held by a parent: wait to be released, then start on its clock.
+    if (armed === false) return;
+    if (armed === true || !("IntersectionObserver" in window)) {
       start();
       return () => window.clearTimeout(wait);
     }
@@ -122,7 +131,7 @@ export function Reading({
       observer.disconnect();
       window.clearTimeout(wait);
     };
-  }, [value, decimals, prefix, delay]);
+  }, [value, decimals, prefix, delay, armed]);
 
   useEffect(() => () => cancelAnimationFrame(state.current.frame), []);
 

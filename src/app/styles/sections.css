@@ -50,6 +50,11 @@
     }
   }
 
+  /* Interactive surfaces keep their own stacking context for their layers. */
+  .spot {
+    position: relative;
+  }
+
   .section-cta {
     display: flex;
     flex-wrap: wrap;
