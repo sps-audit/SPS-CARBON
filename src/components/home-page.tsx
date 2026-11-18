@@ -4,15 +4,21 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { HeroTrace } from "./hero-trace";
 import { Releve } from "./releve";
-import { PlatformBento } from "./platform-bento";
 import { AudiencePicker } from "./audience-picker";
 import { BeforeAfter } from "./before-after";
 import { WhyUs } from "./why-us";
-import { Focus } from "./focus";
-import { CarbonReveal } from "./carbon-reveal";
+import { PhotoBand } from "./photo-slot";
 import { useSiteActions } from "./site-frame";
 import { steps } from "@/lib/steps";
 import { plans } from "@/lib/offers";
+
+/*
+ * Home page. One case runs through it: the invoice of the hero is followed
+ * step by step in "Le relevé", then the firm that checks it, the comparison,
+ * the ways to start and the questions. Density varies on purpose: full-width
+ * bands, text columns and tables drawn with hairlines; only what reacts
+ * (profile picker, the story, the before/after slider) sits in a card.
+ */
 
 const comparison = [
   ["Pensé pour les entreprises marocaines", "À construire soi-même", "Variable", "En français, avec des sources locales"],
@@ -73,73 +79,34 @@ const tools = [
   { href: "/outils#diagnostic", name: "Diagnostic express", text: "Cinq questions pour trouver votre point de départ.", visual: ["5 questions", "→", "Votre parcours"] },
 ];
 
-const i = (n: number) => ({ ["--i" as string]: n });
-
 export function HomePage() {
   const { openChecklist } = useSiteActions();
   return (
     <main id="main" className="home">
       <HeroTrace />
 
-      <section className="chapter" id="pourquoi" aria-labelledby="why-title">
-        <div className="wrap audience-grid">
-          <div className="head">
-            <Focus className="t-h2" id="why-title">
-              Vos raisons de mesurer.
-            </Focus>
-            <p className="t-lead" data-reveal="rise">
-              Une demande client, un marché export, une facture d’énergie, un rapport RSE : elles arrivent souvent en même
-              temps. Choisissez votre situation.
-            </p>
-          </div>
-          <div data-reveal="rise">
-            <AudiencePicker />
-          </div>
+      <section className="band" id="pourquoi" aria-labelledby="why-title">
+        <div className="wrap band-split">
+          <h2 className="band-title" id="why-title">
+            Les raisons de mesurer arrivent rarement seules
+          </h2>
+          <AudiencePicker />
         </div>
       </section>
 
       <Releve />
 
-      <section className="chapter s-tint bento-chapter" id="plateforme" aria-labelledby="bento-title">
-        <div className="wrap">
-          <div className="head is-split">
-            <Focus className="t-h2" id="bento-title">
-              Tout votre carbone, sur un seul écran.
-            </Focus>
-            <p className="t-lead" data-reveal="rise">
-              Chaque module répond à une question de la direction. Essayez-les : ils réagissent. Écrans de démonstration,
-              données d’exemple.
-            </p>
-          </div>
-          <PlatformBento />
-          <div className="section-cta" data-reveal="rise">
-            <Link href="/plateforme" className="btn">
-              Découvrir la plateforme
-            </Link>
-            <Link href="/plateforme#demonstration" className="link">
-              Essayer la démonstration
-            </Link>
-          </div>
-        </div>
-      </section>
-
       <WhyUs />
 
-      <section className="chapter s-tint" id="comparaison" aria-labelledby="compare-title">
+      <PhotoBand ids={["terrain", "revue"]} label="Nos consultants sur le terrain" />
+
+      <section className="band is-tint" id="comparaison" aria-labelledby="compare-title">
         <div className="wrap">
-          <div className="head is-split">
-            <Focus className="t-h2" id="compare-title">
-              Un bilan que vous pouvez défendre.
-            </Focus>
-            <p className="t-lead" data-reveal="rise">
-              Un tableur ou un logiciel importé produit un total. SPS-CARBON produit un bilan que vous comprenez, que vous
-              pouvez justifier et qui débouche sur des actions.
-            </p>
-          </div>
-          <div data-reveal="rise">
-            <BeforeAfter />
-          </div>
-          <div className="compare-wrap" data-reveal="rise">
+          <h2 className="band-title" id="compare-title">
+            Un bilan que vous pouvez défendre, pas seulement un total
+          </h2>
+          <BeforeAfter />
+          <div className="compare-wrap">
             <table className="compare">
               <caption className="sr-only">Comparaison de SPS-CARBON avec un tableur interne et un logiciel générique</caption>
               <thead>
@@ -169,19 +136,14 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="chapter" id="offres" aria-labelledby="offers-title">
+      <section className="band" id="offres" aria-labelledby="offers-title">
         <div className="wrap">
-          <div className="head is-split">
-            <Focus className="t-h2" id="offers-title">
-              Trois façons de commencer.
-            </Focus>
-            <p className="t-lead" data-reveal="rise">
-              Chaque mission démarre par un cadrage. Le prix dépend de vos sites, de vos données et des livrables attendus.
-            </p>
-          </div>
-          <div className="offer-deck" data-reveal="stagger">
+          <h2 className="band-title" id="offers-title">
+            Trois façons de commencer, chacune chiffrée après un cadrage
+          </h2>
+          <div className="offer-cols">
             {plans.map((offer) => (
-              <article key={offer.id} className={offer.featured ? "offer is-featured s-night" : "offer spot"}>
+              <article key={offer.id} className="offer-col">
                 <p className="offer-scope">{offer.scope}</p>
                 <h3 className="offer-name">{offer.name}</h3>
                 <p className="offer-for">{offer.forWho}</p>
@@ -190,28 +152,24 @@ export function HomePage() {
                     <li key={item}>{item}</li>
                   ))}
                 </ul>
-                <Link
-                  href={offer.href}
-                  className={offer.featured ? "btn btn-signal btn-small" : "link"}
-                  aria-label={`En savoir plus : ${offer.name}`}
-                >
+                <Link href={offer.href} className="link" aria-label={`En savoir plus : ${offer.name}`}>
                   En savoir plus
                 </Link>
               </article>
             ))}
           </div>
-          <div className="offers-more" data-reveal="rise">
-            <p>Comparez ce que chaque formule inclut, ajoutez des options et composez votre périmètre.</p>
-            <Link href="/offres" className="btn btn-quiet btn-small">
-              Comparer les offres
+          <p className="offers-note">
+            Le prix dépend de vos sites, de vos données et des livrables attendus.{" "}
+            <Link href="/offres" className="link">
+              Comparer les offres et composer votre périmètre
             </Link>
-          </div>
+          </p>
 
           <div className="tools-strip" id="outils" aria-labelledby="tools-title">
             <h3 id="tools-title" className="tools-strip-title">
-              Ou commencez gratuitement, sans inscription.
+              Ou commencez gratuitement, sans inscription
             </h3>
-            <ul data-reveal="stagger">
+            <ul>
               {tools.map((tool) => (
                 <li key={tool.href}>
                   <Link href={tool.href} className="tool-row">
@@ -232,27 +190,19 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="chapter s-tint path-chapter" id="deroulement" aria-labelledby="process-title">
+      <section className="band is-rule" id="deroulement" aria-labelledby="process-title">
         <div className="wrap">
-          <div className="head is-split">
-            <Focus className="t-h2" id="process-title">
-              Comment se déroule une mission.
-            </Focus>
-            <p className="t-lead" data-reveal="rise">
-              Du premier échange au suivi annuel. À chaque étape, vous savez ce que nous attendons de vous et ce que vous
-              recevez.
-            </p>
-          </div>
-          <ol className="path" data-reveal="rise">
-            <svg className="path-line" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-              <line className="path-line-a" x1="0" y1="-22" x2="100" y2="78" pathLength={1} vectorEffect="non-scaling-stroke" />
-              <line className="path-line-b" x1="0" y1="0" x2="100" y2="100" pathLength={1} vectorEffect="non-scaling-stroke" />
-            </svg>
+          <h2 className="band-title" id="process-title">
+            À chaque étape, vous savez ce que vous apportez et ce que vous recevez
+          </h2>
+          <ol className="steps">
             {steps.map((step, n) => (
-              <li key={step.title} style={i(n)}>
-                <span className="path-n" aria-hidden="true" />
+              <li key={step.title}>
+                <span className="steps-n" aria-hidden="true">
+                  {n + 1}
+                </span>
                 <h3>{step.title}</h3>
-                <dl className="path-io">
+                <dl className="steps-io">
                   <div>
                     <dt>Vous apportez</dt>
                     <dd>{step.give}</dd>
@@ -265,7 +215,7 @@ export function HomePage() {
               </li>
             ))}
           </ol>
-          <div className="section-cta" data-reveal="rise">
+          <div className="section-cta">
             <button type="button" className="btn" onClick={openChecklist}>
               Créer ma checklist de données
             </button>
@@ -274,13 +224,13 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="chapter faq-chapter" aria-labelledby="faq-title">
+      <section className="band is-rule faq-chapter" aria-labelledby="faq-title">
         <div className="wrap faq-grid">
           <div className="faq-side">
-            <Focus className="t-h2" id="faq-title">
-              Vos questions.
-            </Focus>
-            <div className="faq-ask" data-reveal="rise">
+            <h2 className="band-title" id="faq-title">
+              Les questions qu’on nous pose avant de commencer
+            </h2>
+            <div className="faq-ask">
               <p className="faq-ask-title">Une autre question ?</p>
               <p>Posez-la directement à l’équipe : périmètre, données, MACF ou calendrier.</p>
               <Link href="/contact" className="btn btn-small">
@@ -288,7 +238,7 @@ export function HomePage() {
               </Link>
             </div>
           </div>
-          <div className="faq" data-reveal="rise">
+          <div className="faq">
             {faq.map((item) => (
               <details key={item.q}>
                 <summary>{item.q}</summary>
@@ -298,8 +248,6 @@ export function HomePage() {
           </div>
         </div>
       </section>
-
-      <CarbonReveal />
     </main>
   );
 }
