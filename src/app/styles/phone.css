@@ -7,23 +7,6 @@
  */
 
 @layer utilities {
-  @media (max-width: 900px) {
-    /* Hero: the chart is the instrument and the goal card rests on it. */
-    .hero-deck {
-      order: 1;
-    }
-
-    .hf-goal {
-      z-index: 3;
-      order: 2;
-      margin: -2.75rem 0.85rem 0;
-    }
-
-    .hf-proof {
-      order: 3;
-    }
-  }
-
   @media (max-width: 700px) {
     /* Functional pages start with the task, not with a picture of it. */
     .page-head:has(.pi-steps, .pi-sheet, .pi-receipt, .pi-ruler) .pi {
@@ -108,11 +91,7 @@
   }
 
   @media (max-width: 600px) {
-    .hf-proof {
-      display: none;
-    }
-
-    /* Two calls of the same width, stacked, within thumb reach. */
+    /* The call to action at full width, within thumb reach. */
     .hero-actions {
       display: grid;
       width: 100%;
@@ -122,20 +101,6 @@
     .hero-actions .btn {
       justify-content: center;
       width: 100%;
-    }
-
-    /* References: the label on its own line, no separators to start a line. */
-    .hero-calib {
-      gap: 0.35rem 1.1rem;
-    }
-
-    .hero-calib-label {
-      flex-basis: 100%;
-      margin: 0;
-    }
-
-    .hero-calib-item + .hero-calib-item::before {
-      display: none;
     }
 
     /* Profiles: every choice visible, as soft chips. */
@@ -231,11 +196,6 @@
     /* Le relevé: each still is as tall as its picture, no empty glass. */
     .rv-glass {
       min-height: 0;
-    }
-
-    /* Hero: the goal card covers the axis, so the axis gives way. */
-    .hd-years {
-      display: none;
     }
 
     /* Le relevé, first step: the invoice, then its context underneath,

@@ -4,16 +4,15 @@ import { createContext, useContext, useEffect, useRef, useState, type CSSPropert
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "../theme-toggle";
-import { AuthBackdrop } from "./auth-backdrop";
 import { AuthTabs, type AuthRoute } from "./auth-tabs";
 
 /*
  * A focused frame for the sign-in and account pages: no site navigation and
- * no footer call. The backdrop fills the window, light travels slowly over
- * it, and the form sits in the middle on frosted glass.
+ * no footer call. A plain page, warm paper or petrol, and the form in the
+ * middle on a solid card (no backdrop image since Nov 2026).
  *
  * The frame is mounted once for both pages (see site-frame.tsx), so switching
- * between "Connexion" and "Créer un espace" keeps the backdrop, the card and
+ * between "Connexion" and "Créer un espace" keeps the card and
  * the tabs in place: the card changes size smoothly, the tab mark slides, and
  * only the form itself is replaced, arriving from the side it was asked from.
  */
@@ -60,8 +59,6 @@ export function AuthShell({ children }: { children: ReactNode }) {
   return (
     <TabsVisibility.Provider value={setTabsShown}>
       <div className={`auth ${route === "inscription" ? "is-wide" : ""}`}>
-        <AuthBackdrop />
-
         <header className="auth-top">
           <Link href="/" aria-label="SPS CARBON, accueil" className="site-brand auth-brand">
             <img className="logo-on-dark" src="/brand/logo-light.svg" width="200" height="25" alt="SPS CARBON" />

@@ -13,8 +13,8 @@ import { type DemoView, electricityKwh, fuelLitres, illustrativeFactors, months,
 
 const views = [
   { id: "overview", label: "Vue d’ensemble", icon: "chart" },
-  { id: "electricity", label: "Électricité", icon: "electric" },
-  { id: "fuel", label: "Carburants", icon: "fuel" },
+  { id: "electricity", label: "Électricité", icon: "bolt" },
+  { id: "fuel", label: "Carburants", icon: "truck" },
 ] as const;
 
 const elec = electricityKwh.map((kwh) => (kwh * illustrativeFactors.electricity) / 1000);

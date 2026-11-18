@@ -4,10 +4,10 @@ import { createContext, useContext, useEffect, useRef, useState, type MouseEvent
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Icon } from "./icons";
+import { useLivingIcons } from "./living-icons";
 import { ProjectDialog } from "./project-dialog";
 import { MotionLayer } from "./motion-layer";
 import { SiteNav, navSections } from "./site-nav";
-import { PageTransition } from "./page-transition";
 import { AuthShell } from "./auth/auth-shell";
 import { StickyCta } from "./sticky-cta";
 import { ThemeToggle } from "./theme-toggle";
@@ -61,6 +61,7 @@ export function SiteFrame({ children }: { children: ReactNode }) {
   const [scrolled, setScrolled] = useState(false);
   const returnFocus = useRef<HTMLElement | null>(null);
   const pathname = usePathname();
+  useLivingIcons();
 
   useEffect(() => {
     setMenu(false);
@@ -121,7 +122,6 @@ export function SiteFrame({ children }: { children: ReactNode }) {
     return (
       <SiteActions.Provider value={{ openChecklist }}>
         <MotionLayer />
-        <PageTransition />
         <a className="skip-link" href="#main">
           Aller au contenu
         </a>
@@ -135,7 +135,6 @@ export function SiteFrame({ children }: { children: ReactNode }) {
   return (
     <SiteActions.Provider value={{ openChecklist }}>
       <MotionLayer />
-      <PageTransition />
       <a className="skip-link" href="#main">
         Aller au contenu
       </a>
@@ -180,9 +179,7 @@ export function SiteFrame({ children }: { children: ReactNode }) {
                       aria-label={`${expanded === index ? "Masquer" : "Afficher"} les rubriques : ${section.label}`}
                       onClick={() => setExpanded(expanded === index ? null : index)}
                     >
-                      <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M6 9l6 6 6-6" />
-                      </svg>
+                      <Icon name="down" />
                     </button>
                   </div>
                   <div className="m-sub" id={`m-sub-${index}`}>
@@ -205,7 +202,7 @@ export function SiteFrame({ children }: { children: ReactNode }) {
               </Link>
               <div className="m-account">
                 <Link href="/connexion" onClick={closeMenu}>
-                  <Icon name="signin" />
+                  <Icon name="enter" />
                   Espace client
                 </Link>
                 <Link href="/inscription" onClick={closeMenu}>
@@ -223,7 +220,7 @@ export function SiteFrame({ children }: { children: ReactNode }) {
           </nav>
           <ThemeToggle />
           <Link className="site-login" href="/connexion" aria-label="Espace client, connexion" title="Espace client">
-            <Icon name="signin" />
+            <Icon name="enter" />
             <span>Espace client</span>
           </Link>
           <Link className="btn btn-small site-cta" href="/contact">

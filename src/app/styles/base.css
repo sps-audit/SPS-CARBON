@@ -251,6 +251,46 @@
     font-variant-numeric: lining-nums proportional-nums;
   }
 
+  /* SPS icon family (icons.tsx): 1.7 strokes, round ends, a soft same-colour
+     tint on the parts marked .t that deepens when its control is pointed at. */
+  .i {
+    flex: none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    overflow: visible;
+  }
+  .i .t {
+    fill: currentColor;
+    fill-opacity: 0.12;
+    transition: fill-opacity 150ms ease-out;
+  }
+  :is(a, button, summary, label):is(:hover, :focus-visible) .i .t {
+    fill-opacity: 0.22;
+  }
+
+  /* A rolling figure (reading.tsx): one real text, the moving digits drawn over
+     it by generated content while it rolls. The cell keeps the wider of the two. */
+  .reading {
+    display: inline-grid;
+  }
+  .reading > * {
+    grid-area: 1 / 1;
+  }
+  .reading.is-rolling > .reading-value {
+    color: transparent;
+  }
+  .reading-face {
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .reading-face[data-face]::before {
+    content: attr(data-face);
+  }
+
   .readout small,
   .unit {
     font-size: 0.36em;
@@ -306,17 +346,17 @@
   .s-night {
     --paper: var(--night);
     --paper-2: var(--night-2);
-    --surface: #0d2f38;
-    --surface-2: #0b2a32;
+    --surface: var(--night-surface);
+    --surface-2: var(--night-surface-2);
     --ink: var(--night-ink);
     --ink-2: var(--night-ink-2);
     --ink-3: var(--night-ink-3);
     --line: var(--night-line);
     --line-2: var(--night-line-2);
     --line-3: rgba(245, 250, 248, 0.34);
-    --signal: #3cd6a1;
-    --check: #e8c58f;
-    --focus: #3cd6a1;
+    --signal: var(--night-signal);
+    --check: var(--night-check);
+    --focus: var(--night-signal);
     --glass: var(--night-glass);
     --glass-strong: rgba(20, 54, 64, 0.94);
     --glass-rim: rgba(245, 250, 248, 0.14);
@@ -400,13 +440,13 @@
      it rises instead, a step lighter than the page, lit along its top edge. */
   html[data-theme="dark"] .calc-total.s-night,
   html[data-theme="dark"] .page-callout.s-night {
-    --night: #0b2b33;
+    --night: var(--night-surface-2);
     background:
-      radial-gradient(120% 80% at 50% -20%, rgba(37, 198, 145, 0.16), transparent 60%),
-      linear-gradient(180deg, #0e313a, #0a252c);
+      radial-gradient(120% 80% at 50% -20%, rgba(245, 250, 248, 0.06), transparent 60%),
+      var(--night-surface);
     box-shadow:
       inset 0 1px 0 rgba(245, 250, 248, 0.1),
-      0 0 0 1px rgba(37, 198, 145, 0.18),
+      0 0 0 1px var(--night-line),
       var(--shadow-3);
   }
 }
@@ -415,9 +455,7 @@
    edges, and no decorative layers in the way. */
 @layer utilities {
   @media (forced-colors: active) {
-    .cell-veil,
-    .trajectory,
-    .hero::before {
+    .trajectory {
       display: none;
     }
 

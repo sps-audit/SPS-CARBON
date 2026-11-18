@@ -61,7 +61,7 @@ export function LoginForm() {
           </li>
           <li>
             <a href={`mailto:${company.email}?subject=${encodeURIComponent("[SPS-CARBON] Invitation à mon espace")}`} className="auth-path">
-              <Icon name="signin" />
+              <Icon name="enter" />
               <span>
                 <strong>J’attends mon invitation</strong>
                 <small>Écrivez-nous depuis l’adresse prévue pour votre espace.</small>

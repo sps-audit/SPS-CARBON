@@ -11,21 +11,7 @@
     isolation: isolate;
   }
 
-  .page-head::before {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    right: -10%;
-    top: 0;
-    width: 70%;
-    height: 100%;
-    background: radial-gradient(45% 55% at 60% 45%, color-mix(in srgb, var(--signal-fill) 11%, transparent), transparent 70%);
-    pointer-events: none;
-  }
-
-  .page-head.is-plain::before {
-    display: none;
-  }
+  /* No coloured glow behind the instrument: colour is kept for meaning. */
 
   .page-head-grid {
     display: grid;
@@ -678,13 +664,11 @@
     stroke-dasharray: 2 5;
   }
 
+  /* The coast is drawn still: a map, not an animation. */
   .coast-line {
     fill: none;
     stroke-width: 1.6;
     stroke-linecap: round;
-    stroke-dasharray: 1;
-    stroke-dashoffset: 1;
-    animation: draw 2200ms var(--ease-io) 500ms forwards;
   }
 
   .coast-ma {
@@ -693,28 +677,10 @@
 
   .coast-es {
     stroke: var(--line-3);
-    animation-delay: 900ms;
   }
 
   .pin-wave {
-    fill: none;
-    stroke: var(--signal-fill);
-    stroke-width: 1.5;
-    transform-origin: 0 0;
-    /* A few pulses, then rest: an SVG transform repaints on the main thread. */
-    animation: pin-wave 2600ms var(--ease-out) 1800ms 4;
-    opacity: 0;
-  }
-
-  @keyframes pin-wave {
-    0% {
-      opacity: 0.8;
-      transform: scale(0.4);
-    }
-    100% {
-      opacity: 0;
-      transform: scale(1.6);
-    }
+    display: none;
   }
 
   .pin-ring {

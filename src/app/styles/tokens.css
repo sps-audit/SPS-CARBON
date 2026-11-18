@@ -4,6 +4,14 @@
  * Petrol #062129, Viridian #25C691, Ice #F5FAF8, Mist #EFF6F4, Amber #DFB77A.
  * Light is the default version; html[data-theme="dark"] swaps the semantic
  * tokens. Shapes are soft: the logo's softened hexagon sets the tone.
+ *
+ * Colour always means something (Nov 2026, same rule as the platform):
+ * - petrol ink on a warm paper white for everything else (the paper is warmer
+ *   than the kit's Ice #F5FAF8, which stays a brand ink);
+ * - viridian (--signal) only for action and "where you are";
+ * - green / amber / red (--signal, --check, --danger) only for good / to check
+ *   / problem;
+ * - scope colours only inside charts.
  */
 
 @layer tokens, base, layout, controls, chrome, sections, components, motion, utilities;
@@ -20,15 +28,18 @@
     --mist: #eff6f4;
     --amber: #dfb77a;
     --amber-deep: #8a5a14;
+    /* A sheet of paper drawn in a product picture: light in both versions. */
+    --sheet: #fffdf9;
+    --sheet-ink-3: #536a71;
 
     /* Semantic: light version */
-    --paper: #f5faf8;
-    --paper-2: #eaf3f0;
-    --surface: #ffffff;
-    --surface-2: #f8fbfa;
+    --paper: #f6f4ef;
+    --paper-2: #eeebe3;
+    --surface: #fffdf9;
+    --surface-2: #faf8f4;
     --ink: #062129;
     --ink-2: #344c54;
-    --ink-3: #5a7178;
+    --ink-3: #536a71; /* 4.8:1 on paper-2, 5.2:1 on paper */
     --line: rgba(6, 33, 41, 0.11);
     --line-2: rgba(6, 33, 41, 0.2);
     --line-3: rgba(6, 33, 41, 0.34);
@@ -64,8 +75,12 @@
     --night-line: rgba(245, 250, 248, 0.11);
     --night-line-2: rgba(245, 250, 248, 0.2);
     --night-glass: rgba(18, 50, 59, 0.62);
-    /* The lamp over a night panel: light falls from the top, never a grid. */
-    --night-lamp: radial-gradient(120% 70% at 50% -10%, rgba(37, 198, 145, 0.1), transparent 60%);
+    --night-surface: #0d2f38;
+    --night-surface-2: #0b2a32;
+    --night-signal: #3cd6a1;
+    --night-check: #e8c58f;
+    /* The lamp over a night panel: a little white light from the top, no colour. */
+    --night-lamp: radial-gradient(120% 70% at 50% -10%, rgba(245, 250, 248, 0.05), transparent 60%);
 
     /* Type */
     --font: var(--font-mona), "Mona Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
@@ -142,7 +157,7 @@
 
     --night: #020f13;
     --night-2: #071d24;
-    --night-lamp: radial-gradient(120% 70% at 50% -10%, rgba(37, 198, 145, 0.12), transparent 62%);
+    --night-lamp: radial-gradient(120% 70% at 50% -10%, rgba(245, 250, 248, 0.04), transparent 62%);
 
     color-scheme: dark;
   }
