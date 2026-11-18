@@ -1,20 +1,35 @@
-import { createElement } from "react";
+import { createElement, type ReactNode } from "react";
 
 /*
- * A section heading. It used to come into focus word by word as it scrolled
- * in; since Nov 2026 the site keeps motion for what carries meaning, so the
- * heading is simply there at first paint. The component stays so every page
- * keeps one way of writing its headings.
+ * "Mise au point": a heading comes into focus word by word when it is
+ * revealed (see [data-reveal="focus"] in motion.css). The words stay plain
+ * text for assistive technologies; only the visual timing is per word.
+ * Works in server and client components (no hooks).
  */
 type FocusProps = {
   as?: "h1" | "h2" | "h3" | "p";
   className?: string;
   id?: string;
   children: string;
-  /** Kept for compatibility; no longer used. */
+  /** Delay before the first word, in ms. */
   delay?: number;
 };
 
-export function Focus({ as = "h2", className = "", id, children }: FocusProps) {
-  return createElement(as, { className, id }, children);
+export function Focus({ as = "h2", className = "", id, children, delay = 0 }: FocusProps) {
+  const words = children.split(/(\s+)/);
+  let n = 0;
+  const content: ReactNode[] = words.map((part, index) => {
+    if (/^\s+$/.test(part)) return part;
+    const style = { ["--w" as string]: n++ };
+    return (
+      <span className="fw" key={index} style={style}>
+        {part}
+      </span>
+    );
+  });
+  return createElement(
+    as,
+    { className, id, "data-reveal": "focus", style: delay ? { ["--fd" as string]: `${delay}ms` } : undefined },
+    content,
+  );
 }

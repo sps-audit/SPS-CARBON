@@ -1069,6 +1069,23 @@
     stroke: rgba(37, 198, 145, 0.5);
   }
 
+  .trajectory-run {
+    position: absolute;
+    inset: 0;
+  }
+
+  .trajectory-run i {
+    position: absolute;
+    left: 0;
+    top: 85%;
+    width: 9px;
+    height: 9px;
+    margin: -4.5px 0 0 -4.5px;
+    border-radius: 50%;
+    background: var(--viridian);
+    box-shadow: 0 0 0 5px rgba(37, 198, 145, 0.16), 0 0 18px rgba(37, 198, 145, 0.6);
+  }
+
   /* ---------- Sticky bar (phones) ---------- */
   .sticky-cta {
     display: none;
@@ -1105,6 +1122,45 @@
       font-weight: 580;
       text-decoration: none;
     }
+  }
+
+  /* ---------- The cell (page change), see page-transition.tsx ---------- */
+  .cell-veil {
+    position: fixed;
+    z-index: 300;
+    inset: 0;
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  .cell-veil.is-on {
+    visibility: visible;
+  }
+
+  .cell-veil svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .cell-veil path {
+    transform-box: view-box;
+    transform-origin: 0 0;
+    transform: scale(0);
+    will-change: transform;
+  }
+
+  .cell-body {
+    fill: var(--petrol);
+  }
+
+  .cell-ring {
+    fill: none;
+    stroke: var(--viridian);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+    opacity: 0;
   }
 }
 
