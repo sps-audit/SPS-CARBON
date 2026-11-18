@@ -8,7 +8,6 @@ import { useLivingIcons } from "./living-icons";
 import { ProjectDialog } from "./project-dialog";
 import { MotionLayer } from "./motion-layer";
 import { SiteNav, navSections } from "./site-nav";
-import { PageTransition } from "./page-transition";
 import { AuthShell } from "./auth/auth-shell";
 import { StickyCta } from "./sticky-cta";
 import { ThemeToggle } from "./theme-toggle";
@@ -123,7 +122,6 @@ export function SiteFrame({ children }: { children: ReactNode }) {
     return (
       <SiteActions.Provider value={{ openChecklist }}>
         <MotionLayer />
-        <PageTransition />
         <a className="skip-link" href="#main">
           Aller au contenu
         </a>
@@ -137,7 +135,6 @@ export function SiteFrame({ children }: { children: ReactNode }) {
   return (
     <SiteActions.Provider value={{ openChecklist }}>
       <MotionLayer />
-      <PageTransition />
       <a className="skip-link" href="#main">
         Aller au contenu
       </a>
