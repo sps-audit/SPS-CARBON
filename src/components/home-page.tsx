@@ -8,6 +8,8 @@ import { PlatformBento } from "./platform-bento";
 import { AudiencePicker } from "./audience-picker";
 import { BeforeAfter } from "./before-after";
 import { WhyUs } from "./why-us";
+import { Ambiance } from "./ambiance";
+import { SiteReading, TonneExplained } from "./image-stories";
 import { Focus } from "./focus";
 import { CarbonReveal } from "./carbon-reveal";
 import { useSiteActions } from "./site-frame";
@@ -100,6 +102,8 @@ export function HomePage() {
 
       <Releve />
 
+      <SiteReading />
+
       <section className="chapter s-tint bento-chapter" id="plateforme" aria-labelledby="bento-title">
         <div className="wrap">
           <div className="head is-split">
@@ -124,6 +128,8 @@ export function HomePage() {
       </section>
 
       <WhyUs />
+
+      <TonneExplained />
 
       <section className="chapter s-tint" id="comparaison" aria-labelledby="compare-title">
         <div className="wrap">
@@ -182,6 +188,7 @@ export function HomePage() {
           <div className="offer-deck" data-reveal="stagger">
             {plans.map((offer) => (
               <article key={offer.id} className={offer.featured ? "offer is-featured s-night" : "offer spot"}>
+                {offer.featured && <Ambiance name="lumiere" sizes="(max-width: 1000px) 100vw, 720px" className="offer-amb" />}
                 <p className="offer-scope">{offer.scope}</p>
                 <h3 className="offer-name">{offer.name}</h3>
                 <p className="offer-for">{offer.forWho}</p>

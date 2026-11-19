@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Ambiance } from "./ambiance";
 import { Focus } from "./focus";
 import { onScrollFrame, requestScrollFrame } from "./scroll-store";
 
@@ -286,6 +287,8 @@ export function Releve() {
       style={{ ["--steps" as string]: STEPS.length }}
     >
       <div className="releve-pin">
+        {/* Leaf veins under the night: every line traced back to its source. */}
+        <Ambiance name="feuille" className="releve-amb" sizes="100vw" />
         <div className="wrap releve-grid">
           <div className="releve-copy">
             <Focus className="t-h2" id="releve-title">

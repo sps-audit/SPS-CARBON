@@ -911,3 +911,29 @@
     }
   }
 }
+
+/* ---------- Featured offer on its ambiance image (home) ---------- */
+@layer sections {
+  .offer.is-featured {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+  }
+
+  .offer > .amb {
+    position: absolute;
+    z-index: 0;
+  }
+
+  .offer-amb::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--petrol) 94%, transparent) 0%,
+      color-mix(in srgb, var(--petrol) 84%, transparent) 55%,
+      color-mix(in srgb, var(--petrol) 62%, transparent) 100%
+    );
+  }
+}

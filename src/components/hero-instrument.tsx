@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from "react";
 import Link from "next/link";
+import { Ambiance } from "./ambiance";
 import { Focus } from "./focus";
 import { Reading } from "./reading";
 
@@ -114,6 +115,10 @@ export function HeroInstrument() {
       </div>
 
       <div className="hero-stage" ref={stage}>
+        {/* The glass is set on a field of soft green: the frost reads as glass. */}
+        <div className="hero-backdrop">
+          <Ambiance name="voile" eager sizes="(max-width: 900px) 100vw, 1320px" />
+        </div>
         <div className="hero-deck" aria-hidden="true">
           <div className="hero-deck-glass" data-reveal="scan" style={{ ["--scan-delay" as string]: "380ms" }}>
             <div className="hd-side">
