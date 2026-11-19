@@ -437,33 +437,3 @@ export const editorialPages: EditorialPage[] = [
     ],
   },
 ];
-
-/*
- * Home hero: one real line of work instead of a slogan. The invoice, the
- * factor and the result are the same ones followed by "Le relevé" further down
- * the page (fictional company, illustrative factor), so the hero and the story
- * tell one case.
- */
-export const homeHero = {
-  title: "Chaque tonne de votre bilan remonte à sa facture",
-  lead: "SPS-CARBON calcule les Scopes 1, 2 et 3 des entreprises au Maroc à partir de leurs factures, relevés et registres. Les consultants de SAFEPERFORM SOLUTIONS, cabinet d’audit QHSE et RSE, contrôlent chaque ligne avant qu’elle entre dans le bilan.",
-  action: { href: "/contact", label: "Parlons de votre projet" },
-  follow: { href: "#releve", label: "Suivre cette facture jusqu’au rapport" },
-  byline: "Audit, conseil et formation QHSE et RSE, El Jadida",
-};
-
-export const invoiceTrace = {
-  caption: "Une facture d’électricité, de la pièce au bilan",
-  demo: "Entreprise fictive, données d’exemple",
-  document: "Facture d’électricité",
-  number: "N° 2025-03-0417",
-  lines: [
-    { label: "Client", value: "Atelier Atlas, site de production" },
-    { label: "Période", value: "01/03/2025 au 31/03/2025" },
-    { label: "Montant TTC", value: "12 340,00 MAD" },
-  ],
-  quantity: { label: "Consommation relevée", value: "10 000", unit: "kWh" },
-  factor: { label: "Facteur d’émission", source: "Maroc 2024, version 1", value: "0,551", unit: "kgCO₂e/kWh" },
-  result: { label: "Scope 2", source: "électricité achetée", value: 5.51, unit: "tCO₂e" },
-  review: { text: "Revue par un consultant SAFEPERFORM le 14/04/2025", status: "Vérifié" },
-};
