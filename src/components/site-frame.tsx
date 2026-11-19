@@ -8,10 +8,12 @@ import { useLivingIcons } from "./living-icons";
 import { ProjectDialog } from "./project-dialog";
 import { MotionLayer } from "./motion-layer";
 import { SiteNav, navSections } from "./site-nav";
+import { PageTransition } from "./page-transition";
 import { AuthShell } from "./auth/auth-shell";
 import { StickyCta } from "./sticky-cta";
 import { ThemeToggle } from "./theme-toggle";
 import { Trajectory } from "./trajectory";
+import { Ambiance } from "./ambiance";
 import { onScrollFrame } from "./scroll-store";
 import { company } from "@/lib/company";
 import { SafeperformLogo } from "@/components/safeperform-logo";
@@ -122,6 +124,7 @@ export function SiteFrame({ children }: { children: ReactNode }) {
     return (
       <SiteActions.Provider value={{ openChecklist }}>
         <MotionLayer />
+        <PageTransition />
         <a className="skip-link" href="#main">
           Aller au contenu
         </a>
@@ -135,6 +138,7 @@ export function SiteFrame({ children }: { children: ReactNode }) {
   return (
     <SiteActions.Provider value={{ openChecklist }}>
       <MotionLayer />
+      <PageTransition />
       <a className="skip-link" href="#main">
         Aller au contenu
       </a>
@@ -236,6 +240,7 @@ export function SiteFrame({ children }: { children: ReactNode }) {
       <footer className={`site-footer s-night ${ownCall.has(pathname) ? "is-compact" : ""}`}>
         {!ownCall.has(pathname) && (
           <div className="wrap footer-call" data-reveal="rise">
+            <Ambiance name="lumiere" className="footer-amb" sizes="(max-width: 1360px) 100vw, 1320px" />
             <Trajectory className="footer-trajectory" />
             <div className="footer-call-copy">
               <h2 className="t-h2">Votre premier inventaire commence par un échange.</h2>

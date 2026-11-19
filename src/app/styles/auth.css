@@ -1,7 +1,9 @@
 /*
- * Sign-in and account pages. A plain page (warm paper in light, petrol in
- * dark) and the form in the middle on a solid card with the soft corners of
- * the logo. No imagery, no moving light: the page is ready at first paint.
+ * Sign-in and account pages. Soft green ribbons fill the window (the same
+ * backdrop as the platform's entry, so leaving the site for the platform
+ * feels like one place); light travels slowly over them and the form sits in
+ * the middle on frosted glass with the soft corners of the logo. In the dark
+ * version the same ribbons are seen at dusk, under a petrol veil.
  */
 
 @layer components {
@@ -14,6 +16,94 @@
     min-height: 100vh;
     min-height: 100svh;
     background: var(--paper);
+  }
+
+  /* ---------- The backdrop ---------- */
+  .auth-backdrop {
+    position: fixed;
+    z-index: -1;
+    inset: 0;
+    overflow: hidden;
+    background: #cfe8c6;
+  }
+
+  html[data-theme="dark"] .auth-backdrop {
+    background: #04161b;
+  }
+
+  .auth-scene {
+    --px: 0;
+    --py: 0;
+    position: absolute;
+    inset: -3%;
+    transform: translate3d(calc(var(--px) * -14px), calc(var(--py) * -10px), 0);
+    transition: transform 1600ms var(--ease-out);
+  }
+
+  .auth-photo,
+  .auth-photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .auth-photo img {
+    object-fit: cover;
+    opacity: 0;
+    transform: scale(1.1);
+    transition: opacity 1400ms var(--ease), transform 2600ms var(--ease-out);
+  }
+
+  .auth-backdrop.is-ready .auth-photo img {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+
+  /* A band of light crossing the ribbons. */
+  .auth-light {
+    position: absolute;
+    inset: -25% -40%;
+    background: radial-gradient(28% 34% at 50% 48%, rgba(255, 255, 250, 0.6), rgba(255, 255, 250, 0) 70%);
+    mix-blend-mode: soft-light;
+    opacity: 0;
+    transition: opacity 2000ms var(--ease) 600ms;
+  }
+
+  .auth-backdrop.is-ready .auth-light {
+    opacity: 1;
+  }
+
+  /* Legibility: a breath of ice at the top and bottom edges in light, dusk in dark. */
+  .auth-veil {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(245, 250, 248, 0.42), rgba(245, 250, 248, 0) 22%, rgba(245, 250, 248, 0) 78%, rgba(245, 250, 248, 0.5)),
+      radial-gradient(60% 55% at 50% 52%, rgba(245, 250, 248, 0.2), rgba(245, 250, 248, 0) 70%);
+  }
+
+  html[data-theme="dark"] .auth-veil {
+    background:
+      linear-gradient(180deg, rgba(3, 21, 26, 0.9), rgba(3, 21, 26, 0.7) 30%, rgba(3, 21, 26, 0.72) 70%, rgba(3, 21, 26, 0.92)),
+      radial-gradient(60% 55% at 50% 52%, rgba(37, 198, 145, 0.08), rgba(3, 21, 26, 0) 70%);
+  }
+
+  html[data-theme="dark"] .auth-light {
+    background: radial-gradient(28% 34% at 50% 48%, rgba(37, 198, 145, 0.22), rgba(37, 198, 145, 0) 70%);
+    mix-blend-mode: screen;
+  }
+
+  .auth-grain {
+    position: absolute;
+    inset: 0;
+    background: url("/images/auth/grain.png") 0 0 / 240px 240px repeat;
+    mix-blend-mode: overlay;
+    opacity: 0.07;
+    pointer-events: none;
+  }
+
+  html[data-theme="dark"] .auth-grain {
+    opacity: 0.1;
   }
 
   /* ---------- Top, body, foot ---------- */
@@ -43,12 +133,18 @@
   .auth-back {
     padding: 0.6rem 1rem;
     border-radius: 999px;
-    box-shadow: inset 0 0 0 1px var(--line-2);
+    background: color-mix(in srgb, var(--surface) 55%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--surface) 70%, transparent);
     color: var(--ink);
     font-size: var(--t-small);
     font-weight: 580;
     text-decoration: none;
     transition: background-color var(--d-2) var(--ease);
+  }
+
+  html[data-theme="dark"] .auth-back {
+    background: rgba(245, 250, 248, 0.06);
+    box-shadow: inset 0 0 0 1px rgba(245, 250, 248, 0.1);
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -63,28 +159,53 @@
     padding: clamp(1.5rem, 1rem + 4vh, 4rem) var(--auth-pad);
   }
 
-  /* The card: a solid surface with a hairline and the soft corners of the logo. */
+  /* The card: frosted glass with the soft corners of the logo. */
   .auth-card {
     width: min(100%, 30rem);
     padding: clamp(1.6rem, 1.1rem + 2vw, 2.75rem);
     border-radius: 32px;
-    background: var(--surface);
-    box-shadow: 0 0 0 1px var(--line), var(--shadow-2);
+    background: rgba(255, 255, 255, 0.82);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.95),
+      0 0 0 1px rgba(255, 255, 255, 0.6),
+      0 24px 48px -28px rgba(6, 33, 41, 0.28),
+      0 60px 120px -50px rgba(6, 33, 41, 0.38);
   }
 
   .auth.is-wide .auth-card {
     width: min(100%, 38rem);
   }
 
-  /* Fields keep a solid face. */
+  @media (hover: hover) and (pointer: fine) {
+    .auth-card {
+      background: rgba(255, 255, 255, 0.7);
+      -webkit-backdrop-filter: blur(24px) saturate(1.35);
+      backdrop-filter: blur(24px) saturate(1.35);
+    }
+
+    html[data-theme="dark"] .auth-card {
+      background: rgba(7, 30, 37, 0.66);
+    }
+  }
+
+  html[data-theme="dark"] .auth-card {
+    background: rgba(7, 30, 37, 0.86);
+    box-shadow:
+      inset 0 1px 0 rgba(245, 250, 248, 0.09),
+      0 0 0 1px rgba(245, 250, 248, 0.08),
+      0 24px 48px -28px rgba(0, 0, 0, 0.6),
+      0 60px 120px -50px rgba(0, 0, 0, 0.75);
+  }
+
+  /* Fields on glass keep a solid face. */
   .auth-card input:not([type="checkbox"]):not([type="radio"]),
   .auth-card select,
   .auth-card textarea {
-    background: var(--surface-2);
+    background: var(--surface);
   }
 
   html[data-theme="dark"] .auth-card :is(input:not([type="checkbox"]):not([type="radio"]), select, textarea, .auth-chip, .auth-choice, .auth-consent, .auth-path) {
-    background: var(--paper);
+    background: rgba(3, 21, 26, 0.55);
   }
 
   .auth-foot {
@@ -661,10 +782,39 @@
 }
 
 @layer motion {
-  /* Only what the visitor does moves: switching between the two pages, the
-  card widens or narrows, its height follows the content, and the new form
-  arrives from the side of its tab. Nothing plays on arrival. */
   @media (prefers-reduced-motion: no-preference) {
+    /* The card arrives once the backdrop is there. */
+    .auth-card {
+      animation: card-in 1100ms var(--ease-out) 180ms both;
+    }
+
+    @keyframes card-in {
+      from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.985);
+      }
+    }
+
+    /* The ribbons breathe: a drift slow enough to be felt rather than seen. */
+    .auth-backdrop.is-ready .auth-photo {
+      /* Two passes (out and back), then still: the blurred card above it no
+         longer has to be recomposed every frame while the visitor types. */
+      animation: hills 46s var(--ease) var(--since, 0s) 2 alternate both;
+    }
+
+    /* Switching between sign-in and account: the backdrop stays, the card
+       simply cross-fades in. */
+    .auth-backdrop.is-instant .auth-photo img,
+    .auth-backdrop.is-instant .auth-light {
+      transition: none;
+    }
+
+    .auth-backdrop.is-instant ~ .auth-body .auth-card {
+      animation: card-swap 320ms var(--ease-out) both;
+    }
+
+    /* The card widens or narrows between the two pages, its height follows
+       the content, and the new form arrives from the side of its tab. */
     .auth-card {
       transition: width 420ms cubic-bezier(0.32, 0.72, 0, 1);
     }
@@ -681,7 +831,45 @@
       from {
         opacity: 0;
         transform: translateX(calc(var(--dir, 0) * 18px));
+        filter: blur(4px);
       }
+    }
+
+    @keyframes card-swap {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+    }
+
+    @keyframes hills {
+      from {
+        transform: translate3d(-1.2%, 0.4%, 0) scale(1);
+      }
+      to {
+        transform: translate3d(1.2%, -0.6%, 0) scale(1.045);
+      }
+    }
+
+    .auth-backdrop.is-ready .auth-light {
+      animation: light-pass 28s var(--ease) var(--since, 0s) 2 alternate both;
+    }
+
+    @keyframes light-pass {
+      from {
+        transform: translate3d(-22%, 4%, 0);
+      }
+      to {
+        transform: translate3d(22%, -3%, 0);
+      }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .auth-photo img,
+    .auth-light {
+      opacity: 1;
+      transition: none;
     }
   }
 }

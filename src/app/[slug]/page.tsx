@@ -8,7 +8,7 @@ import { PageHead } from "@/components/page-head";
 import type { InstrumentName } from "@/components/page-instruments";
 import { PageShowcase } from "@/components/page-showcase";
 import { CabinetEnd, CabinetShowcase } from "@/components/cabinet";
-import { Trajectory } from "@/components/trajectory";
+import { Ambiance } from "@/components/ambiance";
 import { shareCards, shareMetadata, type ShareCard } from "@/lib/share";
 
 type EditorialPageProps = {
@@ -152,7 +152,7 @@ export default async function EditorialPage({ params }: EditorialPageProps) {
 
             {contactPrompt && (
               <section data-reveal="rise" className="page-callout s-night" aria-labelledby="page-contact-title">
-                <Trajectory className="page-callout-line" />
+                <Ambiance name="vagues" className="callout-amb" sizes="(max-width: 1000px) 100vw, 860px" />
                 <h2 id="page-contact-title">{contactPrompt.title}</h2>
                 <p>{contactPrompt.description}</p>
                 <Link className="btn btn-signal" href="/contact">

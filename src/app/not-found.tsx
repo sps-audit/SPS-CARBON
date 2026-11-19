@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { Trajectory } from "@/components/trajectory";
+import { Ambiance } from "@/components/ambiance";
 
 export default function NotFound() {
   return (
     <main id="main" className="page not-found s-night">
+      {/* A field in motion: the page you looked for has moved on. */}
+      <Ambiance name="champ" className="not-found-amb" eager />
       <div className="wrap not-found-inner" data-reveal="rise">
-        <Trajectory className="not-found-line" />
         <p className="not-found-code readout" aria-hidden="true">
           404
         </p>

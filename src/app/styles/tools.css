@@ -541,9 +541,9 @@
     --ink-3: var(--night-ink-3);
     --line: var(--night-line);
     --line-2: var(--night-line-2);
-    --signal: var(--night-signal);
-    --check: var(--night-check);
-    --surface: var(--night-surface);
+    --signal: #3cd6a1;
+    --check: #e8c58f;
+    --surface: #0d2f38;
     --paper: var(--night);
   }
 

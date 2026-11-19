@@ -51,7 +51,7 @@
 
   @media (hover: hover) and (pointer: fine) {
     .btn-signal:hover {
-      --btn-bg: color-mix(in srgb, var(--signal-fill) 88%, white);
+      --btn-bg: #3fd8a3;
     }
   }
 

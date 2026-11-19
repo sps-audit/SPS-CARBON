@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { CoastMap } from "./coast-map";
+import { Focus } from "./focus";
 import { SafeperformLogo } from "@/components/safeperform-logo";
 
 /*
  * "Pourquoi SPS-CARBON" (home page): the three differences the firm stands
- * on, each shown with a fragment of the real work laid on the page (hairline
- * tables, no frames) rather than an icon card.
+ * on, each shown with a fragment of the real work rather than an icon card.
  * Everything shown here is a fact about the firm or an explicitly labelled
  * example; no client, figure or certification is invented.
  */
@@ -33,17 +33,23 @@ const anchors = [
 
 export function WhyUs() {
   return (
-    <section className="band is-rule why-chapter" id="pourquoi-nous" aria-labelledby="whyus-title">
+    <section className="chapter why-chapter" id="pourquoi-nous" aria-labelledby="whyus-title">
       <div className="wrap">
-        <h2 className="band-title is-wide" id="whyus-title">
-          Un logiciel vous donne un total. Derrière SPS-CARBON, un cabinet d’audit le défend avec vous
-        </h2>
+        <div className="head is-split">
+          <Focus className="t-h2" id="whyus-title">
+            Pourquoi SPS-CARBON, et pas un autre.
+          </Focus>
+          <p className="t-lead" data-reveal="rise">
+            Un logiciel vous donne un total. SPS-CARBON vous donne un bilan, le cabinet qui le défend avec vous, et une
+            équipe qui connaît le terrain marocain.
+          </p>
+        </div>
 
         <div className="why-rows">
-          <article className="why-row">
+          <article className="why-row" data-reveal="rise">
             <div className="why-copy">
               <SafeperformLogo className="why-parent" />
-              <h3 className="t-h3">Une preuve pour chaque ligne, relue par un auditeur</h3>
+              <h3 className="t-h3">Un cabinet d’audit derrière chaque chiffre.</h3>
               <p>
                 SPS-CARBON est porté par SAFEPERFORM SOLUTIONS, cabinet d’audit, de conseil et de formation en QHSE et RSE.
                 Nos consultants relisent vos données comme ils mènent un audit : une preuve pour chaque ligne, un écart
@@ -75,9 +81,9 @@ export function WhyUs() {
             </figure>
           </article>
 
-          <article className="why-row">
+          <article className="why-row is-flip" data-reveal="rise">
             <div className="why-copy">
-              <h3 className="t-h3">Votre carbone se range dans vos systèmes ISO</h3>
+              <h3 className="t-h3">Votre carbone, dans vos systèmes ISO.</h3>
               <p>
                 Depuis l’amendement de 2024, l’ISO 9001, l’ISO 14001 et l’ISO 45001 demandent si le changement climatique est
                 un enjeu pertinent pour vous. Nos livrables se rangent dans les chapitres que vos équipes QHSE connaissent
@@ -103,9 +109,9 @@ export function WhyUs() {
             </figure>
           </article>
 
-          <article className="why-row">
+          <article className="why-row" data-reveal="rise">
             <div className="why-copy">
-              <h3 className="t-h3">Une équipe à El Jadida, qui connaît vos contraintes</h3>
+              <h3 className="t-h3">Une équipe ancrée au Maroc.</h3>
               <p>
                 Le cabinet est implanté à El Jadida. Nous travaillons en français, avec vos factures, vos sites et vos
                 contraintes : le droit marocain des données, les exportations vers l’Union européenne, les questionnaires
