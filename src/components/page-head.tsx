@@ -3,6 +3,8 @@ import type { ReactNode } from "react";
 import { Focus } from "./focus";
 import { PageInstrument, type InstrumentName } from "./page-instruments";
 import { SafeperformLogo } from "./safeperform-logo";
+import { Ambiance } from "./ambiance";
+import { pageAmbiance } from "@/lib/ambiance";
 
 /*
  * One header for every inner page: breadcrumb, a title that comes into focus,
@@ -49,7 +51,13 @@ export function PageHead({
             </div>
           )}
         </div>
-        {instrument && <PageInstrument name={instrument} />}
+        {instrument && (
+          <div className="page-head-visual">
+            <Ambiance name={pageAmbiance[instrument].name} shape="haut" className="page-head-amb" sizes="(max-width: 1000px) 90vw, 520px" />
+            <p className="page-head-note">{pageAmbiance[instrument].note}</p>
+            <PageInstrument name={instrument} />
+          </div>
+        )}
       </div>
     </header>
   );

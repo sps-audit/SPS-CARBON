@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Focus } from "./focus";
-import { Trajectory } from "./trajectory";
+import { Ambiance } from "./ambiance";
 import { company } from "@/lib/company";
 import { cabinetContact, references, sectors, team, trades, values } from "@/lib/cabinet";
 
@@ -145,7 +145,7 @@ export function CabinetEnd() {
         </div>
 
         <div className="page-callout s-night" data-reveal="rise">
-          <Trajectory className="page-callout-line" />
+          <Ambiance name="vagues" className="callout-amb" sizes="(max-width: 1000px) 100vw, 860px" />
           <h2>Échangeons sur les besoins de votre entreprise</h2>
           <p>
             Formation, audit, accompagnement QHSE, démarche RSE ou projet carbone : présentez votre contexte et vos priorités pour

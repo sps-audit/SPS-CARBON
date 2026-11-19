@@ -1175,3 +1175,33 @@
     }
   }
 }
+
+/* ---------- Closing call of every page on its ambiance image ---------- */
+@layer chrome {
+  .footer-call > .footer-amb {
+    z-index: -2;
+  }
+
+  .footer-amb::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      color-mix(in srgb, var(--night) 96%, transparent) 0%,
+      color-mix(in srgb, var(--night) 86%, transparent) 45%,
+      color-mix(in srgb, var(--night) 40%, transparent) 100%
+    );
+  }
+
+  @media (max-width: 1000px) {
+    .footer-amb::after {
+      background: linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--night) 94%, transparent) 0%,
+        color-mix(in srgb, var(--night) 82%, transparent) 60%,
+        color-mix(in srgb, var(--night) 62%, transparent) 100%
+      );
+    }
+  }
+}

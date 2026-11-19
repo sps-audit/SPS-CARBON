@@ -7,12 +7,12 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 let shownAt = 0;
 
 /*
- * The backdrop behind the sign-in and account pages, shared with the
- * platform's entry: soft green ribbons. It arrives softly once decoded, then
- * breathes: a very slow drift, a band of light travelling across, and, with
- * a mouse, a slight depth that follows the pointer. A fine grain keeps the large gradients free of banding
- * on every screen. Portrait screens get a portrait crop; AVIF, WebP and JPEG
- * are offered in that order. Still under reduced motion.
+ * The backdrop behind the sign-in and account pages: the "voile" ambiance
+ * image (src/lib/ambiance.ts), a soft green blur. It arrives softly once
+ * decoded, then breathes: a very slow drift, a band of light travelling
+ * across, and, with a mouse, a slight depth that follows the pointer. A fine
+ * grain keeps the large gradients free of banding on every screen. Portrait
+ * screens get the portrait version; AVIF then WebP. Still under reduced motion.
  */
 export function AuthBackdrop() {
   const scene = useRef<HTMLDivElement>(null);
@@ -60,19 +60,27 @@ export function AuthBackdrop() {
     >
       <div className="auth-scene" ref={scene}>
         <picture className="auth-photo">
-          <source media="(orientation: portrait)" type="image/avif" srcSet="/images/auth/vagues-portrait-1290.avif" />
-          <source media="(orientation: portrait)" type="image/webp" srcSet="/images/auth/vagues-portrait-1290.webp" />
-          <source media="(orientation: portrait)" srcSet="/images/auth/vagues-portrait-1290.jpg" />
-          <source type="image/avif" srcSet="/images/auth/vagues-1920.avif 1920w, /images/auth/vagues-3200.avif 3200w" sizes="100vw" />
-          <source type="image/webp" srcSet="/images/auth/vagues-1920.webp 1920w, /images/auth/vagues-3200.webp 3200w" sizes="100vw" />
+          <source
+            media="(orientation: portrait)"
+            type="image/avif"
+            srcSet="/images/ambiance/voile-haut-480.avif 480w, /images/ambiance/voile-haut-768.avif 768w"
+            sizes="100vw"
+          />
+          <source
+            media="(orientation: portrait)"
+            type="image/webp"
+            srcSet="/images/ambiance/voile-haut-480.webp 480w, /images/ambiance/voile-haut-768.webp 768w"
+            sizes="100vw"
+          />
+          <source type="image/avif" srcSet="/images/ambiance/voile-large-1000.avif 1000w, /images/ambiance/voile-large-1920.avif 1920w" sizes="100vw" />
           <img
             ref={photo}
-            src="/images/auth/vagues-1920.jpg"
-            srcSet="/images/auth/vagues-1920.jpg 1920w, /images/auth/vagues-3200.jpg 3200w"
+            src="/images/ambiance/voile-large-1920.webp"
+            srcSet="/images/ambiance/voile-large-1000.webp 1000w, /images/ambiance/voile-large-1920.webp 1920w"
             sizes="100vw"
             alt=""
             width={1920}
-            height={1080}
+            height={1072}
             decoding="async"
             fetchPriority="high"
             onLoad={show}

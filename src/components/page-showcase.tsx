@@ -10,6 +10,9 @@ import { SectorExplorer } from "./sector-explorer";
 import { Focus } from "./focus";
 import { ImportDemo } from "./import-demo";
 import { useSiteActions } from "./site-frame";
+import { Ambiance } from "./ambiance";
+
+const demoSteps = ["Changez de source d’émission", "Parcourez les mois", "Ouvrez le détail d’un calcul"];
 
 /*
  * Each inner page opens with something to try or look at before the reading:
@@ -42,7 +45,17 @@ export function PageShowcase({ slug }: { slug: string }) {
               title="Voyez-la fonctionner."
               lead="Une entreprise fictive, des facteurs illustratifs : changez de source, parcourez les mois et ouvrez le détail d’un calcul."
             />
-            <div data-reveal="rise">
+            {/* The demo stands on a field of soft light, with the three things to try written on it. */}
+            <div className="demo-stage" data-reveal="rise">
+              <Ambiance name="lumiere" sizes="(max-width: 1360px) 100vw, 1320px" />
+              <ol className="demo-steps">
+                {demoSteps.map((step, n) => (
+                  <li key={step}>
+                    <span aria-hidden="true">{n + 1}</span>
+                    {step}
+                  </li>
+                ))}
+              </ol>
               <ProductPreview />
             </div>
           </div>
