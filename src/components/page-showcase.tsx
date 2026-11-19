@@ -11,8 +11,7 @@ import { Focus } from "./focus";
 import { ImportDemo } from "./import-demo";
 import { useSiteActions } from "./site-frame";
 import { Ambiance } from "./ambiance";
-
-const demoSteps = ["Changez de source d’émission", "Parcourez les mois", "Ouvrez le détail d’un calcul"];
+import { demoSteps } from "@/lib/ambiance";
 
 /*
  * Each inner page opens with something to try or look at before the reading:

@@ -57,6 +57,9 @@ export const pageAmbiance: Record<InstrumentName, { name: AmbianceName; note: st
   outils: { name: "voile", note: "Calculé dans votre navigateur, rien n’est envoyé" },
 };
 
+/* Demonstration on /plateforme: the three things to try, written on the image above the demo. */
+export const demoSteps = ["Changez de source d’émission", "Parcourez les mois", "Ouvrez le détail d’un calcul"];
+
 /*
  * Home, "Un site, trois sources": the field read like an analyst's map. Same
  * fictional company and figures as "Le relevé" (Atelier Atlas, 2 910 t).

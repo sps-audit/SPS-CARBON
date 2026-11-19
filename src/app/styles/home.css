@@ -18,14 +18,14 @@
     position: absolute;
     z-index: -1;
     left: 50%;
-    top: 4.5rem;
+    top: 1.5rem;
     bottom: -2.5rem;
     width: min(100vw - 2 * var(--gutter), var(--max));
     transform: translateX(-50%);
     border-radius: var(--r-xl);
     overflow: hidden;
-    -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 9rem);
-    mask-image: linear-gradient(180deg, transparent 0, #000 9rem);
+    -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 5.5rem);
+    mask-image: linear-gradient(180deg, transparent 0, #000 5.5rem);
   }
 
   .hero-backdrop::after {
