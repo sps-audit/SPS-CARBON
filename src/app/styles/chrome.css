@@ -852,46 +852,6 @@
     overflow: hidden;
   }
 
-  .footer-call {
-    position: relative;
-    display: grid;
-    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
-    align-items: end;
-    gap: 2rem 4rem;
-    padding: clamp(2.5rem, 1.5rem + 4vw, 5.5rem) clamp(1.5rem, 1rem + 3vw, 4.5rem);
-    border-radius: var(--r-xl);
-    background: linear-gradient(180deg, rgba(245, 250, 248, 0.05), rgba(245, 250, 248, 0.015));
-    box-shadow: inset 0 1px 0 rgba(245, 250, 248, 0.12), inset 0 0 0 1px var(--night-line);
-    isolation: isolate;
-    overflow: hidden;
-  }
-
-  .footer-call-copy {
-    display: grid;
-    gap: 1.25rem;
-  }
-
-  .footer-call-copy .t-h2 {
-    max-width: 14em;
-  }
-
-  .footer-call-actions {
-    display: grid;
-    justify-items: start;
-    gap: 1rem;
-    padding-bottom: 0.5rem;
-  }
-
-  .footer-call-mail {
-    color: var(--night-ink-2);
-  }
-
-  .footer-trajectory {
-    z-index: -1;
-    inset: 0;
-    opacity: 0.9;
-  }
-
   .footer-grid {
     display: grid;
     grid-template-columns: minmax(0, 1.6fr) repeat(4, minmax(0, 1fr));
@@ -962,19 +922,6 @@
     font-weight: 580;
   }
 
-  /* The name returns at full width: the close of every page. */
-  .footer-mark {
-    padding-block: clamp(2.5rem, 1.5rem + 4vw, 5rem) clamp(1.5rem, 1rem + 2vw, 3rem);
-  }
-
-  .footer-mark span {
-    display: block;
-    aspect-ratio: 916 / 114;
-    background: color-mix(in srgb, var(--night-ink) 16%, transparent);
-    -webkit-mask: url("/brand/logo-light.svg") center / contain no-repeat;
-    mask: url("/brand/logo-light.svg") center / contain no-repeat;
-  }
-
   .footer-base {
     display: flex;
     flex-wrap: wrap;
@@ -1020,10 +967,6 @@
   }
 
   @media (max-width: 1000px) {
-    .footer-call {
-      grid-template-columns: minmax(0, 1fr);
-    }
-
     .footer-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -1042,48 +985,6 @@
     .footer-base > :last-child {
       margin-left: 0;
     }
-  }
-
-  /* ---------- The brand device ---------- */
-  .trajectory {
-    position: absolute;
-    pointer-events: none;
-  }
-
-  .trajectory svg {
-    width: 100%;
-    height: 100%;
-  }
-
-  .trajectory line {
-    fill: none;
-    stroke-width: 1.25;
-    stroke-linecap: round;
-  }
-
-  .trajectory-a {
-    stroke: rgba(245, 250, 248, 0.16);
-  }
-
-  .trajectory-b {
-    stroke: rgba(37, 198, 145, 0.5);
-  }
-
-  .trajectory-run {
-    position: absolute;
-    inset: 0;
-  }
-
-  .trajectory-run i {
-    position: absolute;
-    left: 0;
-    top: 85%;
-    width: 9px;
-    height: 9px;
-    margin: -4.5px 0 0 -4.5px;
-    border-radius: 50%;
-    background: var(--viridian);
-    box-shadow: 0 0 0 5px rgba(37, 198, 145, 0.16), 0 0 18px rgba(37, 198, 145, 0.6);
   }
 
   /* ---------- Sticky bar (phones) ---------- */
@@ -1172,36 +1073,6 @@
       background: color-mix(in srgb, var(--surface) 96%, transparent);
       -webkit-backdrop-filter: none;
       backdrop-filter: none;
-    }
-  }
-}
-
-/* ---------- Closing call of every page on its ambiance image ---------- */
-@layer chrome {
-  .footer-call > .footer-amb {
-    z-index: -2;
-  }
-
-  .footer-amb::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      105deg,
-      color-mix(in srgb, var(--night) 96%, transparent) 0%,
-      color-mix(in srgb, var(--night) 86%, transparent) 45%,
-      color-mix(in srgb, var(--night) 40%, transparent) 100%
-    );
-  }
-
-  @media (max-width: 1000px) {
-    .footer-amb::after {
-      background: linear-gradient(
-        180deg,
-        color-mix(in srgb, var(--night) 94%, transparent) 0%,
-        color-mix(in srgb, var(--night) 82%, transparent) 60%,
-        color-mix(in srgb, var(--night) 62%, transparent) 100%
-      );
     }
   }
 }

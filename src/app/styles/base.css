@@ -455,7 +455,7 @@
   /* In the dark version a night panel inside a page would read as a hole:
      it rises instead, a step lighter than the page, lit along its top edge. */
   html[data-theme="dark"] .calc-total.s-night,
-  html[data-theme="dark"] .page-callout.s-night {
+  html[data-theme="dark"] .page-closing.s-night {
     --night: #0b2b33;
     background:
       radial-gradient(120% 80% at 50% -20%, rgba(37, 198, 145, 0.16), transparent 60%),
@@ -472,7 +472,6 @@
 @layer utilities {
   @media (forced-colors: active) {
     .cell-veil,
-    .trajectory,
     .hero::before {
       display: none;
     }

@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { onScrollFrame, requestScrollFrame } from "./scroll-store";
 
 /*
- * Site-wide motion engine (v7). One passive scroll loop, one pointer loop.
+ * Site-wide motion engine (v7). One passive scroll loop.
  *
  * - Reveals: [data-reveal] gets .is-in once its top passes 88 % of the viewport.
  *   Variants are styled in motion.css: focus (headings are traced in word by
@@ -13,8 +13,7 @@ import { onScrollFrame, requestScrollFrame } from "./scroll-store";
  *   focus-in for text and groups), stagger (children one after the other).
  * - Page progress: the graduated line of the header (.site-progress i).
  * - Hero settle: --hp on .hero-deck (0 at rest, 1 when the hero has scrolled away).
- * - Pointer: the page-head instrument tilts a little (--px, --py), mouse
- *   only, never under reduced motion.
+ * Page-head plates sit still, like every plate (24 Nov 2026): no pointer tilt.
  *
  * Geometry is measured once (and again when the page changes size), then each
  * scroll frame only compares cached positions with scrollY and writes: no
@@ -25,7 +24,6 @@ export function MotionLayer() {
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
     let lastProgress = "";
     let lastHero = "";
     let pending: HTMLElement[] = [];
@@ -36,7 +34,6 @@ export function MotionLayer() {
     let bar: HTMLElement | null = null;
     let hero: HTMLElement | null = null;
     let deck: HTMLElement | null = null;
-    let head: HTMLElement | null = null;
     // Until the visitor scrolls, the page is "arriving": everything already on
     // screen comes in, even after fonts or images move it a little.
     const startY = window.scrollY;
@@ -46,7 +43,6 @@ export function MotionLayer() {
       bar = document.querySelector<HTMLElement>(".site-progress i");
       hero = document.querySelector<HTMLElement>(".hero");
       deck = document.querySelector<HTMLElement>(".hero-deck");
-      head = document.querySelector<HTMLElement>(".page-head");
       max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
       if (hero) {
         const rect = hero.getBoundingClientRect();
@@ -122,32 +118,13 @@ export function MotionLayer() {
     });
     added.observe(document.body, { childList: true, subtree: true });
 
-    let drift = 0;
-    let px = 0;
-    let py = 0;
-    const applyDrift = () => {
-      drift = 0;
-      if (!head) return;
-      head.style.setProperty("--px", px.toFixed(3));
-      head.style.setProperty("--py", py.toFixed(3));
-    };
-    const onPointer = (event: PointerEvent) => {
-      if (!head || !fine.matches || reduce.matches) return;
-      px = (event.clientX / window.innerWidth - 0.5) * 2;
-      py = (event.clientY / window.innerHeight - 0.5) * 2;
-      if (!drift) drift = requestAnimationFrame(applyDrift);
-    };
-    document.addEventListener("pointermove", onPointer, { passive: true });
-
     return () => {
       stopScroll();
-      cancelAnimationFrame(drift);
       cancelAnimationFrame(remeasure);
       window.clearTimeout(settle);
       sizes.disconnect();
       added.disconnect();
       window.removeEventListener("resize", refresh);
-      document.removeEventListener("pointermove", onPointer);
     };
   }, [pathname]);
 

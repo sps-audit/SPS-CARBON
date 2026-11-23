@@ -12,7 +12,6 @@ import { BeforeAfter } from "./before-after";
 import { WhyUs } from "./why-us";
 import { SiteReading, TonneExplained } from "./image-stories";
 import { Focus } from "./focus";
-import { CarbonReveal } from "./carbon-reveal";
 import { useSiteActions } from "./site-frame";
 import { offerPlate, phasePlate } from "@/lib/plates";
 
@@ -267,7 +266,6 @@ export function HomePage() {
         </div>
       </section>
 
-      <CarbonReveal />
     </main>
   );
 }

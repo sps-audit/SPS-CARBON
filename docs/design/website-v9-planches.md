@@ -72,3 +72,29 @@ project. Blurs weigh 3 to 21 KB; the leaf is softened by 0.8 px to stay near the
 The sign-in card takes the same double rim (spread shadows on `.auth-card`, `src/styles/auth.css`
 in the platform). Nothing else on the platform: its rule keeps photographs away from figures,
 statuses, steppers and charts, and "the reading" style approved on 22 Nov stays as it is.
+
+## 24 Nov 2026: the plates everywhere, a still close
+
+The user asked for one style across the site: no more "window" (a bar with three dots and a
+title) set on a photograph. Every product fragment on an image is now a plate, exactly as on the
+home page.
+
+| Where | Before | Now |
+| --- | --- | --- |
+| Header of the 9 inner pages (`page-head.tsx`, `page-instruments.tsx`) | a tilted glass window with dots, overhanging an image panel, its line written on the picture | the page's plate (same image per page), the instrument under the bezel with a kicker, the chip "Données d'exemple" on the plate's edge for fictional instruments only (`fictional`), the line written under the plate (`.plate-caption`); no pointer tilt |
+| Le relevé, home (`releve.tsx`) | a window with dots on a full-bleed leaf photo behind the whole section, text included | a night plate on `feuille` holding the instrument; the section is plain night, no photo behind the text |
+| Demonstration, /plateforme (`page-showcase.tsx`, `product-preview.tsx`) | the app window (dots, crumb, chip) on a field of light, the three steps written on the picture | the three steps above, the app under the bezel on its plate (`lumiere`), the chip on the plate's edge |
+| Close of every page (footer, page ends: `closing.tsx`) | a dark band on `lumiere` with two drawn lines and a travelling light, the big SPS CARBON wordmark under the links, the animated "carbon reveal" at the end of the home page | the call beside a still plate on `jade` holding the first-exchange card (the contact page's list, real content, no chip); no wordmark; nothing moves at the end of a page |
+
+**Numbering rule.** A number marks a series of plates read together (home: modules 01 to 05, offers
+06, mission 07). A plate standing alone (a page header, the relevé, the demonstration, the close)
+carries no number.
+
+**New image.** `jade` comes from the user's set (`19.36.23 (2)`, the jade blur with a baked grid):
+the rim is trimmed, the grid melted by a strong blur (grids are drawn in CSS, never shipped), the
+wide version turned a quarter. The calmest ground of the set, so it carries a list and a call;
+its grain is lighter (0.22) because the blur is even. 3 to 9 KB per file.
+
+Kept as is on purpose: the hero (restored by the user on 18 Nov), "Un site, trois sources" and
+"Ce que pèse une tonne" (cards on images, not windows), the before/after and the module tour
+(windows, but not on photographs).

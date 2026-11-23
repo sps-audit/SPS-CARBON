@@ -77,16 +77,7 @@ export function ProductPreview() {
 
   return (
     <div className={`app ${live ? "is-live" : ""}`} ref={root} data-view={view}>
-      <div className="app-chrome" aria-hidden="true">
-        <span className="app-lights">
-          <i />
-          <i />
-          <i />
-        </span>
-        <span className="app-crumb">SPS-CARBON / Atelier Atlas / Bilan 2025</span>
-        <span className="demo-chip app-fict">Démonstration, données d’exemple</span>
-      </div>
-
+      {/* No window bar: the demo sits under the plate's bezel, and the plate says "données d'exemple". */}
       <div className="app-shell">
         <aside className="app-nav">
           <div className="app-org">

@@ -1,13 +1,15 @@
 import type { CSSProperties, ReactNode } from "react";
 import { CoastMap } from "./coast-map";
+import { Bezel } from "./plate";
 import { company } from "@/lib/company";
 
 /*
- * The instrument at the head of each inner page: a small glass screen that
- * shows, in the product's own vocabulary, what the page is about. Decorative
- * (aria-hidden): every fact it shows is also in the page text. Static HTML and
- * CSS; it is read by a scan line on arrival, then tilts a little with the
- * pointer (--px, --py from the motion layer). Example figures only.
+ * The instrument at the head of each inner page: one fragment of the product,
+ * in its own vocabulary, held by the double-rim bezel on the page's plate
+ * (page-head.tsx), exactly like the home page's plates. No window bar: the
+ * fragment is named by its kicker, and the "données d'exemple" chip sits on the
+ * plate's top edge for the fictional ones (`fictional`). Decorative
+ * (aria-hidden): every fact it shows is also in the page text.
  */
 
 export type InstrumentName =
@@ -23,20 +25,15 @@ export type InstrumentName =
 
 const i = (n: number) => ({ ["--i" as string]: n }) as CSSProperties;
 
-function Frame({ title, chip = "Exemple", children, className = "" }: { title: string; chip?: string; children: ReactNode; className?: string }) {
+/* Instruments that show example figures: their plate wears the "données d'exemple" chip. */
+export const fictional: ReadonlySet<InstrumentName> = new Set(["plateforme", "solutions", "methodologie", "offres", "outils"]);
+
+function Frame({ title, children, className = "" }: { title: string; children: ReactNode; className?: string }) {
   return (
-    <div className={`pi ${className}`} data-reveal="scan" style={{ ["--scan-delay" as string]: "200ms" }}>
-      <div className="pi-bar">
-        <span className="pi-dots">
-          <i />
-          <i />
-          <i />
-        </span>
-        <span className="pi-title">{title}</span>
-        {chip && <span className="demo-chip">{chip}</span>}
-      </div>
+    <Bezel className={`pi ${className}`}>
+      <p className="pf-kicker pi-head">{title}</p>
       <div className="pi-body">{children}</div>
-    </div>
+    </Bezel>
   );
 }
 
@@ -121,7 +118,7 @@ function Methodologie() {
 
 function Cabinet() {
   return (
-    <Frame title="SAFEPERFORM SOLUTIONS" chip="" className="pi-map">
+    <Frame title="SAFEPERFORM SOLUTIONS" className="pi-map">
       <CoastMap mode="load" />
     </Frame>
   );
@@ -130,7 +127,7 @@ function Cabinet() {
 function Ressources() {
   const docs = ["Liste des sites", "Factures d’électricité", "Carburants et combustibles", "Registre des fluides", "Données de production", "Demande du client"];
   return (
-    <Frame title="Préparer mon inventaire" chip="">
+    <Frame title="Préparer mon inventaire">
       <ul className="pi-checks">
         {docs.map((doc, n) => (
           <li key={doc} style={i(n)} className={n < 4 ? "is-done" : ""}>
@@ -206,7 +203,7 @@ function Normes() {
     { year: "2030", text: "Horizon de la CDN", tag: "Maroc" },
   ];
   return (
-    <Frame title="Repères" chip="">
+    <Frame title="Repères">
       <ol className="pi-ruler">
         {marks.map((mark, n) => (
           <li key={mark.year} style={i(n)}>
@@ -223,7 +220,7 @@ function Normes() {
 function Contact() {
   const steps = company.formKey ? ["Votre besoin", "Vos coordonnées", "Envoi"] : ["Votre besoin", "Vos informations", "Relecture"];
   return (
-    <Frame title="Premier échange" chip="">
+    <Frame title="Premier échange">
       <ol className="pi-steps">
         {steps.map((step, n) => (
           <li key={step} style={i(n)}>

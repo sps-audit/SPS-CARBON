@@ -19,13 +19,17 @@
  * - clairiere: the palest grain, the calm ground for the longest text (the
  *   mission phases).
  *
+ * Added on 24 Nov 2026:
+ * - jade: the calm jade blur (its baked grid melted away), the close of every
+ *   page (components/closing.tsx): the calmest ground for a list and a call.
+ *
  * Files: public/images/ambiance/{name}-{large|haut}-{width}.{avif,webp},
  * encoded from the originals (abstract blurs turned a quarter for the wide
  * versions, so they keep their full resolution). Self-hosted (CSP img-src 'self').
  */
 import type { InstrumentName } from "@/components/page-instruments";
 
-export type AmbianceName = "feuille" | "vagues" | "champ" | "voile" | "lumiere" | "nervure" | "elan" | "eclaircie" | "clairiere";
+export type AmbianceName = "feuille" | "vagues" | "champ" | "voile" | "lumiere" | "nervure" | "elan" | "eclaircie" | "clairiere" | "jade";
 export type AmbianceShape = "large" | "haut";
 
 type Shape = { widths: readonly [number, number]; width: number; height: number };
@@ -64,6 +68,10 @@ export const ambiances: Record<AmbianceName, Record<AmbianceShape, Shape>> = {
     haut: { widths: [676, 480], width: 676, height: 1200 },
   },
   clairiere: {
+    large: { widths: [1600, 900], width: 1600, height: 900 },
+    haut: { widths: [736, 480], width: 736, height: 1308 },
+  },
+  jade: {
     large: { widths: [1600, 900], width: 1600, height: 900 },
     haut: { widths: [736, 480], width: 736, height: 1308 },
   },

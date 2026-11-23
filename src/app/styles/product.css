@@ -419,37 +419,15 @@
     }
   }
 
-  /* ---------- Interactive demo (application window) ---------- */
+  /* ---------- Interactive demo (on its plate, under the bezel: plates.css) ---------- */
   .app {
     overflow: hidden;
   }
 
-  .app-chrome {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    height: 2.9rem;
-    padding: 0 1rem;
-    border-bottom: 1px solid var(--line);
-    background: color-mix(in srgb, var(--paper) 60%, var(--surface));
-    font-size: var(--t-meta);
-    color: var(--ink-3);
-  }
-
-  .app-lights {
-    display: flex;
-    gap: 6px;
-  }
-
-  .app-lights i {
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    background: var(--line-2);
-  }
-
-  .app-fict {
-    margin-left: auto;
+  .demo-bezel .app {
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
   }
 
   .app-shell {
@@ -1019,10 +997,6 @@
     .app-kpis,
     .app-panels {
       grid-template-columns: minmax(0, 1fr);
-    }
-
-    .app-crumb {
-      display: none;
     }
 
     .app-main {
