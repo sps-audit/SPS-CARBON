@@ -4,17 +4,17 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { HeroInstrument } from "./hero-instrument";
 import { Releve } from "./releve";
-import { PlatformBento } from "./platform-bento";
+import { PlateShowcase } from "./plate-showcase";
+import { OfferPlate } from "./offer-plate";
+import { PhasePlate } from "./phase-plate";
 import { AudiencePicker } from "./audience-picker";
 import { BeforeAfter } from "./before-after";
 import { WhyUs } from "./why-us";
-import { Ambiance } from "./ambiance";
 import { SiteReading, TonneExplained } from "./image-stories";
 import { Focus } from "./focus";
 import { CarbonReveal } from "./carbon-reveal";
 import { useSiteActions } from "./site-frame";
-import { steps } from "@/lib/steps";
-import { plans } from "@/lib/offers";
+import { offerPlate, phasePlate } from "@/lib/plates";
 
 const comparison = [
   ["Pensé pour les entreprises marocaines", "À construire soi-même", "Variable", "En français, avec des sources locales"],
@@ -75,7 +75,7 @@ const tools = [
   { href: "/outils#diagnostic", name: "Diagnostic express", text: "Cinq questions pour trouver votre point de départ.", visual: ["5 questions", "→", "Votre parcours"] },
 ];
 
-const i = (n: number) => ({ ["--i" as string]: n });
+
 
 export function HomePage() {
   const { openChecklist } = useSiteActions();
@@ -111,11 +111,11 @@ export function HomePage() {
               Tout votre carbone, sur un seul écran.
             </Focus>
             <p className="t-lead" data-reveal="rise">
-              Chaque module répond à une question de la direction. Essayez-les : ils réagissent. Écrans de démonstration,
-              données d’exemple.
+              Cinq modules, cinq questions de la direction. Choisissez-en un : il réagit comme dans la plateforme. Écrans
+              de démonstration, données d’exemple.
             </p>
           </div>
-          <PlatformBento />
+          <PlateShowcase />
           <div className="section-cta" data-reveal="rise">
             <Link href="/plateforme" className="btn">
               Découvrir la plateforme
@@ -179,33 +179,14 @@ export function HomePage() {
         <div className="wrap">
           <div className="head is-split">
             <Focus className="t-h2" id="offers-title">
-              Trois façons de commencer.
+              {offerPlate.title}
             </Focus>
             <p className="t-lead" data-reveal="rise">
-              Chaque mission démarre par un cadrage. Le prix dépend de vos sites, de vos données et des livrables attendus.
+              {offerPlate.lead}
             </p>
           </div>
-          <div className="offer-deck" data-reveal="stagger">
-            {plans.map((offer) => (
-              <article key={offer.id} className={offer.featured ? "offer is-featured s-night" : "offer spot"}>
-                {offer.featured && <Ambiance name="lumiere" sizes="(max-width: 1000px) 100vw, 720px" className="offer-amb" />}
-                <p className="offer-scope">{offer.scope}</p>
-                <h3 className="offer-name">{offer.name}</h3>
-                <p className="offer-for">{offer.forWho}</p>
-                <ul className="check-list">
-                  {offer.items.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-                <Link
-                  href={offer.href}
-                  className={offer.featured ? "btn btn-signal btn-small" : "link"}
-                  aria-label={`En savoir plus : ${offer.name}`}
-                >
-                  En savoir plus
-                </Link>
-              </article>
-            ))}
+          <div data-reveal="rise">
+            <OfferPlate />
           </div>
           <div className="offers-more" data-reveal="rise">
             <p>Comparez ce que chaque formule inclut, ajoutez des options et composez votre périmètre.</p>
@@ -239,44 +220,24 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="chapter s-tint path-chapter" id="deroulement" aria-labelledby="process-title">
-        <div className="wrap">
-          <div className="head is-split">
+      <section className="chapter s-tint phase-chapter" id="deroulement" aria-labelledby="process-title">
+        <div className="wrap phase-grid">
+          <div className="phase-side">
             <Focus className="t-h2" id="process-title">
-              Comment se déroule une mission.
+              {phasePlate.title}
             </Focus>
             <p className="t-lead" data-reveal="rise">
-              Du premier échange au suivi annuel. À chaque étape, vous savez ce que nous attendons de vous et ce que vous
-              recevez.
+              {phasePlate.lead}
             </p>
+            <div className="section-cta" data-reveal="rise">
+              <button type="button" className="btn" onClick={openChecklist}>
+                Créer ma checklist de données
+              </button>
+              <span className="t-meta">La liste des documents à réunir, selon votre activité.</span>
+            </div>
           </div>
-          <ol className="path" data-reveal="rise">
-            <svg className="path-line" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-              <line className="path-line-a" x1="0" y1="-22" x2="100" y2="78" pathLength={1} vectorEffect="non-scaling-stroke" />
-              <line className="path-line-b" x1="0" y1="0" x2="100" y2="100" pathLength={1} vectorEffect="non-scaling-stroke" />
-            </svg>
-            {steps.map((step, n) => (
-              <li key={step.title} style={i(n)}>
-                <span className="path-n" aria-hidden="true" />
-                <h3>{step.title}</h3>
-                <dl className="path-io">
-                  <div>
-                    <dt>Vous apportez</dt>
-                    <dd>{step.give}</dd>
-                  </div>
-                  <div>
-                    <dt>Vous recevez</dt>
-                    <dd>{step.get}</dd>
-                  </div>
-                </dl>
-              </li>
-            ))}
-          </ol>
-          <div className="section-cta" data-reveal="rise">
-            <button type="button" className="btn" onClick={openChecklist}>
-              Créer ma checklist de données
-            </button>
-            <span className="t-meta">La liste des documents à réunir, selon votre activité.</span>
+          <div data-reveal="rise">
+            <PhasePlate />
           </div>
         </div>
       </section>
