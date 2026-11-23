@@ -10,13 +10,22 @@
  *   firm, the 404);
  * - vagues: lime waves, the explanation of a tonne and the closings.
  *
+ * Added on 23 Nov 2026 for the "planches" (src/lib/plates.ts), placed by
+ * character (full map: docs/design/website-v9-planches.md):
+ * - nervure: the leaf in sharp detail, the calculation traced to its source;
+ *   only behind a small opaque card, never under running text;
+ * - elan: dark grass in motion, the trajectory toward 2030 (a night plate);
+ * - eclaircie: a white bloom on green, the light behind the featured offer;
+ * - clairiere: the palest grain, the calm ground for the longest text (the
+ *   mission phases).
+ *
  * Files: public/images/ambiance/{name}-{large|haut}-{width}.{avif,webp},
  * encoded from the originals (abstract blurs turned a quarter for the wide
  * versions, so they keep their full resolution). Self-hosted (CSP img-src 'self').
  */
 import type { InstrumentName } from "@/components/page-instruments";
 
-export type AmbianceName = "feuille" | "vagues" | "champ" | "voile" | "lumiere";
+export type AmbianceName = "feuille" | "vagues" | "champ" | "voile" | "lumiere" | "nervure" | "elan" | "eclaircie" | "clairiere";
 export type AmbianceShape = "large" | "haut";
 
 type Shape = { widths: readonly [number, number]; width: number; height: number };
@@ -41,6 +50,22 @@ export const ambiances: Record<AmbianceName, Record<AmbianceShape, Shape>> = {
   lumiere: {
     large: { widths: [1920, 1000], width: 1920, height: 1081 },
     haut: { widths: [768, 480], width: 768, height: 1364 },
+  },
+  nervure: {
+    large: { widths: [1440, 900], width: 1440, height: 1000 },
+    haut: { widths: [1000, 640], width: 1000, height: 1330 },
+  },
+  elan: {
+    large: { widths: [1200, 735], width: 1200, height: 800 },
+    haut: { widths: [600, 400], width: 600, height: 800 },
+  },
+  eclaircie: {
+    large: { widths: [1600, 900], width: 1600, height: 1000 },
+    haut: { widths: [676, 480], width: 676, height: 1200 },
+  },
+  clairiere: {
+    large: { widths: [1600, 900], width: 1600, height: 900 },
+    haut: { widths: [736, 480], width: 736, height: 1308 },
   },
 };
 

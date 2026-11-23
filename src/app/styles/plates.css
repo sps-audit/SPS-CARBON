@@ -1,0 +1,1166 @@
+/*
+ * Planches (23 Nov 2026): how the home page presents the product.
+ * A plate is an atmosphere image that holds one real fragment of the platform
+ * under a double-rim glass bezel; registration marks sit outside its corners,
+ * like a print proof. The explanation is written beside or under the plate,
+ * never on the picture. Images by character: src/lib/ambiance.ts and
+ * docs/design/website-v9-planches.md.
+ */
+
+@layer components {
+  /* ---------- The plate ---------- */
+  .plate {
+    position: relative;
+    margin: 0;
+    isolation: isolate;
+  }
+
+  .plate-face {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--r-xl);
+    background: var(--paper-2);
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+
+  .plate-face > .amb {
+    z-index: 0;
+  }
+
+  /* Film grain over the image: keeps an enlarged blur crisp, ties every plate together. */
+  .plate-grain {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: url("/images/auth/grain.png") 0 0 / 240px 240px repeat;
+    opacity: 0.42;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+
+  /* The squared dossier: a drawn grid, sharp at any size and in both themes. */
+  .plate.has-grid .plate-face::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.2) 1px, transparent 1px);
+    background-size: 64px 64px;
+    background-position: -1px -1px;
+    pointer-events: none;
+  }
+
+  /* Dark version: the picture steps down so the plate sits in the night page. */
+  html[data-theme="dark"] .plate-face::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: rgba(3, 21, 26, 0.42);
+    pointer-events: none;
+  }
+
+  /* Registration marks outside the four corners. */
+  .plate-marks {
+    --m: var(--line-3);
+    position: absolute;
+    inset: -13px;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      linear-gradient(var(--m), var(--m)) 0 5px / 11px 1px no-repeat,
+      linear-gradient(var(--m), var(--m)) 5px 0 / 1px 11px no-repeat,
+      linear-gradient(var(--m), var(--m)) 100% 5px / 11px 1px no-repeat,
+      linear-gradient(var(--m), var(--m)) calc(100% - 5px) 0 / 1px 11px no-repeat,
+      linear-gradient(var(--m), var(--m)) 0 calc(100% - 5px) / 11px 1px no-repeat,
+      linear-gradient(var(--m), var(--m)) 5px 100% / 1px 11px no-repeat,
+      linear-gradient(var(--m), var(--m)) 100% calc(100% - 5px) / 11px 1px no-repeat,
+      linear-gradient(var(--m), var(--m)) calc(100% - 5px) 100% / 1px 11px no-repeat;
+  }
+
+  /* The plate's top edge: its number and the example chip, on small glass pills. */
+  .plate-edge {
+    position: absolute;
+    top: 14px;
+    inset-inline: 14px;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin: 0;
+    pointer-events: none;
+  }
+
+  .plate-n {
+    padding: 0.28em 0.72em;
+    border-radius: 999px;
+    font-size: var(--t-micro);
+    font-weight: 600;
+    line-height: 1.3;
+    font-stretch: 104%;
+    letter-spacing: 0.01em;
+    color: var(--petrol);
+    background: rgba(255, 255, 255, 0.62);
+    -webkit-backdrop-filter: blur(10px) saturate(1.3);
+    backdrop-filter: blur(10px) saturate(1.3);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+  }
+
+  .plate-edge .demo-chip {
+    --surface: #ffffff;
+    --line: rgba(6, 33, 41, 0.1);
+    --ink-2: #344c54;
+    background: rgba(255, 255, 255, 0.62);
+    -webkit-backdrop-filter: blur(10px) saturate(1.3);
+    backdrop-filter: blur(10px) saturate(1.3);
+  }
+
+  .plate.is-night .plate-n,
+  html[data-theme="dark"] .plate-n,
+  .plate.is-night .plate-edge .demo-chip,
+  html[data-theme="dark"] .plate-edge .demo-chip {
+    color: var(--ice);
+    --ink-2: #d5e4e0;
+    background: rgba(6, 33, 41, 0.42);
+    box-shadow: inset 0 0 0 1px rgba(245, 250, 248, 0.16);
+  }
+
+  .plate-body {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ---------- The double-rim bezel ---------- */
+  .bezel {
+    --rim: 7px;
+    position: relative;
+    padding: var(--rim);
+    border-radius: calc(var(--r-l) + var(--rim));
+    background: rgba(255, 255, 255, 0.3);
+    -webkit-backdrop-filter: blur(16px) saturate(1.45);
+    backdrop-filter: blur(16px) saturate(1.45);
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.75),
+      0 2px 6px rgba(6, 33, 41, 0.06),
+      0 34px 64px -32px rgba(6, 33, 41, 0.5);
+  }
+
+  .bezel-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--r-l);
+    background: var(--surface);
+    color: var(--ink);
+    box-shadow: 0 0 0 1px var(--line), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  }
+
+  .plate.is-night .bezel,
+  html[data-theme="dark"] .bezel {
+    background: rgba(10, 36, 43, 0.34);
+    box-shadow:
+      inset 0 0 0 1px rgba(245, 250, 248, 0.14),
+      inset 0 1px 0 rgba(245, 250, 248, 0.2),
+      0 2px 6px rgba(0, 0, 0, 0.2),
+      0 34px 64px -32px rgba(0, 0, 0, 0.7);
+  }
+
+  html[data-theme="dark"] .bezel-card {
+    box-shadow: 0 0 0 1px var(--line), var(--glass-lit);
+  }
+
+  /* ---------- Showcase: keycaps and plate ---------- */
+  .showcase {
+    display: grid;
+    grid-template-columns: minmax(0, 4.3fr) minmax(0, 7.7fr);
+    gap: var(--col-gap);
+    align-items: stretch;
+  }
+
+  /* The squared sheet: millimetre grid, registration crosses every 48 px. */
+  .showcase-sheet {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2.5rem;
+    padding: clamp(1.1rem, 1.8vw, 1.6rem);
+    border-radius: var(--r-xl);
+    background:
+      linear-gradient(color-mix(in srgb, var(--ink) 4%, transparent) 1px, transparent 1px) -1px -1px / 12px 12px,
+      linear-gradient(90deg, color-mix(in srgb, var(--ink) 4%, transparent) 1px, transparent 1px) -1px -1px / 12px 12px,
+      var(--surface);
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+
+  .showcase-sheet::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: var(--line-2);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M24 20.5v7M20.5 24h7' stroke='black' stroke-width='1'/%3E%3C/svg%3E") -24px -24px / 48px 48px repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M24 20.5v7M20.5 24h7' stroke='black' stroke-width='1'/%3E%3C/svg%3E") -24px -24px / 48px 48px repeat;
+  }
+
+  .showcase-keys {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  /* A menu line with its shortcut on the right, as in a desktop application. */
+  .key {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 3.1rem;
+    padding: 0 0.6rem 0 1rem;
+    border: 0;
+    border-radius: var(--r-m);
+    background: color-mix(in srgb, var(--surface) 88%, transparent);
+    box-shadow: inset 0 0 0 1px var(--line);
+    color: var(--ink-3);
+    font-size: var(--t-small);
+    font-weight: 560;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color var(--d-2) var(--ease), color var(--d-2) var(--ease), box-shadow var(--d-2) var(--ease);
+  }
+
+  .key kbd {
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.9rem;
+    height: 1.9rem;
+    padding: 0 0.4rem;
+    border-radius: var(--r-xs);
+    font: inherit;
+    font-size: var(--t-meta);
+    font-weight: 620;
+    font-stretch: 108%;
+    color: var(--ink-2);
+    background: var(--surface);
+    box-shadow: inset 0 0 0 1px var(--line-2), inset 0 -2px 0 var(--line);
+    order: 2;
+    transition: background-color var(--d-2) var(--ease), color var(--d-2) var(--ease), box-shadow var(--d-2) var(--ease);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .key:hover {
+      color: var(--ink);
+    }
+  }
+
+  .key[aria-selected="true"] {
+    color: var(--ink);
+    background: var(--surface);
+    box-shadow: inset 0 0 0 1px var(--line-2), var(--shadow-2);
+  }
+
+  /* Viridian = where you are. */
+  .key[aria-selected="true"] kbd {
+    color: var(--signal);
+    background: var(--signal-soft);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--signal) 35%, transparent), inset 0 -2px 0 color-mix(in srgb, var(--signal) 22%, transparent);
+  }
+
+  .key:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  /* The specimen label pinned on the squared sheet: what the plate shows. */
+  .showcase-caption {
+    display: grid;
+    gap: 0.75rem;
+    justify-items: start;
+    align-content: start;
+    /* Room for the longest caption, so changing module never moves the page. */
+    min-height: 16.5rem;
+    padding: 1.1rem 1.2rem 1.25rem;
+    border-radius: var(--r-l);
+    background: var(--surface);
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+
+  .showcase-caption > p:not(.showcase-count) {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: var(--t-body);
+    line-height: 1.55;
+    max-width: 30em;
+  }
+
+  .showcase-caption .t-h3 {
+    margin: 0;
+  }
+
+  .showcase-count {
+    margin: 0;
+    font-size: var(--t-ui);
+    font-weight: 600;
+    font-stretch: 110%;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+  }
+
+  .showcase-count span {
+    color: var(--ink-3);
+    font-weight: 500;
+  }
+
+  .showcase-stage,
+  .showcase-plate,
+  .showcase-plate .plate-face,
+  .showcase-plate .plate-body {
+    height: 100%;
+  }
+
+  .showcase-plate .plate-face {
+    min-height: clamp(30rem, 24rem + 14vw, 37rem);
+  }
+
+  /* ---------- Fragments (pf) ---------- */
+  .pf {
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 1.1rem;
+    height: 100%;
+    padding: 4rem clamp(1rem, 3vw, 2.5rem) clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .pf-card {
+    width: min(100%, 27rem);
+  }
+
+  .pf-card .bezel-card {
+    padding: 1.1rem 1.2rem 1.15rem;
+  }
+
+  .pf-kicker {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 0 0 0.85rem;
+    font-size: var(--t-ui);
+    font-weight: 620;
+  }
+
+  .pf-kicker span {
+    font-size: var(--t-meta);
+    font-weight: 500;
+    color: var(--ink-3);
+    text-align: right;
+  }
+
+  .pf-rows,
+  .pf-alerts,
+  .pf-chain {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .pf-rows li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.62rem 0;
+    border-top: 1px solid var(--line);
+    font-size: var(--t-ui);
+    color: var(--ink-2);
+  }
+
+  /* Collecter: the sources converging on the bilan. */
+  .pf-hub {
+    position: relative;
+    width: min(100%, 30rem);
+    aspect-ratio: 30 / 13;
+  }
+
+  .pf-hub-lines {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .pf-hub-lines line {
+    stroke: rgba(255, 255, 255, 0.85);
+    stroke-width: 1.3;
+    stroke-dasharray: 4 5;
+    stroke-linecap: round;
+  }
+
+  /* A missing source is not connected yet: its line is faint and sparse. */
+  .pf-hub-lines line.is-miss {
+    stroke: rgba(255, 255, 255, 0.45);
+    stroke-dasharray: 1 7;
+  }
+
+  .pf-src,
+  .pf-core {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    translate: -50% -50%;
+  }
+
+  .pf-src {
+    display: grid;
+    justify-items: center;
+    gap: 0.4rem;
+  }
+
+  .pf-src-tile {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: var(--r-s);
+    color: var(--petrol);
+    background: #ffffff;
+    box-shadow: inset 0 0 0 1px rgba(6, 33, 41, 0.08), 0 10px 22px -12px rgba(6, 33, 41, 0.55);
+  }
+
+  /* The status of each source: green received, amber waiting, red missing. */
+  .pf-src-tile::after {
+    content: "";
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 50%;
+    background: var(--signal-fill);
+    box-shadow: 0 0 0 2px #ffffff;
+  }
+
+  .pf-src.is-wait .pf-src-tile::after {
+    background: var(--check-fill);
+  }
+
+  .pf-src.is-miss .pf-src-tile::after {
+    background: #c9574b;
+  }
+
+  .pf-src.is-miss .pf-src-tile {
+    color: rgba(6, 33, 41, 0.5);
+    background: rgba(255, 255, 255, 0.72);
+  }
+
+  .pf-src-name {
+    padding: 0.16em 0.6em;
+    border-radius: 999px;
+    font-size: var(--t-micro);
+    font-weight: 560;
+    line-height: 1.35;
+    white-space: nowrap;
+    color: #ffffff;
+    background: rgba(6, 33, 41, 0.36);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
+
+  .pf-core {
+    display: grid;
+    place-items: center;
+    width: 4.25rem;
+    height: 4.25rem;
+    border-radius: var(--r-m);
+    background: var(--petrol);
+    box-shadow: inset 0 0 0 1px rgba(245, 250, 248, 0.14), 0 0 0 6px rgba(255, 255, 255, 0.22), 0 18px 34px -16px rgba(6, 33, 41, 0.7);
+  }
+
+  .pf-core svg {
+    width: 2.35rem;
+    height: 2.35rem;
+    fill: var(--ice);
+  }
+
+  /* Contrôler */
+  .pf-alerts li {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.7rem 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .pf-alerts strong {
+    display: block;
+    font-size: var(--t-ui);
+    font-weight: 600;
+  }
+
+  .pf-alerts small {
+    display: block;
+    font-size: var(--t-meta);
+    color: var(--ink-3);
+  }
+
+  .pf-alert-mark {
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
+    background: var(--check-fill);
+    transition: background-color var(--d-2) var(--ease);
+  }
+
+  .pf-alerts li.is-fixed .pf-alert-mark {
+    background: var(--signal-fill);
+  }
+
+  .pf-alerts li.is-fixed strong {
+    color: var(--ink-3);
+  }
+
+  .pf-chip {
+    min-height: 2.1rem;
+    padding: 0 0.85rem;
+    border: 0;
+    border-radius: 999px;
+    font-size: var(--t-meta);
+    font-weight: 600;
+    color: var(--check);
+    background: var(--check-soft);
+    cursor: pointer;
+    transition: background-color var(--d-2) var(--ease), color var(--d-2) var(--ease);
+  }
+
+  .pf-chip[aria-pressed="true"] {
+    color: var(--signal);
+    background: var(--signal-soft);
+  }
+
+  .pf-chip:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  /* Calculer: the chain read down one vein. */
+  .pf-chain li {
+    position: relative;
+    display: grid;
+    grid-template-columns: 6rem minmax(0, 1fr);
+    align-items: baseline;
+    gap: 0.75rem;
+    padding: 0.6rem 0 0.6rem 1.35rem;
+  }
+
+  .pf-chain li::before {
+    content: "";
+    position: absolute;
+    left: 0.32rem;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--line-2);
+  }
+
+  .pf-chain li:first-child::before {
+    top: 50%;
+  }
+
+  .pf-chain li:last-child::before {
+    bottom: 50%;
+  }
+
+  .pf-chain li::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 0.66rem;
+    height: 0.66rem;
+    margin-top: -0.33rem;
+    border-radius: 50%;
+    background: var(--surface);
+    box-shadow: inset 0 0 0 1.5px var(--line-3);
+  }
+
+  .pf-chain small {
+    font-size: var(--t-meta);
+    color: var(--ink-3);
+  }
+
+  .pf-chain strong {
+    font-size: var(--t-ui);
+    font-weight: 560;
+  }
+
+  .pf-chain li.is-result {
+    margin-top: 0.3rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .pf-chain li.is-result::after {
+    background: var(--signal-fill);
+    box-shadow: 0 0 0 3px var(--signal-soft);
+  }
+
+  .pf-chain li.is-result strong {
+    font-size: 1.15rem;
+    font-weight: 620;
+    font-stretch: 106%;
+    letter-spacing: -0.02em;
+  }
+
+  /* Piloter */
+  .pf-trajectory .pf-card {
+    width: min(100%, 34rem);
+  }
+
+  .pf-traj-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 0.75rem 1rem;
+  }
+
+  .pf-figure {
+    margin: 0;
+    font-size: clamp(2.1rem, 1.6rem + 1.4vw, 2.8rem);
+  }
+
+  .pf-traj-head .seg button {
+    min-height: 1.9rem;
+    padding: 0 0.7rem;
+    font-size: var(--t-meta);
+  }
+
+  .pf-chart {
+    display: block;
+    width: 100%;
+    height: 9.5rem;
+    margin-top: 1rem;
+    overflow: visible;
+  }
+
+  .pf-chart-grid {
+    fill: none;
+    stroke: var(--line);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .pf-chart-goal {
+    fill: none;
+    stroke: var(--ink-3);
+    stroke-width: 1.2;
+    stroke-dasharray: 4 5;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .pf-chart-line {
+    fill: none;
+    stroke: var(--signal);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .pf-axis {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.4rem 0 0;
+    font-size: var(--t-micro);
+    color: var(--ink-3);
+  }
+
+  .pf-note {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0.85rem 0 0;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--line);
+    font-size: var(--t-meta);
+    color: var(--ink-2);
+  }
+
+  .pf-goal-key {
+    width: 1.4rem;
+    height: 0;
+    border-top: 1.5px dashed var(--ink-3);
+  }
+
+  /* Transmettre */
+  .pf-macf .pf-figure {
+    margin-bottom: 0.9rem;
+  }
+
+  .pf-sheet {
+    margin: 0;
+  }
+
+  .pf-sheet div {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.55rem 0;
+    border-top: 1px solid var(--line);
+    font-size: var(--t-ui);
+  }
+
+  .pf-sheet dt {
+    color: var(--ink-3);
+  }
+
+  .pf-sheet dd {
+    margin: 0;
+    font-weight: 560;
+    text-align: right;
+  }
+
+  .pf-files {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0.9rem 0 0;
+  }
+
+  .pf-files span {
+    padding: 0.2em 0.65em;
+    border-radius: var(--r-xs);
+    font-size: var(--t-micro);
+    font-weight: 600;
+    color: var(--ink-2);
+    box-shadow: inset 0 0 0 1px var(--line-2);
+  }
+
+  .pf-files .tag {
+    margin-left: auto;
+  }
+
+  /* ---------- Offers: specimen cards ---------- */
+  .offer-plate .plate-body {
+    padding: 4.4rem clamp(1rem, 3vw, 3rem) clamp(1.75rem, 3.5vw, 3.25rem);
+  }
+
+  .specimen-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: center;
+    gap: clamp(0.9rem, 1.6vw, 1.6rem);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .specimen-slot:not(.is-featured) > .specimen {
+    border-radius: var(--r-l);
+    background: var(--surface);
+    box-shadow: 0 0 0 1px var(--line), 0 24px 48px -30px rgba(6, 33, 41, 0.45);
+  }
+
+  .specimen {
+    display: grid;
+    gap: 1rem;
+    justify-items: start;
+    padding: 1.15rem 1.25rem 1.3rem;
+  }
+
+  .specimen-head {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 0.4rem 0.7rem;
+    width: 100%;
+  }
+
+  .specimen-n {
+    display: grid;
+    place-items: center;
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: var(--r-xs);
+    font-size: var(--t-meta);
+    font-weight: 620;
+    font-stretch: 108%;
+    color: var(--ink-2);
+    background: var(--surface-2);
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+
+  .specimen-head h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 620;
+    letter-spacing: -0.015em;
+  }
+
+  .specimen-head .tag {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .specimen-rows {
+    width: 100%;
+    margin: 0;
+  }
+
+  .specimen-rows div {
+    display: grid;
+    grid-template-columns: 6.2rem minmax(0, 1fr);
+    gap: 0.75rem;
+    padding: 0.62rem 0;
+    border-top: 1px solid var(--line);
+    font-size: var(--t-small);
+    line-height: 1.45;
+  }
+
+  .specimen-rows dt {
+    font-size: var(--t-small);
+    font-weight: 500;
+    color: var(--ink-3);
+  }
+
+  .specimen-rows dd {
+    margin: 0;
+    font-size: var(--t-small);
+    color: var(--ink);
+  }
+
+  .specimen-rows ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.2rem;
+  }
+
+  /* ---------- Mission: stacked phase cards ---------- */
+  .phase-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(2rem, 4vw, 5rem);
+    align-items: start;
+  }
+
+  .phase-side {
+    position: sticky;
+    top: calc(var(--header) + 2.5rem);
+    display: grid;
+    gap: 1.4rem;
+  }
+
+  .phase-side .section-cta {
+    margin-top: 0.75rem;
+  }
+
+  .phase-plate .plate-body {
+    padding: 4.2rem clamp(0.9rem, 3vw, 2.6rem) clamp(1.5rem, 3vw, 2.6rem);
+  }
+
+  .phase-stack {
+    display: grid;
+    gap: 1.1rem;
+    max-width: 33rem;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+  }
+
+  .phase .bezel-card {
+    padding: 1.05rem 1.25rem 0;
+  }
+
+  .phase-k {
+    margin: 0 0 0.25rem;
+    font-size: var(--t-meta);
+    font-weight: 560;
+    color: var(--ink-3);
+  }
+
+  .phase-title {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 620;
+    letter-spacing: -0.02em;
+  }
+
+  .phase-track {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    margin: 1rem 0 0.9rem;
+    padding: 0;
+    list-style: none;
+  }
+
+  .phase-track li {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    align-content: start;
+    gap: 0.4rem;
+  }
+
+  .phase-track li + li::before {
+    content: "";
+    position: absolute;
+    top: 0.43rem;
+    right: 50%;
+    width: 100%;
+    height: 1px;
+    background: var(--line-2);
+  }
+
+  .phase-track li.is-done + li::before {
+    background: var(--ink-3);
+  }
+
+  .phase-track i {
+    position: relative;
+    z-index: 1;
+    width: 0.9rem;
+    height: 0.9rem;
+    border-radius: 50%;
+    background: var(--surface);
+    box-shadow: inset 0 0 0 1.5px var(--line-3);
+  }
+
+  .phase-track li.is-done i {
+    background: var(--ink-3);
+    box-shadow: none;
+  }
+
+  .phase-track li.is-here i {
+    background: var(--signal-fill);
+    box-shadow: 0 0 0 4px var(--signal-soft);
+  }
+
+  .phase-track span {
+    font-size: 0.6875rem;
+    line-height: 1.25;
+    text-align: center;
+    color: var(--ink-3);
+    padding-inline: 0.15rem;
+  }
+
+  .phase-track li.is-here span {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .phase-io {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 0;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .phase-io dt {
+    font-size: var(--t-meta);
+    font-weight: 600;
+    color: var(--ink-3);
+  }
+
+  .phase-io dd {
+    margin: 0.25rem 0 0;
+    font-size: var(--t-small);
+    line-height: 1.45;
+    color: var(--ink-2);
+  }
+
+  .phase-foot {
+    margin: 1rem -1.25rem 0;
+    padding: 0.7rem 1.25rem;
+    border-top: 1px solid var(--line);
+    background: var(--surface-2);
+    font-size: var(--t-meta);
+    color: var(--ink-3);
+  }
+
+  .phase-foot span {
+    margin-right: 0.35em;
+    font-weight: 600;
+    color: var(--ink-2);
+  }
+
+  /* ---------- Tablet and phone ---------- */
+  @media (max-width: 1000px) {
+    .showcase {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .showcase-sheet {
+      gap: 1.5rem;
+    }
+
+    .showcase-keys {
+      display: flex;
+      gap: 0.4rem;
+      overflow-x: auto;
+      margin-inline: -0.25rem;
+      padding: 0.25rem;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .showcase-keys::-webkit-scrollbar {
+      display: none;
+    }
+
+    .key {
+      flex: none;
+      gap: 0.6rem;
+      padding: 0 0.85rem 0 0.45rem;
+    }
+
+    .key kbd {
+      order: 0;
+    }
+
+    .phase-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .phase-side {
+      position: static;
+    }
+
+    /* The three offers scroll sideways; the next card shows at the edge. */
+    .offer-plate .plate-body {
+      padding-inline: 0;
+    }
+
+    .specimen-row {
+      display: flex;
+      align-items: center;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: clamp(1rem, 5vw, 2rem);
+      padding: 0.6rem clamp(1rem, 5vw, 2rem) 1.2rem;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .specimen-row::-webkit-scrollbar {
+      display: none;
+    }
+
+    .specimen-slot {
+      flex: 0 0 min(84%, 24rem);
+      scroll-snap-align: center;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .pf {
+      padding-inline: 0.75rem;
+    }
+
+    /* Taller on a phone so the five names never touch. */
+    .pf-hub {
+      aspect-ratio: 30 / 19;
+    }
+
+    .pf-src-tile {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+
+    .specimen-rows div {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.15rem;
+    }
+
+    .pf-src-name {
+      font-size: 0.6875rem;
+      padding-inline: 0.45em;
+    }
+
+    .pf-core {
+      width: 3.5rem;
+      height: 3.5rem;
+    }
+
+    .pf-chain li {
+      grid-template-columns: 4.6rem minmax(0, 1fr);
+    }
+
+    /* Only the lit point keeps its name: five labels do not fit a phone. */
+    .phase-track span {
+      visibility: hidden;
+    }
+
+    .phase-track li.is-here span {
+      visibility: visible;
+      white-space: nowrap;
+    }
+
+    .phase-io {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.75rem;
+    }
+
+    .plate-marks {
+      inset: -9px;
+    }
+  }
+}
+
+@layer motion {
+  @media (prefers-reduced-motion: no-preference) {
+    /* A module change: the new plate settles, its fragment rises into place. */
+    .showcase-plate .plate-face {
+      animation: plate-settle var(--d-3) var(--ease-out) both;
+    }
+
+    .showcase-plate .pf > * {
+      animation: plate-rise var(--d-3) var(--ease-out) 80ms both;
+    }
+
+    .showcase-caption {
+      animation: plate-rise var(--d-3) var(--ease-out) both;
+    }
+
+    /* Collecter: the sources arrive one by one. */
+    .pf-src {
+      animation: plate-rise var(--d-3) var(--ease-out) both;
+      animation-delay: calc(140ms + var(--n, 0) * 70ms);
+    }
+
+    @keyframes plate-settle {
+      from {
+        opacity: 0.001;
+        transform: scale(0.985);
+      }
+    }
+
+    @keyframes plate-rise {
+      from {
+        opacity: 0.001;
+        transform: translateY(10px);
+      }
+    }
+  }
+}
+
+/* Touch: every control on a plate is at least 44 px tall. */
+@layer components {
+  @media (pointer: coarse) {
+    .pf-chip,
+    .pf-traj-head .seg button {
+      min-height: 2.75rem;
+    }
+  }
+}

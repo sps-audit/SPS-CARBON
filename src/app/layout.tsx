@@ -8,6 +8,7 @@ import "./styles/sections.css";
 import "./styles/home.css";
 import "./styles/pages.css";
 import "./styles/product.css";
+import "./styles/plates.css";
 import "./styles/tools.css";
 import "./styles/import.css";
 import "./styles/contact.css";
