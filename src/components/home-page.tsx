@@ -105,8 +105,8 @@ export function HomePage() {
               Tout votre carbone, sur un seul écran.
             </Focus>
             <p className="t-lead" data-reveal="rise">
-              Cinq modules, cinq questions de la direction. Choisissez-en un : chaque chiffre vient de la démonstration de
-              la plateforme, {demoCase.name}, une entreprise fictive.
+              Cinq modules, cinq questions de la direction. Choisissez-en un : tout part du bilan de la démonstration de la
+              plateforme, {demoCase.name}, une entreprise fictive.
             </p>
           </div>
           <PlateShowcase />
@@ -120,8 +120,8 @@ export function HomePage() {
               Ouvrez la vraie plateforme.
             </Focus>
             <p className="t-lead" data-reveal="rise">
-              La démonstration n’est pas une maquette : ce sont les écrans et les calculs que nos clients utilisent,
-              ouverts sur {demoCase.name}, une entreprise fictive. Choisissez un rôle et parcourez le bilan.
+              La démonstration n’est pas une maquette : ce sont les écrans et les calculs de la plateforme, ouverts sur
+              {" "}{demoCase.name}, une entreprise fictive. Choisissez un rôle et parcourez le bilan.
             </p>
             <ul className="demo-roles" data-reveal="rise">
               <li>

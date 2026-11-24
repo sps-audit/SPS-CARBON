@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Plate, Bezel } from "./plate";
 import { captures, type CaptureId } from "@/lib/demo-case";
+import { plateEdge } from "@/lib/plates";
 import type { AmbianceName } from "@/lib/ambiance";
 
 /*
@@ -48,7 +49,7 @@ export function PlatformCapture({
           ))}
         </div>
       )}
-      <Plate ambiance={ambiance} sizes={sizes} demo className="capture-plate">
+      <Plate ambiance={ambiance} sizes={sizes} demo demoLabel={plateEdge.demoCase} className="capture-plate">
         <Bezel className="capture-bezel">
           {list.map((c) => (
             <div key={c.id} className="capture-frame" hidden={c.id !== shown}>

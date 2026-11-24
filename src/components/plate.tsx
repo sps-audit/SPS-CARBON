@@ -17,6 +17,7 @@ export function Plate({
   sizes,
   number,
   demo = false,
+  demoLabel = plateEdge.demo,
   grid = false,
   night = false,
   className = "",
@@ -29,6 +30,8 @@ export function Plate({
   number?: number;
   /** The fragment shows fictional data: say so on the plate. */
   demo?: boolean;
+  /** The chip's words, when a plate names its case ("Entreprise fictive de la démonstration"). */
+  demoLabel?: string;
   /** A drawn squared grid over the image (the measured dossier). */
   grid?: boolean;
   /** Dark image: label, chip and bezel rims switch to their night finish. */
@@ -45,7 +48,7 @@ export function Plate({
         {(number !== undefined || demo) && (
           <p className="plate-edge">
             {number !== undefined && <span className="plate-n">{plateEdge.number(number)}</span>}
-            {demo && <span className="demo-chip">{plateEdge.demo}</span>}
+            {demo && <span className="demo-chip">{demoLabel}</span>}
           </p>
         )}
         <div className="plate-body">{children}</div>

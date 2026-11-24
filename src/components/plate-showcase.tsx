@@ -20,6 +20,7 @@ import {
   trajectoryStart,
   scenarios,
   macf,
+  plateEdge,
   type ModuleId,
 } from "@/lib/plates";
 
@@ -300,6 +301,7 @@ export function PlateShowcase() {
           sizes="(max-width: 1000px) 100vw, 820px"
           number={active + 1}
           demo
+          demoLabel={plateEdge.demoCase}
           grid={m.grid}
           night={m.night}
           className={`showcase-plate is-${m.id}`}

@@ -79,7 +79,9 @@ export const plateModules: PlateModule[] = [
 /* The plate's top edge. The chip goes on fictional fragments only, never on the real offers or steps. */
 export const plateEdge = {
   number: (n: number) => `Planche ${String(n).padStart(2, "0")}`,
-  demo: demoCase.chip,
+  demo: "Données d’exemple",
+  /** On the plates that show the demonstration's own company (showcase, captures). */
+  demoCase: demoCase.chip,
 };
 
 /* Collecter: the pieces converging on the bilan, and who still owes what. */
