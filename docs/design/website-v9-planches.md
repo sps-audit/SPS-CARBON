@@ -42,12 +42,13 @@ as photos.
 | Green and white bloom (`19.36.24 (2)`) | soft, a light at the centre | `eclaircie` | Planche 06, the offers | the light falls on the featured formula in the middle |
 | Palest lime grain (`19.36.23`) | calmest, almost no detail | `clairiere` | Planche 07, the mission | the most text on any plate: it needs the quietest ground |
 | Soft diagonal blur (`19.31.37`, already used) | soft stage | `voile` | hero, Planche 01 *Collecter* | white tiles and dashed lines read best on its mid green |
-| Vertical light (`19.32.29`, already used) | soft stage | `lumiere` | Planche 02 *Contrôler*, footer | a calm stage for a list of checks |
-| Lime waves (`19.30.41`, already used) | saturated, energetic | `vagues` | Planche 05 *Transmettre* (with the drawn grid), the tonne, closings | the closing step: the dossier sent |
+| Vertical light (`19.32.29`, already used) | soft stage | `lumiere` | Planche 02 *Contrôler*, the demonstration, two page headers | a calm stage for a list of checks |
+| Lime waves (`19.30.41`, already used) | saturated, energetic | `vagues` | Planche 05 *Transmettre* (with the drawn grid), the tonne, two page headers | the closing step: the dossier sent |
 | Soft leaf (`19.29.53`, already used) | medium detail | `feuille` | the invoice story (Le relevé) | unchanged |
 | Field in motion (`19.31.25`, already used) | terrain, horizon | `champ` | one site and its three scopes, 404 | unchanged |
 | Grid paper with crosses (`19.36.23 (1)`) | a texture, not a photo | drawn in CSS | the showcase sheet (millimetre grid, crosses every 48 px) | sharp at every size and in both themes; the JPEG is 640 px wide |
 | Green blur with a grid (`19.36.23 (2)`) | a texture, not a photo | drawn in CSS | the grid over Planche 05 | same reason |
+| The same jade blur, grid melted (24 Nov) | calmest, even | `jade` | the close of every page | carries a list and a call; nothing on it moves |
 
 Not used, on purpose:
 
