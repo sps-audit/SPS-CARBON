@@ -12,7 +12,8 @@
 
 /** The platform's demonstration: the real application, with fictional data kept in the browser. */
 export const platformDemo = {
-  url: "https://sps-carbon-app.vercel.app",
+  /* "?demo": the platform greets a visitor as a demonstration, not as an invited client. */
+  url: "https://sps-carbon-app.vercel.app/#/connexion?demo",
   cta: "Ouvrir la démonstration",
   note: "Sans inscription. Les données restent dans votre navigateur.",
 };
