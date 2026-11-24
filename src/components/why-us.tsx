@@ -13,9 +13,9 @@ import { SafeperformLogo } from "@/components/safeperform-logo";
  */
 
 const review = [
-  { label: "Facture d’électricité, mars", value: "10 000 kWh", state: "Pièce jointe", tone: "ok" },
-  { label: "Écart avec février", value: "+38 %", state: "À justifier", tone: "check" },
-  { label: "Gazole, flotte de livraison", value: "4 200 L", state: "Contrôlé", tone: "ok" },
+  { label: "Fer blanc pour boîtes", value: "1 450 t", state: "Pièce jointe", tone: "ok" },
+  { label: "Eaux usées, écart avec 2024", value: "+32 %", state: "À justifier", tone: "check" },
+  { label: "Gazole, camions frigorifiques", value: "42 000 L", state: "Contrôlé", tone: "ok" },
 ] as const;
 
 const clauses = [
@@ -62,7 +62,7 @@ export function WhyUs() {
             <figure className="why-ui" data-ui>
               <figcaption className="why-ui-head">
                 <span>Revue du consultant</span>
-                <span className="why-ui-note">Exemple, données fictives</span>
+                <span className="why-ui-note">Conserverie Atlas, entreprise fictive</span>
               </figcaption>
               <ul className="why-review">
                 {review.map((row) => (
@@ -74,9 +74,9 @@ export function WhyUs() {
                 ))}
               </ul>
               <p className="why-review-comment">
-                <strong>Consultant SPS</strong>
-                Justification demandée au service maintenance : arrêt d’un compresseur en février. Écart accepté, pièce
-                ajoutée au dossier.
+                <strong>Consultante SafePerform</strong>
+                Justification demandée au responsable de la station d’épuration : volumes traités en hausse. L’écart sera
+                expliqué avant la revue, pièce ajoutée au dossier.
               </p>
             </figure>
           </article>

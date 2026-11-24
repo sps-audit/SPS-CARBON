@@ -91,7 +91,7 @@ export const pageAmbiance: Record<InstrumentName, { name: AmbianceName; note: st
 };
 
 /* Demonstration on /plateforme: the three things to try, listed above the demo's plate. */
-export const demoSteps = ["Changez de source d’émission", "Parcourez les mois", "Ouvrez le détail d’un calcul"];
+export const demoSteps = ["Choisissez un rôle : cliente, consultante ou vérificateur", "Ouvrez le bilan 2025", "Suivez une donnée de la saisie au rapport"];
 
 /*
  * Home, "Un site, trois sources": the field read like an analyst's map. Same

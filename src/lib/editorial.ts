@@ -24,7 +24,7 @@ export const editorialPages: EditorialPage[] = [
         title: "Un fil conducteur pour votre démarche carbone",
         body: [
           "Les informations nécessaires à un inventaire existent souvent déjà : factures, relevés de compteurs, achats de carburant, registres de production ou données de transport. Leur dispersion, leurs unités et leurs périodes rendent leur exploitation difficile. SPS-CARBON est conçu pour organiser ce travail autour d’un périmètre explicite et d’une méthode partagée.",
-          "La démonstration de cette page suit un parcours consacré à l’électricité et au carburant, avec des données et des facteurs d’exemple. Les missions menées avec nos consultants appliquent dès aujourd’hui la même méthode ; les espaces clients de la plateforme ouvrent progressivement.",
+          "La démonstration de cette page ouvre la plateforme elle-même sur une entreprise fictive, Conserverie Atlas : ses données sont d’exemple, ses calculs suivent les facteurs FM6E v17. Les missions menées avec nos consultants appliquent dès aujourd’hui la même méthode ; les espaces clients de la plateforme ouvrent progressivement.",
         ],
         bullets: [
           "Une lecture simple pour la direction, avec le détail nécessaire à la revue technique.",
@@ -88,11 +88,11 @@ export const editorialPages: EditorialPage[] = [
         id: "trajectoire",
         title: "Un socle solide, puis des extensions",
         body: [
-          "La démonstration porte sur les consommations d’électricité et de carburant. Ce périmètre ne représente pas à lui seul la totalité des Scopes 1 et 2 d’une entreprise, qui peut aussi émettre par ses procédés ou ses fluides frigorigènes : la méthode les examine dès le cadrage.",
+          "La démonstration montre un bilan d’exemple complet, sur les Scopes 1, 2 et 3. Pour une entreprise réelle, le périmètre se fixe au cadrage : procédés, fluides frigorigènes, achats ou transport sont examinés selon l’activité.",
           "Chaque extension se construit à partir de cas métiers et de règles validées. Les catégories du Scope 3, la préparation des données MACF et les empreintes de produits répondent à des besoins distincts ; chacun a son propre cadrage.",
         ],
         bullets: [
-          "Démonstration : données d’exemple d’électricité et de carburant.",
+          "Démonstration : une entreprise fictive, un bilan d’exemple, les facteurs FM6E v17.",
           "Socle : collecte, pièces justificatives, revue, calculs documentés et rapports versionnés.",
           "Extensions : catégories prioritaires du Scope 3, suivi des actions et parcours MACF.",
         ],

@@ -1334,3 +1334,94 @@
     }
   }
 }
+
+/* The real platform on a plate (24 Nov 2026): captures of SPS-CARBON, never redrawn. */
+@layer components {
+  .capture {
+    display: grid;
+    gap: clamp(0.8rem, 0.5rem + 0.8vw, 1.25rem);
+    min-width: 0;
+  }
+
+  .capture-tabs {
+    justify-self: start;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .capture-plate .plate-body {
+    padding: 3.25rem clamp(0.6rem, 0.1rem + 2.4vw, 3rem) clamp(0.6rem, 0.1rem + 2.4vw, 3rem);
+  }
+
+  .capture-bezel .bezel-card {
+    background: var(--paper-2);
+  }
+
+  .capture-frame[hidden] {
+    display: none;
+  }
+
+  .capture-img,
+  .capture-img img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Light and dark captures follow the site's theme; the hidden one is never downloaded (lazy). */
+  .capture-img.is-sombre,
+  html[data-theme="dark"] .capture-img.is-clair {
+    display: none;
+  }
+
+  html[data-theme="dark"] .capture-img.is-sombre {
+    display: block;
+  }
+
+  /* Home: the demonstration, the real platform beside what to open in it. */
+  .demo-band {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.6fr);
+    gap: clamp(1.5rem, 1rem + 2.5vw, 4rem);
+    align-items: center;
+  }
+
+  .demo-band-copy {
+    display: grid;
+    gap: 1.1rem;
+    align-content: start;
+  }
+
+  .demo-roles {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--line);
+  }
+
+  .demo-roles li {
+    display: grid;
+    gap: 0.1rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--line);
+    font-size: var(--t-small);
+    color: var(--ink-2);
+  }
+
+  .demo-roles strong {
+    color: var(--ink);
+    font-weight: 620;
+  }
+
+  .demo-band .section-cta {
+    margin-top: 0.25rem;
+  }
+
+  @media (max-width: 1000px) {
+    .demo-band {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+}

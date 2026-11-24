@@ -3,17 +3,16 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { HeroInstrument } from "./hero-instrument";
-import { Releve } from "./releve";
 import { PlateShowcase } from "./plate-showcase";
+import { PlatformCapture } from "./platform-capture";
 import { OfferPlate } from "./offer-plate";
 import { PhasePlate } from "./phase-plate";
 import { AudiencePicker } from "./audience-picker";
-import { BeforeAfter } from "./before-after";
 import { WhyUs } from "./why-us";
-import { SiteReading, TonneExplained } from "./image-stories";
 import { Focus } from "./focus";
 import { useSiteActions } from "./site-frame";
 import { offerPlate, phasePlate } from "@/lib/plates";
+import { demoCase, platformDemo } from "@/lib/demo-case";
 
 const comparison = [
   ["Pensé pour les entreprises marocaines", "À construire soi-même", "Variable", "En français, avec des sources locales"],
@@ -28,7 +27,7 @@ const comparison = [
 const faq: { q: string; a: ReactNode }[] = [
   {
     q: "Que puis-je découvrir aujourd’hui ?",
-    a: "Une démonstration interactive avec des données d’exemple, des outils gratuits (calculateur express, vérificateur MACF, diagnostic) et une checklist adaptée à votre activité. Les missions sont menées dès maintenant par nos consultants avec la méthode SPS-CARBON ; l’accès à la plateforme ouvre sur invitation, dans le cadre du programme pilote 2026.",
+    a: "La plateforme elle-même, en démonstration avec une entreprise fictive, des outils gratuits (calculateur express, vérificateur MACF, diagnostic) et une checklist adaptée à votre activité. Les missions sont menées dès maintenant par nos consultants avec la méthode SPS-CARBON ; l’accès à la plateforme avec vos données ouvre sur invitation, dans le cadre du programme pilote 2026.",
   },
   {
     q: "Quelles données faut-il pour commencer ?",
@@ -99,10 +98,6 @@ export function HomePage() {
         </div>
       </section>
 
-      <Releve />
-
-      <SiteReading />
-
       <section className="chapter s-tint bento-chapter" id="plateforme" aria-labelledby="bento-title">
         <div className="wrap">
           <div className="head is-split">
@@ -110,25 +105,52 @@ export function HomePage() {
               Tout votre carbone, sur un seul écran.
             </Focus>
             <p className="t-lead" data-reveal="rise">
-              Cinq modules, cinq questions de la direction. Choisissez-en un : il réagit comme dans la plateforme. Écrans
-              de démonstration, données d’exemple.
+              Cinq modules, cinq questions de la direction. Choisissez-en un : tout part du bilan de la démonstration de la
+              plateforme, {demoCase.name}, une entreprise fictive.
             </p>
           </div>
           <PlateShowcase />
-          <div className="section-cta" data-reveal="rise">
-            <Link href="/plateforme" className="btn">
-              Découvrir la plateforme
-            </Link>
-            <Link href="/plateforme#demonstration" className="link">
-              Essayer la démonstration
-            </Link>
+        </div>
+      </section>
+
+      <section className="chapter" id="demonstration" aria-labelledby="demo-title">
+        <div className="wrap demo-band">
+          <div className="demo-band-copy">
+            <Focus className="t-h2" id="demo-title">
+              Ouvrez la vraie plateforme.
+            </Focus>
+            <p className="t-lead" data-reveal="rise">
+              La démonstration n’est pas une maquette : ce sont les écrans et les calculs de la plateforme, ouverts sur
+              {" "}{demoCase.name}, une entreprise fictive. Choisissez un rôle et parcourez le bilan.
+            </p>
+            <ul className="demo-roles" data-reveal="rise">
+              <li>
+                <strong>Cliente</strong>
+                Saisir, contrôler, suivre le plan de réduction.
+              </li>
+              <li>
+                <strong>Consultante SafePerform</strong>
+                Revoir les données, commenter, valider.
+              </li>
+              <li>
+                <strong>Vérificateur indépendant</strong>
+                Échantillonner et rendre un avis, en lecture seule.
+              </li>
+            </ul>
+            <div className="section-cta" data-reveal="rise">
+              <a href={platformDemo.url} className="btn" target="_blank" rel="noopener">
+                {platformDemo.cta}
+              </a>
+              <span className="t-meta">{platformDemo.note}</span>
+            </div>
+          </div>
+          <div data-reveal="rise">
+            <PlatformCapture ambiance="voile" sizes="(max-width: 1000px) 100vw, 860px" />
           </div>
         </div>
       </section>
 
       <WhyUs />
-
-      <TonneExplained />
 
       <section className="chapter s-tint" id="comparaison" aria-labelledby="compare-title">
         <div className="wrap">
@@ -140,9 +162,6 @@ export function HomePage() {
               Un tableur ou un logiciel importé produit un total. SPS-CARBON produit un bilan que vous comprenez, que vous
               pouvez justifier et qui débouche sur des actions.
             </p>
-          </div>
-          <div data-reveal="rise">
-            <BeforeAfter />
           </div>
           <div className="compare-wrap" data-reveal="rise">
             <table className="compare">

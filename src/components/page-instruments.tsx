@@ -39,15 +39,15 @@ function Frame({ title, children, className = "" }: { title: string; children: R
 
 function Plateforme() {
   const rows = [
-    ["Collecte guidée", "62 % reçu", "ok"],
-    ["Contrôle qualité", "3 points", "check"],
-    ["Calcul traçable", "5,51 t", "ok"],
-    ["Tableau de bord", "2 910 t", "ok"],
+    ["Collecte guidée", "54 % reçu", "ok"],
+    ["Contrôle qualité", "2 à vérifier", "check"],
+    ["Calcul traçable", "26 lignes", "ok"],
+    ["Tableau de bord", "9 146 t", "ok"],
     ["Plan de réduction", "−30 %", "ok"],
     ["Rapports et MACF", "Prêts", "ok"],
   ];
   return (
-    <Frame title="Atelier Atlas, bilan 2025">
+    <Frame title="Conserverie Atlas, bilan 2025">
       <ol className="pi-flow">
         {rows.map(([name, value, tone], n) => (
           <li key={name} style={i(n)} className={`is-${tone}`}>
