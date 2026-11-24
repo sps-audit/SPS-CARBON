@@ -2,11 +2,13 @@
  * "Planches": the way the home page presents the platform since 23 Nov 2026.
  * One plate = one atmosphere image (src/lib/ambiance.ts) holding one real
  * fragment of SPS-CARBON under a double-rim glass bezel; the explanation is
- * written under or beside the plate, never on the picture. Same fictional
- * company and figures as the rest of the home page (Atelier Atlas, 2 910 t).
- * Every fragment wears its "données d'exemple" chip.
+ * written under or beside the plate, never on the picture. Since 24 Nov 2026
+ * every fragment shows the platform's own demonstration case (Conserverie
+ * Atlas, src/lib/demo-case.ts), with its real checks and figures, and wears
+ * the chip that says the company is fictional.
  */
 import type { AmbianceName } from "./ambiance";
+import { demoCase, demoChecks, demoLine } from "./demo-case";
 
 export type ModuleId = "collecter" | "controler" | "calculer" | "piloter" | "transmettre";
 
@@ -66,9 +68,9 @@ export const plateModules: PlateModule[] = [
   {
     id: "transmettre",
     verb: "Transmettre",
-    title: "Que transmettre au client européen ?",
-    text: "La fiche produit MACF se prépare depuis les mêmes données que le bilan, prête à envoyer en PDF ou en Excel.",
-    link: { href: "/solutions#cbam", label: "L’accompagnement MACF" },
+    title: "Que répondre au client européen ?",
+    text: "L’empreinte de chaque produit se calcule depuis le bilan, avec sa méthode : la réponse au questionnaire carbone part en PDF ou en Excel.",
+    link: { href: "/solutions#livrables", label: "Les livrables" },
     ambiance: "vagues",
     grid: true,
   },
@@ -77,12 +79,12 @@ export const plateModules: PlateModule[] = [
 /* The plate's top edge. The chip goes on fictional fragments only, never on the real offers or steps. */
 export const plateEdge = {
   number: (n: number) => `Planche ${String(n).padStart(2, "0")}`,
-  demo: "Données d’exemple",
+  demo: demoCase.chip,
 };
 
 /* Collecter: the pieces converging on the bilan, and who still owes what. */
 export const collect = {
-  kicker: "Bilan 2025",
+  kicker: `${demoCase.name}, bilan 2025`,
   complete: (done: number, total: number) => `${done} sources sur ${total} complètes`,
   srLabel: "Sources du bilan",
   states: { ok: "reçu", wait: "en attente", miss: "manquant" },
@@ -90,56 +92,55 @@ export const collect = {
 
 export const collectSources = [
   { name: "Électricité", icon: "bolt", state: "ok" },
-  { name: "Gaz propane", icon: "flame", state: "wait" },
-  { name: "Flotte", icon: "truck", state: "ok" },
+  { name: "Fioul et propane", icon: "flame", state: "ok" },
+  { name: "Flotte", icon: "truck", state: "wait" },
   { name: "Sites", icon: "building", state: "ok" },
-  { name: "Fluides", icon: "file", state: "miss" },
+  { name: "Justificatifs", icon: "file", state: "miss" },
 ] as const;
 
 export const collectRows = [
-  { name: "Factures d’électricité", state: "ok", label: "Reçu" },
-  { name: "Gaz propane, T3 et T4", state: "wait", label: "En attente" },
-  { name: "Registre des fluides", state: "miss", label: "Manquant" },
+  { name: "Chaudière vapeur, fioul lourd", state: "ok", label: "Reçu" },
+  { name: "Camions frigorifiques, décembre", state: "wait", label: "Mois manquant" },
+  { name: "Groupe électrogène, facture", state: "miss", label: "Justificatif attendu" },
 ] as const;
 
 /* Contrôler */
 export const control = {
   kicker: "Contrôle qualité",
-  allClear: "Tout est vérifié : le calcul peut partir",
-  open: (n: number) => `${n} point${n > 1 ? "s" : ""} à vérifier avant le calcul`,
+  allClear: "Tout est vérifié : le bilan peut partir en revue",
+  open: (n: number) => `${n} point${n > 1 ? "s" : ""} à vérifier avant la revue`,
   check: "Vérifier",
   fixed: "Corrigé",
   markFixed: "marquer comme corrigé",
   markOpen: "marquer à vérifier",
 };
 
-export const controlAlerts = [
-  { title: "Période en double", text: "Facture de mars saisie deux fois" },
-  { title: "Unité incompatible", text: "Gaz déclaré en m³ au lieu de kg" },
-  { title: "Hausse inhabituelle", text: "Électricité de juillet +38 %" },
-];
+export const controlAlerts = demoChecks;
 
 /* Calculer */
-export const trace = { kicker: "Électricité, mars 2025", note: "Calcul tracé" };
+export const trace = { kicker: demoLine.name, note: "Calcul tracé" };
 
 export const traceChain = [
-  { k: "Pièce", v: "Facture d’électricité, mars 2025" },
-  { k: "Quantité", v: "10 000 kWh" },
-  { k: "Facteur", v: "0,551 kgCO₂e/kWh" },
-  { k: "Source", v: "Maroc 2024, version 1" },
-  { k: "Résultat", v: "5,51 tCO₂e" },
+  { k: "Pièce", v: demoLine.piece },
+  { k: "Quantité", v: `${demoLine.quantity} de fer blanc` },
+  { k: "Facteur", v: `${demoLine.factor} ${demoLine.factorUnit}` },
+  { k: "Source", v: demoLine.factorSource },
+  { k: "Résultat", v: `${demoLine.result}CO₂e, 51 % du bilan` },
 ];
 
 /* Piloter */
-export const trajectoryBase = 2910;
+/* The reference year (2024) and the 2025 bilan the curve starts from. */
+export const trajectoryBase = demoCase.base.total;
+export const trajectoryStart = demoCase.current.total;
+/* goal: reduction in 2030 against 2024. "Plan actuel" = the 1 184 t a year of actions retained in the platform. */
 export const scenarios = [
   { name: "Sans action", goal: 0, note: "La tendance si rien ne change" },
-  { name: "Plan actuel", goal: 0.3, note: "Quatre actions engagées" },
-  { name: "Plan renforcé", goal: 0.45, note: "Avec de l’électricité renouvelable" },
+  { name: "Plan actuel", goal: 0.125, note: "Cinq actions retenues, 1 184 t par an" },
+  { name: "Plan renforcé", goal: 0.29, note: "Avec le facteur du fournisseur de fer blanc" },
 ];
 export const trajectory = {
   unit: "tCO₂e en 2030",
-  /** The target, as a share of the base year: −30 % (2 037 t, as in the hero). */
+  /** The target, as a share of the base year: −30 % (6 373 t, as in the hero). */
   target: 0.7,
   targetLabel: "Objectif −30 %",
   group: "Scénario",
@@ -147,15 +148,17 @@ export const trajectory = {
 };
 
 /* Transmettre */
+/* Transmettre: the product footprint, as the platform's "Empreinte produit" computes it for 2025. */
 export const macf = {
-  kicker: "Fiche produit MACF",
-  product: "Acier laminé, 2025",
-  value: 1.62,
-  unit: "tCO₂e par tonne produite",
+  kicker: "Empreinte produit, 2025",
+  product: "Sardines à l’huile, boîte de 125 g",
+  value: 97,
+  decimals: 0,
+  unit: "gCO₂e par boîte",
   rows: [
-    { k: "Émissions directes", v: "1,18 t" },
-    { k: "Émissions indirectes", v: "0,44 t" },
-    { k: "Méthode", v: "Règlement (UE) 2023/956" },
+    { k: "Par kilo", v: "0,78 kgCO₂e" },
+    { k: "Périmètre", v: "Du berceau à la sortie d’usine" },
+    { k: "Méthode", v: "Bilan réparti par masse, vers ISO 14067" },
   ],
   files: ["PDF", "Excel"],
   ready: "Prêt à transmettre",

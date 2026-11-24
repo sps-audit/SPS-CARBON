@@ -40,13 +40,13 @@ function Screen({ index }: { index: number }) {
     case 0:
       return (
         <div className="ui ui-collect">
-          <div className="ui-head">Demandes de données <span>Site principal</span></div>
+          <div className="ui-head">Collecte guidée <span>Conserverie Atlas</span></div>
           {[
-            ["Factures d’électricité", "Janv. à déc.", "Reçu", "ok"],
-            ["Gasoil des véhicules", "Janv. à déc.", "Reçu", "ok"],
-            ["Gaz propane chaudière", "T3 et T4", "En attente", "wait"],
-            ["Fluides frigorigènes", "Registre 2025", "Manquant", "miss"],
-            ["Achats de matières", "Export comptable", "En attente", "wait"],
+            ["Chaudière vapeur, fioul lourd", "Suivi mensuel", "Reçu", "ok"],
+            ["Propane, ligne de cuisson", "Donnée annuelle", "Reçu", "ok"],
+            ["Camions frigorifiques", "Suivi mensuel", "Mois manquant", "wait"],
+            ["Groupe électrogène", "Facture", "Justificatif attendu", "miss"],
+            ["Chariots élévateurs diesel", "Donnée annuelle", "À préciser", "wait"],
           ].map(([label, period, status, tone], i) => (
             <div className="ui-row" key={label} style={{ ["--i" as string]: i }}>
               <span>{label}</span>
@@ -54,8 +54,8 @@ function Screen({ index }: { index: number }) {
               <em className={`tag ${tone}`}>{status}</em>
             </div>
           ))}
-          <div className="ui-progress"><span style={{ width: "62%" }} /></div>
-          <small className="ui-foot">Collecte : 62 % des données reçues</small>
+          <div className="ui-progress"><span style={{ width: "54%" }} /></div>
+          <small className="ui-foot">Collecte : 54 % des données reçues, 14 sur 26</small>
         </div>
       );
     case 1:
@@ -63,9 +63,9 @@ function Screen({ index }: { index: number }) {
         <div className="ui ui-quality">
           <div className="ui-head">Contrôles avant calcul <span>3 points</span></div>
           {[
-            ["Période en double", "Facture de mars saisie deux fois", "warn"],
-            ["Unité incompatible", "Gaz déclaré en m³ au lieu de kg", "warn"],
-            ["Hausse inhabituelle", "Électricité de juillet +38 %", "info"],
+            ["Mois manquant", "Camions frigorifiques : décembre", "warn"],
+            ["Qualité à préciser", "Chariots élévateurs diesel", "warn"],
+            ["Écart avec 2024", "Eaux usées +32 %, à expliquer", "info"],
           ].map(([title, text, tone], i) => (
             <div className={`ui-alert ${tone}`} key={title} style={{ ["--i" as string]: i }}>
               <strong>{title}</strong>
@@ -79,29 +79,29 @@ function Screen({ index }: { index: number }) {
     case 2:
       return (
         <div className="ui ui-calc">
-          <div className="ui-head">Électricité, site principal <span>Mars 2025</span></div>
+          <div className="ui-head">Fer blanc pour boîtes <span>2025</span></div>
           <div className="ui-equation">
-            <div><strong>10 000</strong><small>kWh, facture jointe</small></div>
+            <div><strong>1 450</strong><small>tonnes achetées</small></div>
             <b>×</b>
-            <div><strong>0,5</strong><small>kgCO₂e par kWh</small></div>
+            <div><strong>3,19</strong><small>tCO₂e par tonne</small></div>
             <b>=</b>
-            <div className="ui-result"><strong>5,0</strong><small>tCO₂e, Scope 2</small></div>
+            <div className="ui-result"><strong>4 626</strong><small>tCO₂e, Scope 3</small></div>
           </div>
           <div className="ui-trace">
-            <span>Source du facteur</span><strong>Valeur illustrative, version et année documentées</strong>
-            <span>Hypothèse</span><strong>Consommation relevée sur facture, sans estimation</strong>
+            <span>Source du facteur</span><strong>FM6E v17, acier neuf importé</strong>
+            <span>Pièce</span><strong>Export comptable des achats 2025</strong>
           </div>
         </div>
       );
     case 3:
       return (
         <div className="ui ui-dash">
-          <div className="ui-head">Bilan 2025 <span>Exemple fictif</span></div>
-          <div className="ui-dash-total"><strong>2 910</strong><small>tCO₂e</small></div>
+          <div className="ui-head">Bilan 2025 <span>Conserverie Atlas</span></div>
+          <div className="ui-dash-total"><strong>9 146</strong><small>tCO₂e</small></div>
           {[
-            ["Scope 1", 14, "412 t"],
-            ["Scope 2", 19, "538 t"],
-            ["Scope 3", 67, "1 960 t"],
+            ["Scope 1", 14, "1 288 t"],
+            ["Scope 2", 22, "2 008 t"],
+            ["Scope 3", 64, "5 850 t"],
           ].map(([name, share, value], i) => (
             <div className="ui-bar" key={name as string} style={{ ["--i" as string]: i }}>
               <span>{name}</span>
@@ -109,17 +109,17 @@ function Screen({ index }: { index: number }) {
               <strong>{value}</strong>
             </div>
           ))}
-          <small className="ui-foot">Dont 21 % estimés, sources et méthodes indiquées</small>
+          <small className="ui-foot">Incertitude ± 7,6 %, fiabilité bonne (4,2 sur 5)</small>
         </div>
       );
     case 4:
       return (
         <div className="ui ui-plan">
-          <div className="ui-head">Plan d’action <span>Exemple</span></div>
+          <div className="ui-head">Plan de réduction <span>Objectif −30 % en 2030</span></div>
           {[
             ["Variateurs sur les compresseurs", "Maintenance", "En cours", "wait"],
-            ["Optimisation des tournées", "Logistique", "Planifié", "info"],
-            ["Éclairage LED de l’atelier", "Services généraux", "Réalisé", "ok"],
+            ["Chaudière : du fioul lourd au gaz naturel", "Direction technique", "Planifié", "info"],
+            ["Optimiser les tournées de livraison", "Logistique", "Réalisé", "ok"],
           ].map(([action, owner, status, tone], i) => (
             <div className="ui-row" key={action} style={{ ["--i" as string]: i }}>
               <span>{action}</span>

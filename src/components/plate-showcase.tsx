@@ -17,6 +17,7 @@ import {
   traceChain,
   trajectory,
   trajectoryBase,
+  trajectoryStart,
   scenarios,
   macf,
   type ModuleId,
@@ -153,15 +154,16 @@ function Trajectory() {
   const [scenario, setScenario] = useState(1);
   const s = scenarios[scenario];
   const xs = [10, 160, 310, 460, 610, 760];
-  const value = (i: number) => (s.goal === 0 ? trajectoryBase * Math.pow(1.012, i) : trajectoryBase * (1 - s.goal * Math.pow(i / 5, 1.2)));
-  const y = (t: number) => 20 + ((3200 - t) / 1700) * 150;
+  const end = trajectoryBase * (1 - s.goal);
+  const value = (i: number) => (s.goal === 0 ? trajectoryStart * Math.pow(1.005, i) : trajectoryStart + (end - trajectoryStart) * Math.pow(i / 5, 1.2));
+  const y = (t: number) => 20 + ((9800 - t) / 4000) * 150;
   const d = xs.map((x, i) => `${i ? "L" : "M"} ${x} ${y(value(i)).toFixed(1)}`).join(" ");
   return (
     <div className="pf pf-trajectory">
       <Bezel className="pf-card">
         <div className="pf-traj-head">
           <p className="pf-figure readout" aria-live="polite">
-            <Reading value={Math.round(value(5))} from={trajectoryBase} />
+            <Reading value={Math.round(value(5))} from={trajectoryStart} />
             <small>{trajectory.unit}</small>
           </p>
           <div className="seg" role="group" aria-label={trajectory.group}>
@@ -199,7 +201,7 @@ function Macf() {
           {macf.kicker} <span>{macf.product}</span>
         </p>
         <p className="pf-figure readout">
-          <Reading value={macf.value} decimals={2} />
+          <Reading value={macf.value} decimals={macf.decimals} />
           <small>{macf.unit}</small>
         </p>
         <dl className="pf-sheet">

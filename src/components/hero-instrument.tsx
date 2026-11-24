@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Ambiance } from "./ambiance";
 import { Focus } from "./focus";
 import { Reading } from "./reading";
+import { demoCase, demoChecks, demoLine, demoActions, platformDemo } from "@/lib/demo-case";
 
 /*
  * Home hero, "Instrument de précision": the product is the hero. A glass
@@ -13,20 +14,18 @@ import { Reading } from "./reading";
  * pointer (fine pointers only, never under reduced motion). The reduction goal
  * is a real control: the 2030 projection, the curve and the example plan
  * follow it, and the figures settle like a meter needle. Hovering the chart
- * reads any year. Fictional company and figures, labelled as such.
+ * reads any year. The company and its figures are the platform's own
+ * demonstration (Conserverie Atlas, src/lib/demo-case.ts), labelled as fictional.
  */
 
-const BASE = 2910;
+/* The goal is set against the reference year (2024); the curve starts from the 2025 bilan. */
+const BASE = demoCase.base.total;
+const START = demoCase.current.total;
 const YEARS = [2025, 2026, 2027, 2028, 2029, 2030];
-const ACTIONS = [
-  { name: "Variateurs sur les compresseurs", from: 5 },
-  { name: "Récupération de chaleur des fours", from: 15 },
-  { name: "Optimisation des tournées", from: 25 },
-  { name: "Électricité renouvelable", from: 35 },
-];
+const ACTIONS = demoActions;
 
 const nf = new Intl.NumberFormat("fr-FR");
-const y = (t: number) => 22 + ((3200 - t) / 1700) * 176;
+const y = (t: number) => 22 + ((9800 - t) / 5000) * 176;
 const line = (pts: number[][]) => pts.map((p, i) => `${i ? "L" : "M"} ${p[0]} ${p[1].toFixed(1)}`).join(" ");
 const XS = [12, 167, 322, 477, 632, 788];
 
@@ -62,12 +61,13 @@ export function HeroInstrument() {
     };
   }, []);
 
-  const value = (i: number) => BASE * (1 - (goal / 100) * Math.pow(i / 5, 1.25));
-  const trendValue = (i: number) => BASE * Math.pow(1.012, i);
+  const target = BASE * (1 - goal / 100);
+  const value = (i: number) => START + (target - START) * Math.pow(i / 5, 1.25);
+  const trendValue = (i: number) => START * Math.pow(1.005, i);
   const trend = XS.map((x, i) => [x, y(trendValue(i))]);
   const plan = XS.map((x, i) => [x, y(value(i))]);
   const planD = line(plan);
-  const t2030 = Math.round(BASE * (1 - goal / 100));
+  const t2030 = Math.round(target);
   const progress = { ["--p" as string]: `${((goal / 45) * 100).toFixed(1)}%` } as CSSProperties;
 
   function onChart(event: PointerEvent<SVGSVGElement>) {
@@ -94,9 +94,9 @@ export function HeroInstrument() {
           <Link className="btn" href="/contact">
             Parlons de votre projet
           </Link>
-          <Link className="btn btn-quiet" href="/plateforme#demonstration">
+          <a className="btn btn-quiet" href={platformDemo.url} target="_blank" rel="noopener">
             Essayer la démonstration
-          </Link>
+          </a>
         </div>
         <Link
           href="/normes"
@@ -123,13 +123,13 @@ export function HeroInstrument() {
           <div className="hero-deck-glass" data-reveal="scan" style={{ ["--scan-delay" as string]: "380ms" }}>
             <div className="hd-side">
               <p className="hd-org">
-                <span>AA</span>
-                Atelier Atlas
+                <span>{demoCase.initials}</span>
+                {demoCase.name}
               </p>
-              <span className="is-on">Vue d’ensemble</span>
-              <span>Collecte</span>
-              <span>Contrôles</span>
-              <span>Plan d’action</span>
+              <span className="is-on">Tableau de bord</span>
+              <span>Saisir mes données</span>
+              <span>Contrôle qualité</span>
+              <span>Plan de réduction</span>
               <span>Rapports</span>
             </div>
             <div className="hd-main">
@@ -137,11 +137,11 @@ export function HeroInstrument() {
                 <div>
                   <p className="hd-k">Projection 2030, objectif −{goal} %</p>
                   <p className="hd-total readout">
-                    <Reading value={t2030} from={BASE} />
+                    <Reading value={t2030} from={START} />
                     <small>tCO₂e</small>
                   </p>
                 </div>
-                <span className="demo-chip">Entreprise fictive, données d’exemple</span>
+                <span className="demo-chip">{demoCase.chip}</span>
               </div>
               <div className="hd-chart-wrap">
                 <svg
@@ -197,9 +197,9 @@ export function HeroInstrument() {
             <i className="hf-dot is-check" />
             Contrôle qualité
           </p>
-          <p className="hf-sub">2 points à vérifier avant le calcul</p>
-          <span className="hf-alert">Facture de mars saisie deux fois</span>
-          <span className="hf-alert">Gaz déclaré en m³ au lieu de kg</span>
+          <p className="hf-sub">2 points à vérifier avant la revue</p>
+          <span className="hf-alert">{demoChecks[0].title} : {demoChecks[0].text}</span>
+          <span className="hf-alert">{demoChecks[1].title} : {demoChecks[1].text}</span>
         </div>
 
         <div className="hero-float hf-goal">
@@ -230,19 +230,19 @@ export function HeroInstrument() {
               </li>
             ))}
           </ul>
-          <p className="hf-foot">Plan d’exemple : les effets se chiffrent avec vous.</p>
+          <p className="hf-foot">Actions du plan de démonstration ; les effets se chiffrent avec vous.</p>
         </div>
 
         <div className="hero-float hf-proof" aria-hidden="true">
-          <p className="hf-title">Électricité, mars 2025</p>
+          <p className="hf-title">{demoLine.name}</p>
           <p className="hf-eq">
-            <span>10 000 kWh</span>
+            <span>{demoLine.quantity}</span>
             <b>×</b>
-            <span>0,551</span>
+            <span>{demoLine.factor}</span>
             <b>=</b>
-            <strong>5,51 t</strong>
+            <strong>{demoLine.result}</strong>
           </p>
-          <p className="hf-sub">Facture jointe, facteur sourcé, version 1</p>
+          <p className="hf-sub">Pièce jointe, facteur {demoLine.factorSource}</p>
         </div>
       </div>
     </section>
