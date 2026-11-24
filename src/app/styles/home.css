@@ -594,7 +594,7 @@
 
   .releve-grid {
     display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    grid-template-columns: minmax(0, 4.6fr) minmax(0, 7.4fr);
     gap: 2rem clamp(2rem, 1rem + 3vw, 5rem);
     align-items: center;
   }
@@ -728,60 +728,49 @@
     }
   }
 
-  /* The relevé instrument */
-  .rv {
-    --rv-paper: #ffffff;
-    width: min(100%, calc((100vh - var(--header) - 7rem) * 1.18));
+  /* The relevé instrument: a fragment under the bezel, on its night plate (plates.css). */
+  .releve-plate .plate-body {
+    padding: 2.9rem clamp(0.75rem, 0.3rem + 1.4vw, 1.5rem) clamp(0.75rem, 0.3rem + 1.4vw, 1.5rem);
+  }
+
+  .rv-bezel {
+    width: min(100%, calc((100vh - var(--header) - 9rem) * 1.18));
     margin-inline: auto;
   }
 
+  .rv {
+    --rv-paper: #ffffff;
+    container-type: inline-size;
+  }
+
+  /* Proportioned 1.18 : 1 by its own width, and never shorter than the invoice and its
+     notes need (as far as the screen allows). A height, not aspect-ratio, so the
+     minimum never widens the glass past its bezel. */
   .rv-glass {
     position: relative;
-    aspect-ratio: 1.18 / 1;
-    border-radius: 22px;
-    background: linear-gradient(180deg, rgba(245, 250, 248, 0.08), rgba(245, 250, 248, 0.03));
-    box-shadow: inset 0 1px 0 rgba(245, 250, 248, 0.14), inset 0 0 0 1px rgba(245, 250, 248, 0.12), 0 40px 90px -40px rgba(0, 0, 0, 0.7);
+    height: max(calc(100cqw / 1.18), min(37.5rem, calc(100vh - var(--header) - 9.5rem)));
     overflow: hidden;
     color: var(--night-ink);
   }
 
-  .rv-bar {
+  /* Short laptop screens: the invoice keeps two of its notes, so nothing overlaps. */
+  @media (min-width: 641px) and (max-height: 820px) {
+    .rv-meta li:nth-child(3) {
+      display: none;
+    }
+  }
+
+  .rv-head.pf-kicker {
     position: relative;
     z-index: 3;
     display: flex;
     align-items: center;
-    gap: 0.85rem;
     height: 3rem;
-    padding: 0 1rem;
-    border-bottom: 1px solid var(--night-line);
-    font-size: var(--t-micro);
-    color: var(--night-ink-3);
-  }
-
-  .rv-bar .demo-chip {
-    margin-left: auto;
-    color: var(--night-ink-2);
-    background: rgba(245, 250, 248, 0.06);
-    box-shadow: inset 0 0 0 1px var(--night-line);
-  }
-
-  .rv-path {
-    min-width: 0;
+    margin: 0;
+    padding: 0 1.1rem;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-
-  .rv-dots {
-    display: flex;
-    gap: 5px;
-  }
-
-  .rv-dots i {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: rgba(245, 250, 248, 0.18);
   }
 
   .rv-layer {
@@ -1306,7 +1295,7 @@
   .rv[data-stage="4"] .rv-docs li:nth-child(3) { transition-delay: 1200ms; }
 
   /* Unpinned (phones, reduced motion): every step is laid out with a still of its picture. */
-  .releve:not(.is-pinned) .rv {
+  .releve:not(.is-pinned) .rv-bezel {
     width: 100%;
   }
 
@@ -1351,7 +1340,7 @@
 
   @media (max-width: 640px) {
     .rv-glass {
-      aspect-ratio: auto;
+      height: auto;
       min-height: 22rem;
     }
 
@@ -1626,80 +1615,10 @@
       gap: 0.15rem;
     }
   }
-
-  /* Closing moment of the homepage (components/carbon-reveal.tsx). It needs JavaScript, so it takes no room without. */
-  .carbon-reveal {
-    --reveal-ink: var(--ink);
-    --reveal-live: var(--signal);
-    --reveal-fill: var(--signal-fill);
-    --reveal-logo: var(--signal-fill);
-    --reveal-bg: var(--paper);
-    position: relative;
-    overflow: hidden;
-    height: clamp(27.5rem, 72vh, 40rem);
-    background: var(--paper);
-  }
-
-  html[data-theme="dark"] .carbon-reveal {
-    --reveal-logo: var(--ink);
-  }
-
-  html:not(.js) .carbon-reveal {
-    display: none;
-  }
-
-  .carbon-reveal svg {
-    position: absolute;
-    inset: 0;
-    display: block;
-  }
-
-  .carbon-reveal-text {
-    position: absolute;
-    inset-inline: 0;
-    bottom: clamp(1.75rem, 8%, 3.5rem);
-    display: grid;
-    justify-items: center;
-    padding-inline: var(--gutter, 1rem);
-    text-align: center;
-    pointer-events: none;
-  }
-
-  .carbon-reveal-text > * {
-    grid-area: 1 / 1;
-    opacity: 0;
-  }
 }
 
 /* ---------- Ambiance images on the home page (ambiance.tsx, image-stories.tsx) ---------- */
 @layer sections {
-  /* Le relevé: leaf veins under the night, in luminosity only, darker on the text side. */
-  .releve-pin {
-    position: relative;
-    isolation: isolate;
-  }
-
-  .releve-amb {
-    z-index: -1;
-  }
-
-  .releve-amb img {
-    opacity: 0.42;
-    mix-blend-mode: luminosity;
-  }
-
-  .releve-amb::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      90deg,
-      var(--night) 0%,
-      color-mix(in srgb, var(--night) 82%, transparent) 42%,
-      color-mix(in srgb, var(--night) 55%, transparent) 100%
-    );
-  }
-
   /* "Un site, trois sources": the field read like an analyst's map. */
   .sr-stage {
     position: relative;

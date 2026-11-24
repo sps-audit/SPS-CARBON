@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Ambiance } from "./ambiance";
+import { Plate, Bezel } from "./plate";
 import { Focus } from "./focus";
 import { onScrollFrame, requestScrollFrame } from "./scroll-store";
 
@@ -12,6 +12,9 @@ import { onScrollFrame, requestScrollFrame } from "./scroll-store";
  * and report. Steps can also be chosen directly. On phones, and under reduced
  * motion, the five steps are simply laid out one after the other, each with
  * its own picture. Fictional company and illustrative figures.
+ * Since 24 Nov 2026 the instrument is a fragment on a plate (leaf veins, a
+ * night plate), like every product fragment on the site: no window bar, and
+ * no photograph behind the text.
  */
 
 const STEPS = [
@@ -49,17 +52,10 @@ const STEPS = [
 
 function ReleveVisual({ stage }: { stage: number }) {
   return (
-    <div className="rv" data-stage={stage} aria-hidden="true">
+    <Bezel className="rv-bezel">
+      <div className="rv" data-stage={stage} aria-hidden="true">
       <div className="rv-glass">
-        <div className="rv-bar">
-          <span className="rv-dots">
-            <i />
-            <i />
-            <i />
-          </span>
-          <span className="rv-path">Atelier Atlas / Site de production / Mars 2025</span>
-          <span className="demo-chip">Données d’exemple</span>
-        </div>
+        <p className="pf-kicker rv-head">Atelier Atlas, site de production, mars 2025</p>
 
         {/* 1-2: the invoice, then its check */}
         <div className="rv-layer rv-invoice">
@@ -208,7 +204,17 @@ function ReleveVisual({ stage }: { stage: number }) {
           </ul>
         </div>
       </div>
-    </div>
+      </div>
+    </Bezel>
+  );
+}
+
+/* The instrument on its plate: leaf veins (each tonne traced to its source), a night plate. */
+function RelevePlate({ stage }: { stage: number }) {
+  return (
+    <Plate ambiance="feuille" sizes="(max-width: 1000px) 100vw, 760px" demo night className="releve-plate">
+      <ReleveVisual stage={stage} />
+    </Plate>
   );
 }
 
@@ -287,8 +293,6 @@ export function Releve() {
       style={{ ["--steps" as string]: STEPS.length }}
     >
       <div className="releve-pin">
-        {/* Leaf veins under the night: every line traced back to its source. */}
-        <Ambiance name="feuille" className="releve-amb" sizes="100vw" />
         <div className="wrap releve-grid">
           <div className="releve-copy">
             <Focus className="t-h2" id="releve-title">
@@ -306,7 +310,7 @@ export function Releve() {
                   </button>
                   <p className="releve-step-text">{step.text}</p>
                   <div className="releve-step-visual">
-                    <ReleveVisual stage={index} />
+                    <RelevePlate stage={index} />
                   </div>
                 </li>
               ))}
@@ -321,7 +325,7 @@ export function Releve() {
             <div className="releve-gauge" aria-hidden="true">
               <i />
             </div>
-            <ReleveVisual stage={stage} />
+            <RelevePlate stage={stage} />
           </div>
         </div>
       </div>

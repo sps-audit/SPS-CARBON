@@ -171,6 +171,22 @@ export const offerPlate = {
   more: "En savoir plus",
 };
 
+/*
+ * The closing plate of every page (footer, page ends): what to prepare for the
+ * first exchange, the same list as the contact page. Real content: no chip.
+ */
+export const firstExchange = {
+  kicker: "Pour préparer notre échange",
+  aside: "Sans engagement",
+  items: [
+    "Votre secteur d’activité et les sites concernés.",
+    "L’objectif de la démarche et son destinataire.",
+    "La période étudiée et les éventuelles échéances.",
+    "Les données déjà disponibles dans votre entreprise.",
+  ],
+  note: "Quelques lignes suffisent pour ce premier contact.",
+};
+
 /* The mission as stacked phase cards. */
 export const phasePlate = {
   title: "Comment se déroule une mission.",

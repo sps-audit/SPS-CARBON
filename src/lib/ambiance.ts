@@ -4,11 +4,11 @@
  * product under glass, a caption, an explanation or an analysis. Each image
  * has one role across the site:
  * - voile, lumiere: soft blurs, the stages under glass (hero, demonstration,
- *   page headers, page ends, sign-in);
+ *   page headers, sign-in);
  * - feuille: leaf veins, traceability (the invoice story, method, norms);
  * - champ: a field in motion, the terrain (one site and its three scopes, the
  *   firm, the 404);
- * - vagues: lime waves, the explanation of a tonne and the closings.
+ * - vagues: lime waves, the explanation of a tonne, the dossier sent.
  *
  * Added on 23 Nov 2026 for the "planches" (src/lib/plates.ts), placed by
  * character (full map: docs/design/website-v9-planches.md):
@@ -19,13 +19,17 @@
  * - clairiere: the palest grain, the calm ground for the longest text (the
  *   mission phases).
  *
+ * Added on 24 Nov 2026:
+ * - jade: the calm jade blur (its baked grid melted away), the close of every
+ *   page (components/closing.tsx): the calmest ground for a list and a call.
+ *
  * Files: public/images/ambiance/{name}-{large|haut}-{width}.{avif,webp},
  * encoded from the originals (abstract blurs turned a quarter for the wide
  * versions, so they keep their full resolution). Self-hosted (CSP img-src 'self').
  */
 import type { InstrumentName } from "@/components/page-instruments";
 
-export type AmbianceName = "feuille" | "vagues" | "champ" | "voile" | "lumiere" | "nervure" | "elan" | "eclaircie" | "clairiere";
+export type AmbianceName = "feuille" | "vagues" | "champ" | "voile" | "lumiere" | "nervure" | "elan" | "eclaircie" | "clairiere" | "jade";
 export type AmbianceShape = "large" | "haut";
 
 type Shape = { widths: readonly [number, number]; width: number; height: number };
@@ -67,9 +71,13 @@ export const ambiances: Record<AmbianceName, Record<AmbianceShape, Shape>> = {
     large: { widths: [1600, 900], width: 1600, height: 900 },
     haut: { widths: [736, 480], width: 736, height: 1308 },
   },
+  jade: {
+    large: { widths: [1600, 900], width: 1600, height: 900 },
+    haut: { widths: [736, 480], width: 736, height: 1308 },
+  },
 };
 
-/* Inner page headers: the image behind each page's instrument, and the line written on it. */
+/* Inner page headers: the plate under each page's instrument, and the line written under the plate. */
 export const pageAmbiance: Record<InstrumentName, { name: AmbianceName; note: string }> = {
   plateforme: { name: "voile", note: "Collecte, contrôle et calcul dans un seul espace" },
   solutions: { name: "lumiere", note: "Trois parcours, toujours précédés d’un cadrage" },
@@ -82,7 +90,7 @@ export const pageAmbiance: Record<InstrumentName, { name: AmbianceName; note: st
   outils: { name: "voile", note: "Calculé dans votre navigateur, rien n’est envoyé" },
 };
 
-/* Demonstration on /plateforme: the three things to try, written on the image above the demo. */
+/* Demonstration on /plateforme: the three things to try, listed above the demo's plate. */
 export const demoSteps = ["Changez de source d’émission", "Parcourez les mois", "Ouvrez le détail d’un calcul"];
 
 /*

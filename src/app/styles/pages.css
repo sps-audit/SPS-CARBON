@@ -126,69 +126,20 @@
     }
   }
 
-  /* ---------- Page instruments ---------- */
-  .page-instrument {
-    --px: 0;
-    --py: 0;
-    perspective: 1400px;
-  }
-
-  .page-head .page-instrument {
-    --px: inherit;
-    --py: inherit;
-  }
-
+  /* ---------- Page instruments: a fragment under the bezel, on the page's plate ---------- */
   .pi {
-    position: relative;
-    border-radius: var(--r-l);
-    background: var(--glass-strong);
-    box-shadow: var(--glass-lit), 0 0 0 1px var(--glass-edge), var(--shadow-3);
-    overflow: hidden;
-    transform: rotateY(calc(-7deg + var(--px, 0) * 5deg)) rotateX(calc(4deg - var(--py, 0) * 4deg));
-    transform-style: preserve-3d;
-    transition: transform 900ms var(--ease-out);
+    width: 100%;
   }
 
-  .pi-bar {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    height: 2.75rem;
-    padding: 0 0.9rem;
-    border-bottom: 1px solid var(--line);
-    background: color-mix(in srgb, var(--paper) 50%, transparent);
-    color: var(--ink-3);
-    font-size: var(--t-micro);
-  }
-
-  .pi-bar .demo-chip {
-    margin-left: auto;
-  }
-
-  .pi-title {
-    color: var(--ink-2);
-    font-weight: 560;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .pi-dots {
-    display: flex;
-    gap: 5px;
-  }
-
-  .pi-dots i {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--line-2);
+  .pi .pf-kicker.pi-head {
+    margin: 0;
+    padding: 1rem 1.2rem 0;
   }
 
   .pi-body {
     display: grid;
     gap: 1rem;
-    padding: clamp(1rem, 0.8rem + 1vw, 1.6rem);
+    padding: 0.85rem 1.2rem 1.2rem;
   }
 
   /* Rows that light up one after the other, once the instrument has been read. */
@@ -213,7 +164,7 @@
   .pi-steps li,
   .pi-sheet > div {
     animation: pi-row 700ms var(--ease-out) both;
-    animation-delay: calc(900ms + var(--i, 0) * 110ms);
+    animation-delay: calc(320ms + var(--i, 0) * 90ms);
   }
 
   @keyframes pi-row {
@@ -651,16 +602,6 @@
     font-size: var(--t-meta);
   }
 
-  @media (max-width: 1000px) {
-    .page-instrument {
-      max-width: 34rem;
-    }
-
-    .pi {
-      transform: none;
-    }
-  }
-
   /* El Jadida on the coast (firm page) */
   .coast {
     position: relative;
@@ -1088,34 +1029,6 @@
     font-weight: 620;
   }
 
-  .page-callout {
-    position: relative;
-    display: grid;
-    justify-items: start;
-    gap: 1rem;
-    padding: clamp(2rem, 1.5rem + 2vw, 3rem);
-    border-radius: var(--r-xl);
-    overflow: hidden;
-    isolation: isolate;
-  }
-
-  .page-callout h2 {
-    max-width: 18em;
-    font-size: clamp(1.6rem, 1.2rem + 1.2vw, 2.3rem);
-    font-weight: 600;
-    letter-spacing: -0.03em;
-  }
-
-  .page-callout p {
-    max-width: 36em;
-    color: var(--night-ink-2);
-  }
-
-  .page-callout-line {
-    z-index: -1;
-    inset: 0;
-  }
-
   @media (max-width: 1000px) {
     .page-layout {
       grid-template-columns: minmax(0, 1fr);
@@ -1468,103 +1381,58 @@
 
 /* ---------- Ambiance images on the inner pages ---------- */
 @layer sections {
-  /* Page header: the instrument (glass) stands on an image panel with its line written at the foot. */
+  /*
+   * Page header (24 Nov 2026): the instrument is a fragment on the page's plate,
+   * exactly like the home page's plates (plates.css). The image is framed, the
+   * fragment sits inside it under the bezel, the page's line is written under
+   * the plate, never on the picture.
+   */
   .page-head::before {
     display: none;
   }
 
   .page-head-visual {
-    position: relative;
-    isolation: isolate;
-    padding: clamp(2rem, 1.25rem + 2.5vw, 3.5rem) clamp(1.25rem, 0.75rem + 1.5vw, 2.25rem) clamp(3.75rem, 3rem + 1.5vw, 4.75rem) 0;
+    display: grid;
+    gap: 0.95rem;
+    min-width: 0;
   }
 
-  .page-head-amb {
-    left: 14%;
-    right: 0;
-    z-index: -1;
-    border-radius: var(--r-xl);
-    box-shadow: 0 0 0 1px var(--glass-edge);
+  .head-plate .plate-face {
+    display: grid;
+    min-height: clamp(24rem, 18rem + 12vw, 31rem);
   }
 
-  .page-head-amb::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, transparent 50%, color-mix(in srgb, var(--petrol) 72%, transparent));
-  }
-
-  html[data-theme="dark"] .page-head-amb::after {
-    background: linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--petrol) 35%, transparent),
-      color-mix(in srgb, var(--petrol) 80%, transparent)
-    );
-  }
-
-  .page-head-note {
-    position: absolute;
-    left: calc(14% + 1.4rem);
-    right: 1.4rem;
-    bottom: 1.15rem;
-    margin: 0;
-    color: var(--night-ink);
-    font-size: var(--t-small);
-    font-weight: 580;
-    letter-spacing: -0.005em;
-  }
-
-  .page-head-note::before {
-    content: "";
-    display: inline-block;
-    width: 0.5rem;
-    height: 0.5rem;
-    margin-right: 0.6rem;
-    border-radius: 50%;
-    background: var(--viridian);
-    vertical-align: 0.1em;
+  .head-plate .plate-body {
+    display: grid;
+    align-content: center;
+    padding: 3.5rem clamp(1rem, 0.4rem + 2.2vw, 2.25rem) clamp(1.25rem, 0.6rem + 2vw, 2.25rem);
   }
 
   @media (max-width: 1000px) {
     .page-head-visual {
-      padding: 1.25rem 1rem 3.75rem;
+      max-width: 36rem;
     }
 
-    .page-head-amb {
-      left: 0;
-    }
-
-    .page-head-note {
-      left: 1.25rem;
+    .head-plate .plate-face {
+      min-height: 0;
     }
   }
 
-  /* Demonstration: the product on a field of soft light, the three things to try written on it. */
+  /* Demonstration: the three things to try, then the product on its plate (soft light), under the bezel. */
   .demo-stage {
-    position: relative;
-    isolation: isolate;
-    padding: clamp(1rem, 0.4rem + 2.6vw, 3.25rem);
-    border-radius: var(--r-xl);
-    overflow: hidden;
-    box-shadow: 0 0 0 1px var(--glass-edge);
+    display: grid;
+    gap: clamp(1rem, 0.6rem + 1vw, 1.75rem);
   }
 
-  .demo-stage > .amb {
-    z-index: -1;
-  }
-
-  html[data-theme="dark"] .demo-stage > .amb::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: color-mix(in srgb, var(--petrol) 55%, transparent);
+  .demo-plate .plate-body {
+    padding: 3.25rem clamp(0.6rem, 0.1rem + 2.4vw, 3rem) clamp(0.6rem, 0.1rem + 2.4vw, 3rem);
   }
 
   .demo-steps {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin: 0 0 clamp(1rem, 0.6rem + 1vw, 1.75rem);
+    margin: 0;
     padding: 0;
     list-style: none;
   }
@@ -1575,10 +1443,8 @@
     gap: 0.55rem;
     padding: 0.4rem 0.9rem 0.4rem 0.4rem;
     border-radius: 999px;
-    background: var(--glass-strong);
-    -webkit-backdrop-filter: var(--blur);
-    backdrop-filter: var(--blur);
-    box-shadow: var(--glass-lit), 0 0 0 1px var(--glass-edge);
+    background: var(--surface);
+    box-shadow: 0 0 0 1px var(--line);
     font-size: var(--t-small);
     font-weight: 580;
   }
@@ -1595,27 +1461,4 @@
     font-weight: 650;
   }
 
-  /* Page ends with their own call: the lime waves under a petrol veil. */
-  .page-callout > .callout-amb {
-    z-index: -1;
-  }
-
-  .callout-amb::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      100deg,
-      color-mix(in srgb, var(--petrol) 95%, transparent) 0%,
-      color-mix(in srgb, var(--petrol) 86%, transparent) 50%,
-      color-mix(in srgb, var(--petrol) 45%, transparent) 100%
-    );
-  }
-
-  @media (max-width: 760px), (pointer: coarse) {
-    .demo-steps li {
-      -webkit-backdrop-filter: none;
-      backdrop-filter: none;
-    }
-  }
 }

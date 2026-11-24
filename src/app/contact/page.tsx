@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ContactForm } from "@/components/contact-form";
 import { PageHead } from "@/components/page-head";
 import { company } from "@/lib/company";
+import { firstExchange } from "@/lib/plates";
 import { shareMetadata } from "@/lib/share";
 
 const title = "Parlons de votre projet | SPS-CARBON";
@@ -38,12 +39,11 @@ export default function ContactPage() {
                 Réserver un appel de 30 min
               </a>
             ) : null}
-            <h3>Pour préparer notre échange</h3>
+            <h3>{firstExchange.kicker}</h3>
             <ul className="dash-list">
-              <li>Votre secteur d’activité et les sites concernés.</li>
-              <li>L’objectif de la démarche et son destinataire.</li>
-              <li>La période étudiée et les éventuelles échéances.</li>
-              <li>Les données déjà disponibles dans votre entreprise.</li>
+              {firstExchange.items.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
             </ul>
             <p className="form-notice">
               Quelques lignes suffisent pour ce premier contact. Les justificatifs et les informations détaillées pourront

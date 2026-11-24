@@ -194,47 +194,6 @@
       transform: none;
     }
 
-    /* The brand device draws when its section arrives. */
-    html.js [data-reveal] .trajectory line {
-      stroke-dasharray: 1;
-      stroke-dashoffset: 1;
-      transition: stroke-dashoffset 1800ms var(--ease-io);
-    }
-
-    html.js [data-reveal] .trajectory .trajectory-b {
-      transition-delay: 160ms;
-    }
-
-    html.js [data-reveal].is-in .trajectory line {
-      stroke-dashoffset: 0;
-    }
-
-    html.js [data-reveal] .trajectory-run {
-      opacity: 0;
-    }
-
-    html.js [data-reveal].is-in .trajectory-run {
-      opacity: 1;
-      animation: trajectory-run 9s var(--ease-io) 1.6s 3 both;
-    }
-
-    @keyframes trajectory-run {
-      0% {
-        transform: translate(0, 0);
-        opacity: 0;
-      }
-      8% {
-        opacity: 1;
-      }
-      85% {
-        opacity: 1;
-      }
-      100% {
-        transform: translate(100%, 55%);
-        opacity: 0;
-      }
-    }
-
     /* Instrument surfaces (.spot) light their edge under the pointer. */
     .spot {
       position: relative;
@@ -353,12 +312,8 @@
     @keyframes ic-fold { from { opacity: 0; transform: translateY(-2px); } }
   }
 
-  /* Reduced motion: the device is simply drawn, nothing travels. */
+  /* Reduced motion: nothing travels. */
   @media (prefers-reduced-motion: reduce) {
-    .trajectory-run {
-      display: none;
-    }
-
     *,
     *::before,
     *::after {

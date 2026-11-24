@@ -10,7 +10,7 @@ import { SectorExplorer } from "./sector-explorer";
 import { Focus } from "./focus";
 import { ImportDemo } from "./import-demo";
 import { useSiteActions } from "./site-frame";
-import { Ambiance } from "./ambiance";
+import { Plate, Bezel } from "./plate";
 import { demoSteps } from "@/lib/ambiance";
 
 /*
@@ -44,9 +44,8 @@ export function PageShowcase({ slug }: { slug: string }) {
               title="Voyez-la fonctionner."
               lead="Une entreprise fictive, des facteurs illustratifs : changez de source, parcourez les mois et ouvrez le détail d’un calcul."
             />
-            {/* The demo stands on a field of soft light, with the three things to try written on it. */}
+            {/* The three things to try, then the demo on its plate (soft light), held by the bezel. */}
             <div className="demo-stage" data-reveal="rise">
-              <Ambiance name="lumiere" sizes="(max-width: 1360px) 100vw, 1320px" />
               <ol className="demo-steps">
                 {demoSteps.map((step, n) => (
                   <li key={step}>
@@ -55,7 +54,11 @@ export function PageShowcase({ slug }: { slug: string }) {
                   </li>
                 ))}
               </ol>
-              <ProductPreview />
+              <Plate ambiance="lumiere" sizes="(max-width: 1360px) 100vw, 1320px" demo className="demo-plate">
+                <Bezel className="demo-bezel">
+                  <ProductPreview />
+                </Bezel>
+              </Plate>
             </div>
           </div>
         </section>

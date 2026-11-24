@@ -12,8 +12,7 @@ import { PageTransition } from "./page-transition";
 import { AuthShell } from "./auth/auth-shell";
 import { StickyCta } from "./sticky-cta";
 import { ThemeToggle } from "./theme-toggle";
-import { Trajectory } from "./trajectory";
-import { Ambiance } from "./ambiance";
+import { Closing } from "./closing";
 import { onScrollFrame } from "./scroll-store";
 import { company } from "@/lib/company";
 import { SafeperformLogo } from "@/components/safeperform-logo";
@@ -239,25 +238,13 @@ export function SiteFrame({ children }: { children: ReactNode }) {
 
       <footer className={`site-footer s-night ${ownCall.has(pathname) ? "is-compact" : ""}`}>
         {!ownCall.has(pathname) && (
-          <div className="wrap footer-call" data-reveal="rise">
-            <Ambiance name="lumiere" className="footer-amb" sizes="(max-width: 1360px) 100vw, 1320px" />
-            <Trajectory className="footer-trajectory" />
-            <div className="footer-call-copy">
-              <h2 className="t-h2">Votre premier inventaire commence par un échange.</h2>
-              <p className="t-lead">
-                Présentez votre activité, vos sites et votre objectif. Nous définissons avec vous le bon périmètre, avant tout
-                engagement.
-              </p>
-            </div>
-            <div className="footer-call-actions">
-              <Link className="btn btn-signal" href="/contact">
-                Parlons de votre projet
-              </Link>
-              <a className="link footer-call-mail" href={`mailto:${company.email}`}>
-                {company.email}
-              </a>
-            </div>
-          </div>
+          <Closing
+            className="wrap footer-closing"
+            title="Votre premier inventaire commence par un échange."
+            lead="Présentez votre activité, vos sites et votre objectif. Nous définissons avec vous le bon périmètre, avant tout engagement."
+            action={{ href: "/contact", label: "Parlons de votre projet" }}
+            mail={company.email}
+          />
         )}
         <div className="wrap footer-grid">
           <div className="footer-company">
@@ -323,9 +310,6 @@ export function SiteFrame({ children }: { children: ReactNode }) {
               </li>
             </ul>
           </div>
-        </div>
-        <div className="wrap footer-mark" aria-hidden="true" data-reveal="rise">
-          <span />
         </div>
         <div className="wrap footer-base">
           <span>© 2026 SAFEPERFORM SOLUTIONS SARL AU</span>

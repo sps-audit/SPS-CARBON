@@ -133,6 +133,33 @@
     z-index: 2;
   }
 
+  /* The plate's line, written under it like a caption under a print: never on the picture. */
+  .plate-caption {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    margin: 0;
+    padding-inline: 0.2rem;
+    color: var(--ink-2);
+    font-size: var(--t-small);
+    font-weight: 560;
+    letter-spacing: -0.005em;
+  }
+
+  .plate-caption::before {
+    content: "";
+    flex: none;
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: var(--viridian);
+    transform: translateY(-0.08em);
+  }
+
+  .s-night .plate-caption {
+    color: var(--night-ink-2);
+  }
+
   /* ---------- The double-rim bezel ---------- */
   .bezel {
     --rim: 7px;
@@ -159,6 +186,7 @@
   }
 
   .plate.is-night .bezel,
+  .s-night .bezel,
   html[data-theme="dark"] .bezel {
     background: rgba(10, 36, 43, 0.34);
     box-shadow:
@@ -168,6 +196,7 @@
       0 34px 64px -32px rgba(0, 0, 0, 0.7);
   }
 
+  .s-night .bezel-card,
   html[data-theme="dark"] .bezel-card {
     box-shadow: 0 0 0 1px var(--line), var(--glass-lit);
   }
@@ -1152,6 +1181,147 @@
         transform: translateY(10px);
       }
     }
+  }
+}
+
+/*
+ * The close of every page (components/closing.tsx, 24 Nov 2026): the call
+ * beside, the jade plate holding the first-exchange card. Still: no reveal,
+ * no drawn line, no travelling light. Laid out by its own width.
+ */
+@layer components {
+  .closing {
+    container-type: inline-size;
+  }
+
+  .closing-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+    align-items: center;
+    gap: 2.25rem clamp(2rem, 1rem + 4vw, 5.5rem);
+  }
+
+  .closing-copy {
+    display: grid;
+    justify-items: start;
+    gap: 1.25rem;
+  }
+
+  .closing-copy .t-h2 {
+    max-width: 14em;
+  }
+
+  .closing-copy .t-lead {
+    max-width: 30em;
+  }
+
+  .closing-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .closing-mail {
+    color: var(--ink-2);
+  }
+
+  /* The jade is an even blur: a lighter grain keeps it soft. */
+  .closing-plate .plate-grain {
+    opacity: 0.22;
+  }
+
+  .closing-plate .plate-body {
+    display: grid;
+    place-items: center;
+    padding: clamp(1.75rem, 1rem + 3vw, 3.5rem) clamp(1rem, 0.4rem + 3vw, 3.25rem);
+  }
+
+  .closing-card {
+    width: min(100%, 30rem);
+  }
+
+  .closing-card .bezel-card {
+    padding: 1.15rem 1.25rem 1.1rem;
+  }
+
+  .closing-list {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--line);
+  }
+
+  .closing-list li {
+    display: grid;
+    grid-template-columns: 2.1rem minmax(0, 1fr);
+    gap: 0.5rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--line);
+    font-size: var(--t-small);
+    line-height: 1.45;
+  }
+
+  .closing-list span {
+    color: var(--ink-3);
+    font-size: var(--t-meta);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.6;
+  }
+
+  .closing-note {
+    margin: 0.85rem 0 0;
+    color: var(--ink-3);
+    font-size: var(--t-meta);
+  }
+
+  .closing-card .pf-kicker {
+    flex-wrap: wrap;
+    gap: 0.15rem 1rem;
+  }
+
+  .closing-card .pf-kicker span {
+    text-align: left;
+  }
+
+  @container (max-width: 760px) {
+    .closing-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* Narrow: the plate gives the card its width. */
+  @container (max-width: 480px) {
+    .closing-plate .plate-body {
+      padding: 0.9rem;
+    }
+
+    .closing-card .bezel-card {
+      padding: 1rem 1rem 0.95rem;
+    }
+
+    .closing-list li {
+      grid-template-columns: 1.8rem minmax(0, 1fr);
+    }
+  }
+
+  /* Page ends that bring their own call: the same close, on a night panel. */
+  .page-closing {
+    padding: clamp(1.1rem, 0.6rem + 2.5vw, 3rem);
+    border-radius: var(--r-xl);
+  }
+
+  .page-closing .closing-copy .t-h2 {
+    font-size: clamp(1.6rem, 1.2rem + 1.2vw, 2.3rem);
+  }
+
+  /* Footer: the close sits on the night before the links. */
+  .footer-closing {
+    padding-block: clamp(1rem, 0.5rem + 2vw, 2.5rem) clamp(3rem, 2rem + 3vw, 5rem);
+    border-bottom: 1px solid var(--night-line);
   }
 }
 

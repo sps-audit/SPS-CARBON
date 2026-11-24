@@ -26,7 +26,7 @@
 
   @media (max-width: 700px) {
     /* Functional pages start with the task, not with a picture of it. */
-    .page-head:has(.pi-steps, .pi-sheet, .pi-receipt, .pi-ruler) .pi {
+    .page-head:has(.pi-steps, .pi-sheet, .pi-receipt, .pi-ruler) .page-head-visual {
       display: none;
     }
 

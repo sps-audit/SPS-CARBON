@@ -42,12 +42,13 @@ as photos.
 | Green and white bloom (`19.36.24 (2)`) | soft, a light at the centre | `eclaircie` | Planche 06, the offers | the light falls on the featured formula in the middle |
 | Palest lime grain (`19.36.23`) | calmest, almost no detail | `clairiere` | Planche 07, the mission | the most text on any plate: it needs the quietest ground |
 | Soft diagonal blur (`19.31.37`, already used) | soft stage | `voile` | hero, Planche 01 *Collecter* | white tiles and dashed lines read best on its mid green |
-| Vertical light (`19.32.29`, already used) | soft stage | `lumiere` | Planche 02 *Contrôler*, footer | a calm stage for a list of checks |
-| Lime waves (`19.30.41`, already used) | saturated, energetic | `vagues` | Planche 05 *Transmettre* (with the drawn grid), the tonne, closings | the closing step: the dossier sent |
+| Vertical light (`19.32.29`, already used) | soft stage | `lumiere` | Planche 02 *Contrôler*, the demonstration, two page headers | a calm stage for a list of checks |
+| Lime waves (`19.30.41`, already used) | saturated, energetic | `vagues` | Planche 05 *Transmettre* (with the drawn grid), the tonne, two page headers | the closing step: the dossier sent |
 | Soft leaf (`19.29.53`, already used) | medium detail | `feuille` | the invoice story (Le relevé) | unchanged |
 | Field in motion (`19.31.25`, already used) | terrain, horizon | `champ` | one site and its three scopes, 404 | unchanged |
 | Grid paper with crosses (`19.36.23 (1)`) | a texture, not a photo | drawn in CSS | the showcase sheet (millimetre grid, crosses every 48 px) | sharp at every size and in both themes; the JPEG is 640 px wide |
 | Green blur with a grid (`19.36.23 (2)`) | a texture, not a photo | drawn in CSS | the grid over Planche 05 | same reason |
+| The same jade blur, grid melted (24 Nov) | calmest, even | `jade` | the close of every page | carries a list and a call; nothing on it moves |
 
 Not used, on purpose:
 
@@ -72,3 +73,29 @@ project. Blurs weigh 3 to 21 KB; the leaf is softened by 0.8 px to stay near the
 The sign-in card takes the same double rim (spread shadows on `.auth-card`, `src/styles/auth.css`
 in the platform). Nothing else on the platform: its rule keeps photographs away from figures,
 statuses, steppers and charts, and "the reading" style approved on 22 Nov stays as it is.
+
+## 24 Nov 2026: the plates everywhere, a still close
+
+The user asked for one style across the site: no more "window" (a bar with three dots and a
+title) set on a photograph. Every product fragment on an image is now a plate, exactly as on the
+home page.
+
+| Where | Before | Now |
+| --- | --- | --- |
+| Header of the 9 inner pages (`page-head.tsx`, `page-instruments.tsx`) | a tilted glass window with dots, overhanging an image panel, its line written on the picture | the page's plate (same image per page), the instrument under the bezel with a kicker, the chip "Données d'exemple" on the plate's edge for fictional instruments only (`fictional`), the line written under the plate (`.plate-caption`); no pointer tilt |
+| Le relevé, home (`releve.tsx`) | a window with dots on a full-bleed leaf photo behind the whole section, text included | a night plate on `feuille` holding the instrument; the section is plain night, no photo behind the text |
+| Demonstration, /plateforme (`page-showcase.tsx`, `product-preview.tsx`) | the app window (dots, crumb, chip) on a field of light, the three steps written on the picture | the three steps above, the app under the bezel on its plate (`lumiere`), the chip on the plate's edge |
+| Close of every page (footer, page ends: `closing.tsx`) | a dark band on `lumiere` with two drawn lines and a travelling light, the big SPS CARBON wordmark under the links, the animated "carbon reveal" at the end of the home page | the call beside a still plate on `jade` holding the first-exchange card (the contact page's list, real content, no chip); no wordmark; nothing moves at the end of a page |
+
+**Numbering rule.** A number marks a series of plates read together (home: modules 01 to 05, offers
+06, mission 07). A plate standing alone (a page header, the relevé, the demonstration, the close)
+carries no number.
+
+**New image.** `jade` comes from the user's set (`19.36.23 (2)`, the jade blur with a baked grid):
+the rim is trimmed, the grid melted by a strong blur (grids are drawn in CSS, never shipped), the
+wide version turned a quarter. The calmest ground of the set, so it carries a list and a call;
+its grain is lighter (0.22) because the blur is even. 3 to 9 KB per file.
+
+Kept as is on purpose: the hero (restored by the user on 18 Nov), "Un site, trois sources" and
+"Ce que pèse une tonne" (cards on images, not windows), the before/after and the module tour
+(windows, but not on photographs).

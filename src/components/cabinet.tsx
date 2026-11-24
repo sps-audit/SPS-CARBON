@@ -1,6 +1,5 @@
-import Link from "next/link";
 import { Focus } from "./focus";
-import { Ambiance } from "./ambiance";
+import { Closing } from "./closing";
 import { company } from "@/lib/company";
 import { cabinetContact, references, sectors, team, trades, values } from "@/lib/cabinet";
 
@@ -144,17 +143,14 @@ export function CabinetEnd() {
           </article>
         </div>
 
-        <div className="page-callout s-night" data-reveal="rise">
-          <Ambiance name="vagues" className="callout-amb" sizes="(max-width: 1000px) 100vw, 860px" />
-          <h2>Échangeons sur les besoins de votre entreprise</h2>
-          <p>
-            Formation, audit, accompagnement QHSE, démarche RSE ou projet carbone : présentez votre contexte et vos priorités pour
-            préparer un premier échange avec notre équipe.
-          </p>
-          <Link className="btn btn-signal" href="/contact">
-            Contacter le cabinet
-          </Link>
-        </div>
+        <section className="page-closing s-night" aria-labelledby="cab-closing-title">
+          <Closing
+            headingId="cab-closing-title"
+            title="Échangeons sur les besoins de votre entreprise."
+            lead="Formation, audit, accompagnement QHSE, démarche RSE ou projet carbone : présentez votre contexte et vos priorités pour préparer un premier échange avec notre équipe."
+            action={{ href: "/contact", label: "Contacter le cabinet" }}
+          />
+        </section>
       </div>
     </section>
   );
