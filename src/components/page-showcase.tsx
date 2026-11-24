@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { ProductPreview } from "./product-preview";
 import { FeatureTour } from "./feature-tour";
+import { PlatformCapture } from "./platform-capture";
 import { Deliverables } from "./deliverables";
 import { Diagnostic } from "./diagnostic";
 import { ScopeChain } from "./scope-chain";
@@ -10,8 +10,8 @@ import { SectorExplorer } from "./sector-explorer";
 import { Focus } from "./focus";
 import { ImportDemo } from "./import-demo";
 import { useSiteActions } from "./site-frame";
-import { Plate, Bezel } from "./plate";
 import { demoSteps } from "@/lib/ambiance";
+import { demoCase, platformDemo } from "@/lib/demo-case";
 
 /*
  * Each inner page opens with something to try or look at before the reading:
@@ -42,9 +42,9 @@ export function PageShowcase({ slug }: { slug: string }) {
             <Head
               id="showcase-title"
               title="Voyez-la fonctionner."
-              lead="Une entreprise fictive, des facteurs illustratifs : changez de source, parcourez les mois et ouvrez le détail d’un calcul."
+              lead={`Voici la plateforme elle-même, pas une maquette : trois écrans du bilan 2025 de ${demoCase.name}, une entreprise fictive. Ouvrez la démonstration pour aller plus loin.`}
             />
-            {/* The three things to try, then the demo on its plate (soft light), held by the bezel. */}
+            {/* What to do in the demonstration, then three real screens on their plate (soft light). */}
             <div className="demo-stage" data-reveal="rise">
               <ol className="demo-steps">
                 {demoSteps.map((step, n) => (
@@ -54,11 +54,13 @@ export function PageShowcase({ slug }: { slug: string }) {
                   </li>
                 ))}
               </ol>
-              <Plate ambiance="lumiere" sizes="(max-width: 1360px) 100vw, 1320px" demo className="demo-plate">
-                <Bezel className="demo-bezel">
-                  <ProductPreview />
-                </Bezel>
-              </Plate>
+              <PlatformCapture tabs ambiance="lumiere" sizes="(max-width: 1360px) 100vw, 1320px" />
+              <div className="section-cta">
+                <a href={platformDemo.url} className="btn" target="_blank" rel="noopener">
+                  {platformDemo.cta}
+                </a>
+                <span className="t-meta">{platformDemo.note}</span>
+              </div>
             </div>
           </div>
         </section>
